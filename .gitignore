@@ -1,0 +1,41 @@
+# === Qt Build Artifacts ===
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+*.autosave
+
+# === Python Caches ===
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyd
+
+# === Virtual Environments ===
+.venv/
+env/
+venv/
+
+# === SQLite DB Files ===
+*.db
+*.sqlite3
+*.db-journal
+*.db-wal
+
+# === LaTeX Temp Files ===
+*.aux
+*.log
+*.out
+*.toc
+*.gz
+*.fls
+*.fdb_latexmk
+*.synctex.*
+
+# === System/IDE Files ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

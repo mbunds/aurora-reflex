@@ -1,0 +1,38 @@
+Name: PySide6
+Version: 6.9.0
+Summary: Python bindings for the Qt cross-platform application and UI framework
+Home-page: https://pyside.org
+Author-email: Qt for Python Team <pyside@qt-project.org>
+License: LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+Location: C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages
+Requires: PySide6-Addons, PySide6-Essentials, shiboken6
+Required-by: AURORA GUI
+
+Name: selenium
+Version: 4.31.0
+Summary: Official Python bindings for Selenium WebDriver
+Home-page: https://www.selenium.dev
+License: Apache 2.0
+Location: C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages
+Requires: certifi, trio, trio-websocket, typing_extensions, urllib3, websocket-client
+Required-by: AURORA browser launch utilities.
+
+Name: lxml
+Version: 5.3.2
+Summary: Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API.
+Home-page: https://lxml.de/
+Author: lxml dev team
+Author-email: lxml@lxml.de
+License: BSD-3-Clause
+Location: C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages
+Required-by: xml parsing scripts (Not yet implimented in AURORA).
+
+Name: beautifulsoup4
+Version: 4.13.3
+Summary: Screen-scraping library
+Home-page: https://www.crummy.com/software/BeautifulSoup/bs4/
+Author-email: Leonard Richardson <leonardr@segfault.org>
+License: MIT License
+Location: C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages
+Requires: soupsieve, typing-extensions
+Required-by: AURORA code extraction routines.
