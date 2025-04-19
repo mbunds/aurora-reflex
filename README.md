@@ -3,6 +3,8 @@
 # AURORA – Autonomous File Agent and Reflexive Control Framework
 
 ---
+> **Note:** Aurora is an active development system and is not yet packaged for external installation.  
+> See [docs/PACKAGING_STATUS.md](docs/PACKAGING_STATUS.md) for details.
 
 **Authors:** ChatGPT and Mark  
 **Created:** 2025-04-12  
