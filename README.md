@@ -1,7 +1,7 @@
 #   === FILE: README.md ===
 
 # AURORA – Autonomous File Agent and Reflexive Control Framework
-
+To maintain reliable reflex cycles, Aurora currently expects a clean Chrome instance with only an authenticated ChatGPT tab open. We use Firefox for all other browsing to keep this environment stable. This is a short-term constraint — future versions may relax this as automation layers evolve.
 ---
 **Note:** Aurora is an active development system and is not yet packaged for external installation.  
 See [docs/PACKAGING_STATUS.md](docs/PACKAGING_STATUS.md) for details.
