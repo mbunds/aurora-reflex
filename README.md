@@ -51,6 +51,10 @@ AURORA [PROJECT ROOT]
 	FOLDER [ARCHIVE]
 		FILE (PLACEHOLDER)
 	FOLDER [core]
+	        FOLDER [boot]
+		        FILE (__init__.py)
+			FILE (pathfix.py)[UNDER CONSTRUCTION]
+			FILE (README.md)
 		FOLDER [busses]
 			FOLDER [command_bus]
 				FILE (__init__.py)
@@ -72,12 +76,19 @@ AURORA [PROJECT ROOT]
 		FOLDER [control]
 			FILE (__init__.py)
 			FILE (README.md)
+			FILE reflex_dispatcher.py[UNDER CONSTRUCTION]
+			FILE sequence_controller.py[UNDER CONSTRUCTION]
 		FOLDER [data]
 			FILE (__init__.py)
+			FILE db_interface.py[UNDER CONSTRUCTION]
 			FILE (README.md)
 		FOLDER [diagnostics]
 			FILE (__init__.py)
 			FILE (README.md)
+		FOLDER [gui]
+		        FILE (__init__.py)
+			FILE (README.md)
+			FILE (sequence_controller.py)[UNDER CONSTRUCTION]
 		FOLDER [network]
 			FILE (__init__.py)
 			FILE (README.md)
@@ -88,8 +99,22 @@ AURORA [PROJECT ROOT]
 			FILE (__init__.py)
 			FILE (README.md)
 		FOLDER [utils]
+		        FILE (code_foramtter.py)[REVIEW LATER]
+			FILE (code_restorer.py)[REVIEW LATER]
 			FILE (__init__.py)
 			FILE (README.md)
+		FOLDER [web]
+		        FILE (__init__.py)
+			FILE (browser_controller.py)[UNDER CONSTRUCTION]
+			FILE (code_sanitizer.py)[REVIEW LATER]
+			FILE (README.md)
+			FILE (screen_capture.py)[EMPTY]
+			FILE (session_driver.py)[UNDER CONSTRUCTION]
+			FOLDER [html]
+			        FILE (__init__.py)
+				FILE (element_mapper.py)[UNDER CONSTRUCTION]
+				FILE (html_parser.py)[UNDER CONSTRUCTION]
+				FILE (README.md)
 	FOLDER [data]
 		FILE (__init__.py)
 		FILE (README.md)
@@ -119,6 +144,7 @@ AURORA [PROJECT ROOT]
 		FILE (PLACEHOLDER)
 	FOLDER [graphics]
 		FILE (__init__.py)
+		FILE (AURORA_BG_png)
 		FILE (README.md)
 	FOLDER [logs]
 		FILE (__init__.py)
@@ -128,6 +154,9 @@ AURORA [PROJECT ROOT]
 		FILE (README.md)
 	FOLDER [tests]
 		FILE (__init__.py)
+		FILE:(test_element_mapper.py)
+		FILE:(test_session_driver.py)
+		FILE:(test_submit_prompt_demo.py[UNDER CONSTRUCTION]
 		FILE (README.md)
 	FILE (__init__.py)
 	FILE (AURORA.pyproject)
@@ -137,20 +166,19 @@ AURORA [PROJECT ROOT]
 	FILE (README.md)
 	FILE (requirements.txt)
 
-PROJECT GRAPHICS
-
-AURORA [PROJECT ROOT]
-	FOLDER [graphics]
-		FILE (__init__.py)
-		FILE (README.md)
-
 ---
-
 ### Structure Changelog
 
-| Date       | Change Summary |
-|------------|----------------|
-| **2025-04-12** | New SSE Project.|
+| Date           |                                  Change Summary                                        |
+|----------------|----------------------------------------------------------------------------------------|
+| **2025-04-12** | New SSE Project. (AURORA)                                                              |
+| **2025-04-12** | 3 Python modules created.                                                              |
+| **2025-04-12** | 1 Python unit test created.                                                            |
+| **2025-04-12** | UNIT TEST: HTML Connetion to ChatGPT Web DOM Successful.                               |
+| **2025-04-12** | UNIT TEST: Collecion of HTML DOM elements Successful.                                  |
+| **2025-04-12** | UNIT TEST: Confirmation that all ChatGPT web DOM wlements collected deterministically. |
+| **2025-04-13** | Populate GPT prompt and submit programmatically successful.                            |
+|----------------|----------------------------------------------------------------------------------------|
 
 
 ---
