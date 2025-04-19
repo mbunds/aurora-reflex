@@ -1,0 +1,78 @@
+[Milestone Log – 2025-04-13]
+
+▶ Milestone: DOM Capture and Override Sanity Test
+▶ Trigger: Post-publish screenshot prep (LinkedIn tab left open)
+▶ Environment: Chrome persistent session, single open tab (LinkedIn)
+▶ Behavior Observed:
+    - Aurora attempted browser launch
+    - Browser opened to last-used tab (LinkedIn)
+    - Aurora issued new navigation request to ChatGPT
+    - Waited for page readiness (confirmed via presence of chip: “Create image”)
+    - DOM captured (length: 213,443 characters)
+    - Session closed successfully
+    - Reflex agent declared test PASSED
+
+▶ Notes:
+    - DOM size reflects full page render including sidebar, headers, history, and async content
+    - ElementMapper routines remain performant
+    - Parser may benefit from scoped extraction zones in future branches
+
+[Milestone Log – 2025-04-13]
+
+▶ Milestone: Reflexive Prompt Injection + DOM Reply Capture
+▶ Trigger: Manual test of intelligent browser-based interaction loop
+▶ Environment: Chrome persistent profile session (ChatGPT UI loaded directly)
+▶ Behavior Observed:
+    - Prompt text injected into ChatGPT’s ProseMirror input field
+    - Submission triggered via .send_keys(Keys.ENTER)
+    - DOM monitored for stable assistant message completion using fade-aware polling
+    - Parser reinitialized post-render with updated HTML snapshot
+    - Successfully extracted and printed four AI-generated response bubbles
+
+▶ Output Sample:
+    [Bubble 1]: Got it! Session is now officially named:
+    [Bubble 2]: AUTO_TEST “Aurora says hello… and she brought her own clipboard.”
+    [Bubble 3]: Let’s mark it as an active exploratory session...
+    [Bubble 4]: Let me know what you’d like AUTO_TEST to focus on first...
+
+▶ Notes:
+    - Response text arrived with staggered fade-ins; required stability-aware DOM polling
+    - No API used; all interaction occurred through the GUI layer
+    - System is now capable of sending and interpreting full AI responses in real-time
+    - Branch T01-B03_HTML_GPT_INTERFACE remains open for reflex queue integration
+
+[Milestone Log – 2025-04-14]
+
+▶ Milestone: Reflex Loop #12 – Format-Agnostic Code Capture
+▶ Trigger: Prompt #12 initiated via test_submit_prompt_demo.py
+▶ Environment: GUI-driven test harness, no API access
+▶ Behavior Observed:
+    - SessionDriver launched Chrome (non-headless)
+    - ChatGPT GUI loaded, prompt injected directly into interface
+    - Prompt composed by ChatGPT itself (self-reflexive)
+    - DOM monitored until message stability achieved
+    - Parser extracted 8 response bubbles and 2 classic <pre><code> blocks
+    - Code was well-formed, multi-function, and shell-executable
+    - Session closed with no errors
+
+▶ Output Sample:
+    [Code Block 1]: YAML config validator in full Python3 format with CLI, argparse, and usage instructions
+
+▶ Notes:
+    - Format fallback (Monaco support) was present but not triggered in this run
+    - Prompt self-generation confirmed as viable for autonomous session bootstrapping
+    - This test completes the reflex round-trip: prompt → submission → capture → synthesis
+    - Officially designates the test loop as Format-Agnostic Reflex Capture (FARC-capable)
+
+[Public Response Log – 2025-04-14]
+
+▶ Milestone: Reflex Demo Video – LinkedIn Impressions Surge
+▶ Trigger: Posting of live browser automation demo showcasing Aurora's reflex integration
+▶ Outcome:
+    - Post gained 1,501 impressions within 16 hours
+    - 57.7% increase in member reach compared to prior 7 days
+    - Chart spike confirms Aurora demo as top-performing content (April 8–14)
+▶ Insights:
+    - Demo video successfully demonstrated real-time AI prompt injection, DOM response capture
+    - Viewer interest peaked after period of low engagement
+    - Confirms narrative + visual proof pairing is highly effective for outreach

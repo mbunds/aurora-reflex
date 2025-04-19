@@ -1,0 +1,105 @@
+# GPT session instructions:
+# INSTUCTION: Use "TEMPLATES.txt" to look up headers for new modules and other new files.
+# INSTUCTION: Examine "T01_OVERVIEW.txt" to see the code entry for "mainwindow.py" and other initial code blocks.
+# INSTUCTION: Examine "T02_INITIAL_PROCESSING.txt" to see other modules created since "T01_OVERVIEW".
+# INSTUCTION: Examine "FOLDER_TREE.txt" to get the latest folder structure. A copy of this is also kept in "T01_OVERVIEW".
+# CHANGELOG
+2025-04-12: Project AURORA created in QT Creator. This file, "MASTER_INDEX.txt" was created for the AURORA project, and indexes to the file "T01_OVERVIEW".
+
+FOLDER_TREE.txt
+#   - [PROJECT FOLDERS/FILES]
+#   - [PROJECT GRAPHICS]
+
+MAGIC_BUSES.txt
+#   - FILE: core/busses/__init__.py
+#   - FILE: core/busses/README.md
+
+DOCS.txt
+#   - [EMPTY]
+
+DEVELOPER_SECURITY.txt
+#   - [EMPTY]
+
+FUTURE_FEATURES.txt
+#   - [EMPTY]
+
+T01_OVERVIEW.txt
+#   - FILE: __init__.py
+#   - FILE: README.md
+#   - FILE: ui/mainwindow.py
+#   - T01_OVERVIEW session concluded
+#   - T01_OVERVIEW_FOCUS session seeded
+# === CONCLUDE SESSION T01_OVERVIEW - MAIN BASE TRUNK
+# === BEGIN SUB SESSION PARALLEL TRUNK T01_OVERVIEW_FOCUS
+# === BEGIN BRANCH T01-B01_HTML_CONNECT
+#   - FILE: core/web/browser_controller.py[UNDER CONSTRUCTION]
+#   - FILE: core/web/session_driver.py[UNDER CONSTRUCTION]
+#   - FILE: core/web/html/html_parser.py[UNDER CONSTRUCTION]
+#   - FILE: core/web/html/element_mapper.py[UNDER CONSTRUCTION]
+#   - FILE: tests/test_session_driver.py
+# === CONCLUDE BRANCH T01-B01_HTML_CONNECT AS T01-B01-L01_HTML_CONNECT
+# === BEGIN BRANCH T01-B02_HTML__GPT01
+# === REFINE CODE WITHIN BRANCH T01-B02_HTML_GPT01
+# === REFINED ABOVE: FILE: tests/browser_controller.py
+# === REFINED ABOVE: FILE: tests/test_session_driver.py
+# === BRANCH T01-B02_HTML_GPT01 RESULTS: DOM elements fully loaded.
+# === CONCLUDE BRANCH T01-B02_HTML_GPT01 AS T01-B02-L01_HTML_GPT01
+# === REFINE BRANCH T01-B03_HTML_GPT_INTERFACE
+#   - FILE: tests/test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+# === REFINE BRANCH T01-B03_HTML_GPT_INTERFACE
+#   - Updated: core/web/session_driver.py (added intelligent wait logic)
+#   - Updated: core/web/html/html_parser.py (message bubble selector refinement)
+#   - Created: tests/test_submit_prompt_demo.py
+#   - Milestone: Reflexive ChatGPT prompt submission and response capture achieved without API
+# === CONCLUDE BRANCH T01-B03_HTML_GPT_INTERFACE AS T01-B03-L01_HTML_GPT_INTERFACE
+#   - STATUS: Complete
+#   - MILESTONE: Reflexive prompt submission and full response capture via browser GUI
+#   - SPECIAL NOTE: Accomplished without API access; browser-only interaction validated
+#   - Output: Stable DOM-parsed AI response extraction with fade-aware polling and parser reload
+#   - Reflex integration staging confirmed; queue input or command mapping may begin in next branch
+#   - EVENT: 2025.04.13 # === CONCLUDE TRUNK T01_OVERVIEW_FOCUS (REFERENCE TRUNK)
+#   - EVENT: 2025.04.13 # === BEGIN TRUNK T02_INITIAL_PROCESSING (ACTIVE TRUNK)
+#   - EVENT: 2025.04.13 # === BEGIN BRANCH T02-B01_RESPONSE_CAPTURE_REFINEMENT
+#   - EVENT: 2025.04.13 # === FLAT FILE "T01_INITIAL_PROCESSING.txt CREATED
+#   - EVENT: 2025.04.13 # === FILE tests/test_submit_prompt_demo.py UPDATED IN T01_OVERVIEW.txt
+#   - EVENT: 2025.04.14 # === FILE flat/TEMPLATES.txt CREATED
+#   - EVENT: 2025.04.14 # === FILE web/html/html_parser.py UPDATED IN T01_OVERVIEW.txt
+#   - EVENT: 2025.04.14 # === FILE tests/test_submit_prompt_demo.py UPDATED IN T01_OVERVIEW.txt
+#   - EVENT: 2025.04.14 # === FILE flat/MASTER_INDEX.txt UPDATED
+#   - EVENT: 2025.04.14 # === FILE flat/T01_OVERVIEW.txt UPDATED
+#   - EVENT: 2025.04.14 # === FILE flat/AURORA_REFLEX_LOG.txt UPDATED - REFORMATTED AS "MILESTONES"
+#   - EVENT: 2025.04.14 # === FILE flat/AURORA_REFLEX_LOG.txt UPDATED - RENAMED AS "MILESTONES.txt"
+#   - EVENT: 2025.04.15 # === INSTRUCTION - CONCLUDE REGISTRATION OF EVENTS AND MODULES IN T01_OVERVIEW.txt
+#   - EVENT: 2025.04.15 # === INSTRUCTION - ALL NEW EVENTS AND MODULES TO BE REGISTERED HERE AND IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.15 # === BEGIN BRANCH T02-B02_CODE_CAPTURE_CLEAN
+#   - EVENT: 2025.04.15 # === FILE - NEW MODULE - core/utils/code_restorer.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - FILE: core/utils/code_restorer.py[UNDER CONSTRUCTION]
+#   - EVENT: 2025.04.15 # === FILE - NEW MODULE - core/web/code_sanitizer.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - FILE: core/web/code_sanitizer.py[UNDER CONSTRUCTION]
+#   - EVENT: 2025.04.15 # === FILE - NEW MODULE - core/utils/code_formatter.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - FILE: core/utils/code_formatter.py[UNDER CONSTRUCTION]
+#   - EVENT: 2025.04.15 # === FILE - NEW MODULE - tests/test_element_mapper.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - FILE: tests/test_element_mapper.py[UNDER CONSTRUCTION]
+#   - EVENT: 2025.04.15 # === BEGIN BRANCH T02-B03_INNERTEXT_REFACTOR
+#   - EVENT: 2025.04.15 # === METHOD ADDED: wait_for_any_code_render() added to core/web/session_driver.py
+#   - PURPOSE: Universal detector for code block rendering across inline, Monaco, and fullscreen modes
+#   - DETAILS:
+#       • Detects inline <pre><code> copy icon
+#       • Detects Monaco line view blocks
+#       • Detects full-window Monaco editor SVG icon
+#       • Replaces need for mode-specific wait handlers
+#       • Some formatting issues remain; code was fleshed-out prematurely
+#   - STATUS: Confirmed stable in test_submit_prompt_demo.py
+#   - EVENT: 2025.04.16 # === CONCLUDE BRANCH T02-B03_INNERTEXT_REFACTOR
+#   - EVENT: 2025.04.13 # === BEGIN BRANCH T02-B04_SEQ_CONT
+#   - EVENT: 2025.04.16 # === FILE - NEW MODULE - core/control/sequence_controller.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.16 # === FILE - NEW MODULE - core/control/reflex_dispatcher.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.16 # === FILE - NEW MODULE - data/db_interface.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.17 # === FOLDER- NEW FOLDER - core/gui CREATED
+#   - EVENT: 2025.04.17 # === FILE - NEW MODULE - core/gui/sequencer_controller.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.17 # === FOLDER- NEW FOLDER - core/boot CREATED
+#   - EVENT: 2025.04.17 # === FILE - NEW MODULE - core/boot/pathfix.py CREATED - REGISTERED IN T02_INITIAL_PROCESSING.txt
+#   - EVENT: 2025.04.17 # === EVENT - GUI LAUNCHED SUCCESSFULLY
+
+UNLISTED (EMPTY IF NO 'ORPHANED" MODULE EXIST):
+#   - [NO ORPHANS]

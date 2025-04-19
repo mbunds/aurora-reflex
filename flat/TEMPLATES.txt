@@ -1,0 +1,439 @@
+# CHANGELOG
+2025-04-14: TEMPLATES.txt created.
+
+#   - TEMPLATE: HEADER - PYTHON CODE HEADER TEMPLATE
+#   - TEMPLATE: FILE - __INIT__.PY TEMPLATE
+#   - TEMPLATE: FILE - README.md TEMPLATE
+#   - TEMPLATE: STRUCTURE - FLAT PROJECT FOLDER STRUCTURE TEMPLATE
+#   - TEMPLATE: STRUCTURE - SSE SESSION NAMING CONVENTIONS TEMPLATE
+#   - TEMPLATE: DOCUMENT- FLAT FILE DEVELOPER_SECURITY.txt TEMPLATE [TBD]
+#   - TEMPLATE: DOCUMENT- FLAT FILE DOCS.txt TEMPLATE [TBD]
+#   - TEMPLATE: DOCUMENT- FLAT FILE FOLDER_TREE.txt TEMPLATE [TBD]
+#   - TEMPLATE: DOCUMENT- FLAT FILE FUTURE_FEATURES.txt TEMPLATE [TBD]
+#   - TEMPLATE: DOCUMENT- FLAT FILE MASTER_INDEX.txt TEMPLATE [TBD]
+#   - TEMPLATE: DOCUMENT- FLAT FILE T00_INITIALIZATION.txt TEMPLATE [TBD]
+#   - TEMPLATE: SSE COMMANDS - SSE SESSION LAUNCH AND CONCLUSIONS TEMPLATE [TBD]
+# === BEGIN BASE TRUNK
+# === BEGIN PARALLEL BASE TRUNK
+# === BEGIN BRANCH
+# === (IF this branch has branches, declare its trunk status):
+# === CONCLUDE BRANCH
+# === CONCLUDE TRUNK
+
+
+
+#   - TEMPLATE: HEADER - PYTHON CODE HEADER TEMPLATE
+# === [FILE NAME]: [PATH][MODULE].py ===
+
+"""
+[PROJECT NAME] – [PROJECT SHORT DESCRIPTION] 
+---------------------------------------
+
+Module: [PATH][MODULE].py
+Authors: ChatGPT and Mark
+Created: [YYYY]-[MM]-[DD]
+Location: [CITY], [STATE]
+Project: [PROJECT NAME]
+
+[PROJECT LONG DESCRIPTION] 
+
+License:
+    This file is part of the [PROJECT NAME] project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the [PROJECT NAME] project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: [FLAT FILE NAME]txt
+    - This file participates in the [SSE SESSION LABEL] branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+[MODULE FUNCTION]
+
+[MODULE FUNCTION LONG DESCRIPTION]
+"""
+
+
+
+#   - TEMPLATE: FILE - __INIT__.PY TEMPLATE
+#   === FILE: [PATH]__init__.py ===
+
+"""
+[PROJECT NAME] – [PROJECT SHORT DESCRIPTION] 
+------------------------------------------------------
+
+Module: [PATH]__init__.py
+Authors: ChatGPT and Mark
+Created: [YYYY]-[MM]-[DD]
+Location: [CITY], [STATE]
+Project: [PROJECT NAME]
+
+This file marks the [THIS __INIT__.PY FILE PATH RELATION] of the [PROJECT NAME] Project Python package hierarchy.
+It exists to satisfy Python's module system and to establish the FLAT structure.
+
+License:
+    This file is part of the [PROJECT NAME] project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the [PROJECT NAME] project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: [FLAT FILE NAME]txt
+    - Versioning and audit history are maintained via flat-file records.
+    - This file is subject to future FLAT flattening and regeneration tools.
+
+---
+
+[MODULE FUNCTION]
+
+[MODULE FUNCTION LONG DESCRIPTION]
+"""
+
+
+
+#   - TEMPLATE: FILE - README.md TEMPLATE
+#   === FILE: README.md ===
+
+[PROJECT NAME] – [PROJECT SHORT DESCRIPTION] 
+
+---
+
+**Authors:** ChatGPT and Mark  
+**Created:**  [YYYY]-[MM]-[DD]  
+**Location:** [CITY], [STATE]  
+**Project:** [PROJECT NAME]  
+**Milestone:** New SSE/FLAT Compliant "disciplined" project. 
+**License:** MIT  
+**FLAT Registered In:** [FLAT FILE NAME]txt 
+**WARNING:**  
+> This file may be auto-modified by development tools or AI agents.  
+> (Meddle if you dare, foolish mortal!)
+
+---
+
+## Project Overview
+
+This repository contains [FOLDER CONTENTS FUNCTIONAL GROUP DESCRIPTION].
+
+All components follow the FLAT discipline:  
+> **F**ile-based  
+> **L**ogic  
+> **A**ssembly  
+> **T**ree  
+> *(Still not an acronym.)*
+
+---
+## Project Folder Structure
+
+> Milestone: [VERSION] [YYYY]-[MM]-[DD] 
+#   - EVENT: [VERSION] [YYYY]-[MM]-[DD] # === FILE [EVENT DESCRIPTION]
+
+[NOTES/COMMENTS[ [OPTIONAL - **[YYYY]-[MM]-[DD]**].
+
+> Built on FLAT principles — the File-based Logic Assembly Tree (Nope, STILL NOT an acronym). 
+> Modularized  
+> Testable  
+> AI-ready  
+> Future-proofed  
+
+---
+
+### Folder and File Layout
+
+[PROJECT NAME] [[PROJECT ROOT]]
+	FOLDER [FOLDER NAME]
+	FILE ([FILE NAME])
+	FILE ([MODULE NAME].py)
+		FOLDER [FOLDER NAME]
+			FOLDER [[FOLDER NAME]]
+				FILE ([FILE NAME])
+				FILE ([MODULE NAME].py)
+
+
+[OPTIONAL] PROJECT GRAPHICS
+
+[PROJECT NAME] [[PROJECT ROOT]]
+	FOLDER [FOLDER NAME]
+	FILE ([FILE NAME])
+	FILE ([MODULE NAME].py)
+
+---
+
+### Structure Changelog
+
+| Date                 |                                  Change Summary                                        |
+|----------------------|----------------------------------------------------------------------------------------|
+| **[YYYY]-[MM]-[DD]** | [CHANGE SUMMARY DESCRIPTION]                                                           |
+|----------------------|----------------------------------------------------------------------------------------|
+
+---
+
+
+
+#   - TEMPLATE: STRUCTURE - FLAT PROJECT FOLDER STRUCTURE TEMPLATE
+[PROJECT NAME] [[PROJECT ROOT]]
+	FILE (__init__.py)
+	FILE (README.md)
+	FILE (requirements.txt)
+	FOLDER [ARCHIVE]
+	FOLDER [core]
+		FILE (__init__.py)
+		FILE (README.md)
+			FOLDER [core [FUNCTION GROUP]
+				FILE (__init__.py)
+				FILE (README.md)
+	FOLDER [data]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [DESIGN AND PROMOTION]
+	FOLDER [dist]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [docs]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [flat]
+		FILE (DEVELOPER_SECURITY.txt)
+		FILE (DOCS.txt)	
+		FILE (FOLDER_TREE.txt)
+		FILE (MASTER_INDEX.txt)
+		FILE (T00_INITIALIZATION.txt)
+		FOLDER [ARCHIVE]
+	FOLDER [GPT SUBMISSIONS]
+	FOLDER [graphics]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [logs]
+		FILE (__init__.py)
+		FILE (README.md)	
+	FOLDER [resources]
+		FILE (__init__.py)
+		FILE (README.md)
+		FOLDER [legal]
+		FOLDER [releases]
+		FOLDER [ui_assets]
+			FOLDER [about]
+			FOLDER [docs]
+			FOLDER [help]
+			FOLDER [user_help]
+	FOLDER [tests]
+		FILE (__init__.py)
+		FILE (README.md)
+
+
+
+#   - TEMPLATE: STRUCTURE - SSE SESSION NAMING CONVENTIONS TEMPLATE [TBD]
+#   - BASE TRUNK FOR INITIALIZATION: T00_[SSE SESSION NAME]
+#   - BASE TRUNK FOR OVERVIEW: T01_OVERVIEW
+#   - PARALLEL BASE TRUNK FOR OVERVIEW: [T01]_OVERVIEW_[EXTENSION NAME]
+#   - BRANCH FROM OVERVIEW: T01-B01_[BRANCH NAME]
+#   - BRANCH FROM BRANCH T01-B01: T01-B01-B01_[BRANCH NAME]
+#   - CONCLUDE BRANCH T01-B01-B01_[BRANCH NAME]: T01-B01-L01_[BRANCH NAME]
+#   - CONCLUDE BRANCH T01-B01-[BRANCH NAME]: T01-L01_[BRANCH NAME]
+#   - 2ND BRANCH FROM OVERVIEW: T01-B02_[BRANCH NAME]
+#   - 2ND BRANCH FROM BRANCH T01-B02: T01-B02-B01_[BRANCH NAME]
+#   - CONCLUDE BRANCH T01-B02-B01_[BRANCH NAME]: T01-B02-L01_[BRANCH NAME]
+#   - CONCLUDE BRANCH T01-B02-[BRANCH NAME]: T01-L02_[BRANCH NAME]
+#   - CONCLUDE TRUNK T01_OVERVIEW_[EXTENSION NAME]: T01_OVERVIEW_[EXTENSION NAME]
+#   - NEW BASE TRUNK FOR PROGRESSION: T02_[EXTENSION NAME]
+#   - NEW PARALLEL BASE TRUNK FOR PROGRESSION: [T02]_[EXTENSION NAME]
+#   - T01
+#   - T01-B01
+#   - T01-B01-L01
+#   - T01-B01-L02
+#   - T01-B02-L01
+#   - T01-B01-B02-L01
+#   - T01-B01-B02-L02
+#   - T01-B01-B03-L01
+#   - T01-B01-B04-L01
+#   - T01-B01-B04-B05-L01
+#   - T01-B01-B04-B05-L02
+#   - T01-B01-B04-B06-L01
+#   - T02
+#   - …
+
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE DEVELOPER_SECURITY.txt TEMPLATE [TBD]
+
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE DOCS.txt TEMPLATE [TBD]
+
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE FOLDER_TREE.txt TEMPLATE [TBD]
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE FUTURE_FEATURES.txt TEMPLATE [TBD]
+
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE MASTER_INDEX.txt TEMPLATE [TBD]
+
+
+
+#   - TEMPLATE: DOCUMENT- FLAT FILE T00_INITIALIZATION.txt TEMPLATE [TBD]
+
+
+
+#   - TEMPLATE: SSE COMMANDS - SSE SESSION LAUNCH AND CONCLUSIONS TEMPLATE [TBD]
+# === BEGIN BASE TRUNK
+
+This is SSE session T##_[FOCUS]
+
+This trunk is intended as a planning and architectural node — not for code generation.
+
+It inherits structural context from:
+
+        ○ TXX_[PREVIOUS] (if applicable)
+	○ FLAT files: [List relevant FLAT indexes if important here]
+
+This session is scoped to:
+
+        ○ [Module or subsystem under design]
+	○ [Goal: plan, outline, resolve constraints, compare strategies]
+
+Code generation is suppressed in this trunk.
+
+Branches will be created for experiments, variants, or finalized implementation logic.
+
+Updates will be reported upward and summarized into FLAT upon resolution.
+
+
+
+# === BEGIN PARALLEL BASE TRUNK
+
+This is SSE session T##_[FOCUS]_[SUBTRUNK]
+
+This trunk is intended as an extension from T##_[FOCUS], a more general planning base trunk, this one being more focused on planning and architecture refinement — not for code generation.
+
+It inherits structural context from sessions and files from:
+
+    ○ T##_[PARENT] (base trunk session of same namespace)
+    ○ FLAT files: [List inherited FLAT indexes or relevant structural notes]
+
+This session is scoped to:
+
+    ○ [Subsystem logic, orchestration layer, or complex feature breakout]
+    ○ [Refining high-level design from TRUNK##_PARENT into modular planning]
+
+This session exists as a parallel trunk under the same root and does not represent a forked vision.
+Instead, it narrows scope from the general trunk and supports modular clarity.
+
+Code generation is suppressed in this trunk.
+
+Branches will be created for:
+
+    ○ Specific subsystems
+    ○ Experiments
+    ○ or Implementations requiring isolation from broader planning logs
+
+Updates will be reported upward to TRUNK##_PARENT and summarized into FLAT upon resolution.
+
+
+
+# === BEGIN BRANCH
+
+This is SSE session T##-B##_[TASK FOCUS]_[MODIFIER]
+
+This branch is spawned from T##_[PARENT] and inherits its structure, goals, and architectural assumptions.
+
+This session will perform:
+
+        ○ [Design testing / Implementation / Variant exploration / Refactoring]
+	○ Based on context from: [Reference files or prior branches]
+
+FLAT files presumed relevant:
+
+        ○ FLAT_FILE_A.txt
+	○ FLAT_FILE_B.txt
+
+Output may include:
+
+        ○ [Draft modules, FLAT registry entries, test harness stubs, structural notes]
+
+Upon conclusion, this branch will report status and decisions to its trunk.
+
+If concluded, it may be renamed with a LEAF## prefix for archival clarity.
+
+# === (IF this branch has branches, declare its trunk status):
+
+This is SSE session T##-B##_[MODULE_NAME]TASK FOCUS]_[MODIFIER]
+It is named as T##[+1]_[FOCUS] and is host to the following branches:
+T##-B01_[MODULE_NAME]TASK FOCUS]_[MODIFIER]
+T##-B02_[MODULE_NAME]TASK FOCUS]_[MODIFIER]
+T##-B[02]NNN]_[MODULE_NAME]TASK FOCUS]_[MODIFIER]
+…
+
+This trunk is intended as a planning and architectural node AND for code generation.
+
+It inherits structural context from:
+
+○ TXX_[PREVIOUS] (if applicable)
+○ FLAT files: [List relevant FLAT indexes if important here]
+
+This session is scoped to:
+
+○ [Module or subsystem under design]
+○ [Goal: plan, outline, resolve constraints, compare strategies]
+
+Code generation is not suppressed in this trunk.
+
+Branches will be created for experiments, variants, or finalized implementation logic.
+
+Updates will be reported upward and summarized into FLAT upon resolution.
+
+
+
+# === CONCLUDE BRANCH
+
+This session is now concluded, to be designated from T##-B##_[TASK FOCUS]_[MODIFIER] to T##-L##_[TASK FOCUS]_[MODIFIER]
+
+This session has reached a terminal state due to:
+
+        ○ [Completion of module]
+	○ [Experiment deemed non-viable or shelved for future]
+	○ [Planning snapshot preserved]
+
+Final outputs include:
+
+        ○ [Summarize what was achieved: modules, conclusions, errors, etc.]
+
+All relevant findings will be passed upstream and downstream to:
+
+        ○ B##_[PARENT]
+	○ T##_[ROOT]
+
+This session is now frozen and marked for archival, cross-reference, or future inspiration.
+
+
+
+# === CONCLUDE TRUNK
+
+This session is now concluded, to be designated from T##_[TRUNK DETAILS] to concluded after processing this prompt.
+
+This session has reached a terminal state due to:
+
+        ○ [Completion of module]
+	○ [Experiment deemed non-viable or shelved for future]
+	○ [Planning snapshot preserved]
+
+Final outputs include:
+
+        ○ [Summarize what was achieved: modules, conclusions, errors, etc.]
+
+All relevant findings will be passed upstream and downstream to:
+
+        ○ T##_[PARALLEL TRUNK IF ANY]
+	○ T##_[NEXT]
+
+This session is now frozen and marked for archival, cross-reference, or future inspiration.

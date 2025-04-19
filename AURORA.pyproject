@@ -1,0 +1,23 @@
+{
+    "files": [
+        "mainwindow.py",
+        "form.ui",
+        "core/web/browser_controller.py",
+        "core/web/session_driver.py",
+        "core/web/html/html_parser.py",
+        "core/web/html/element_mapper.py",
+        "core/web/screen_capture.py",
+        "tests/test_session_driver.py",
+        "tests/test_submit_prompt_demo.py",
+        "core/utils/code_restorer.py",
+        "core/web/code_sanitizer.py",
+        "core/utils/code_formatter.py",
+        "tests/test_element_mapper.py",
+        "core/control/sequence_controller.py",
+        "core/data/db_interface.py",
+        "core/control/reflex_dispatcher.py",
+        "core/gui/__init__.py",
+        "core/gui/sequencer_controller.py",
+        "core/boot/pathfix.py"
+    ]
+}

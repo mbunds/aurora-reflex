@@ -1,0 +1,203 @@
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF       
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:64052/devtools/browser/bb4314de-fd7a-4c84-8810-c03819d164c1
+[10768:1656:0413/133450.282:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+Created TensorFlow Lite XNNPACK delegate for CPU.
+Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+[BrowserController] Detected command chips — page fully loaded.
+[BrowserController] UI ready after 3.85 seconds.
+[SessionDriver] HTML captured. Initializing parser...
+[SessionDriver] Initializing element mapper...
+[ElementMapper] Registered elements: ['prompt_box', 'send_button', 'message_bubbles']
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST
+[SessionDriver] Prompt submitted.
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF       
+[BrowserController] Launching Chrome browser...
+Traceback (most recent call last):
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\tests\test_submit_prompt_demo.py", line 51, in <module>
+    driver.start_session()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\core\web\session_driver.py", line 56, in start_session
+    self.browser.launch_browser()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\core\web\browser_controller.py", line 65, in launch_browser
+    self.driver = webdriver.Chrome(service=ChromeService(), options=options)
+~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__      
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        browser_name=DesiredCapabilities.CHROME["browserName"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        keep_alive=keep_alive,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 66, in __init__    
+    super().__init__(command_executor=executor, options=options)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 250, in __init__     
+    self.start_session(capabilities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 342, in start_session
+    response = self.execute(Command.NEW_SESSION, caps)["value"]
+~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF       
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:1272/devtools/browser/4bf9d7bf-f5ed-4184-9c1d-65044252b58b
+[9432:22852:0413/141126.848:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+Created TensorFlow Lite XNNPACK delegate for CPU.
+Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+[BrowserController] Detected command chips — page fully loaded.
+[BrowserController] UI ready after 4.63 seconds.
+[SessionDriver] HTML captured. Initializing parser...
+[SessionDriver] Initializing element mapper...
+[ElementMapper] Registered elements: ['prompt_box', 'send_button', 'message_bubbles']
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST. Keep your response short - we are testing response parsing
+[SessionDriver] Prompt submitted.
+[Demo] Captured HTML after prompt submission.
+<html lang="en-US" data-build="prod-bfc932963e42e98ba999cdc94644b970e4e8ad68" dir="ltr" class="dark" style="color-scheme: dark;"><head><link rel="stylesheet" href="https://cdn.oaistatic.com/assets/root-du2cji4h.css"><link rel="stylesheet" href="https://cdn.oaistatic.com/assets/conversation-small-dzg2dewz.css"><script nonce="">!function initScrollTimelineInline(){try{if(CSS.supports("animation-timeline: --works"))return;var t=new Map;document.addEventListener("animationstart",(n=>{if(!(n.target instanceof HTMLElement))return;const e=n.target.getAnimations().filter((t=>t.animationName===n.animationName));t.set(n.target,e)})),document.addEventListener("scrolltimelineload",(n=>{t.forEach(((t,e)=>{t.forEach((t=>{n.detail.upgradeAnimation(t,e)}))})),t.clear()}),{once:!0})}catch{}}();</script><style type="text/css">
+@font-face {
+        font-family: 'Atlassian Sans';
+        font-style: normal;
+        font-weight: 400 653;
+        font-display: swap;
+        src:
+                local('AtlassianSans'),
+                local('Atlassian Sans Text'),
+                url('chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/fonts/AtlassianSans-latin.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+                U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://cdn.oaistatic.com"><link rel="preconnect" href="https://ab.chatgpt.co    
+[Demo] Found 1 message bubbles.
+[Bubble 1]: 
+
+[Debug] Raw extracted <p>: <p data-end="7" data-start="0"><span class="_fadeIn_4f9by_7" style="--duration: 700ms; --delay: 0ms;"></span></p>
+
+[Demo] Latest AI Response:
+​
+[SessionDriver] Closing browser session...
+[SessionDriver] Session closed.
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:1332/devtools/browser/92f8251f-0612-4b45-8f89-bb2677f1bba6
+[21148:25848:0413/141146.698:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF       
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:1535/devtools/browser/2e910a7f-9a01-455d-b75d-02ae153046c6
+[30844:788:0413/141437.405:ERROR:interface_endpoint_client.cc(725)] Message 6 rejected by interface blink.mojom.WidgetHost
+[30844:788:0413/141437.405:ERROR:interface_endpoint_client.cc(725)] Message 7 rejected by interface blink.mojom.WidgetHost
+[30844:29432:0413/141440.231:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+Created TensorFlow Lite XNNPACK delegate for CPU.
+Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+[BrowserController] Detected command chips — page fully loaded.
+[BrowserController] UI ready after 3.93 seconds.     
+[SessionDriver] HTML captured. Initializing parser...
+[SessionDriver] Initializing element mapper...
+[ElementMapper] Registered elements: ['prompt_box', 'send_button', 'message_bubbles']
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST. Respond with Hamlet's soliloquy in the third act.
+[SessionDriver] Prompt submitted.
+[Demo] Captured HTML after prompt submission.
+<html lang="en-US" data-build="prod-bfc932963e42e98ba999cdc94644b970e4e8ad68" dir="ltr" class="dark" style="color-scheme: dark;" foxified=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="image" href="https://cdn.oaistatic.com/assets/sora-mutf8tav.webp"><link rel="preload" as="image" href="https://lh3.googleusercontent.com/a/ACg8ocK1FO6Wdk9KIZIZ97qbxBLZSKrNDaWKLhbqd2ScC3erV3ZIZndwYg=s96-c" referrerpolicy="no-referrer"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/manifest-20a6e91b.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/oze1iuua84vjk8by.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/i493i4du2dpxka5z.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/h5xsa1ucu3n336bq.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/kfdoazjqvsz5vxv1.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/pd62toooqoui011l.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/if2wq94hzxrlcyaj.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/ec81feknnkg87ilv.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/f2mlrfnfgvr1bo1t.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/lrz04dpvf7m0rr63.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/assets/hfjumpczfo0rzhch.js"><link rel="modulepreload" href="https://cdn.oaistatic.com/
+
+[Demo] Found 1 message bubbles.
+[Bubble 1]: 
+
+[Debug] Raw extracted <p>: <p data-end="7" data-start="0"><span class="_fadeIn_4f9by_7" style="--duration: 700ms; --delay: 0ms;"></span></p>
+
+[Demo] Latest AI Response:
+​
+[SessionDriver] Closing browser session...
+[SessionDriver] Session closed.
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:1587/devtools/browser/aa738996-e293-4def-91eb-e7ab658cc30e
+[31404:17024:0413/141456.302:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+Created TensorFlow Lite XNNPACK delegate for CPU.
+Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+[BrowserController] Detected command chips — page fully loaded.
+[BrowserController] UI ready after 4.14 seconds.
+[SessionDriver] HTML captured. Initializing parser...
+[SessionDriver] Initializing element mapper...
+[ElementMapper] Registered elements: ['prompt_box', 'send_button', 'message_bubbles']
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST. Respond with Hamlet's soliloquy in the third act.
+[SessionDriver] Prompt submitted.
+Traceback (most recent call last):
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\tests\test_submit_prompt_demo.py", line 80, in <module>
+    wait_for_finalized_reply(driver)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\tests\test_submit_prompt_demo.py", line 68, in wait_for_finalized_reply
+    latest = bubbles[-1].text.strip()
+^^^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 109, in text
+    return self._execute(Command.GET_ELEMENT_TEXT)["value"]
+~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 572, in _execute
+    return self._parent.execute(command, params)
+~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\.qtcreator\Python_3_13_2venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 429, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>python tests/test_submit_prompt_demo.py
+[SessionDriver] Launching ChatGPT browser session...
+[BrowserController] Headless mode is OFF       
+[BrowserController] Launching Chrome browser...
+
+DevTools listening on ws://127.0.0.1:1636/devtools/browser/53cdb179-ae39-4b27-b0e4-8939ae75de2f
+[31988:33428:0413/141517.100:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT
+Created TensorFlow Lite XNNPACK delegate for CPU.
+Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+[BrowserController] Detected command chips — page fully loaded.
+[BrowserController] UI ready after 3.73 seconds.     
+[SessionDriver] HTML captured. Initializing parser...
+[SessionDriver] Initializing element mapper...
+[ElementMapper] Registered elements: ['prompt_box', 'send_button', 'message_bubbles']
+[SessionDriver] ElementMapper ready.
+[SessionDriver] Submitting prompt: AUORORA says HELLO! Name this session AUTO_TEST. Respond with Hamlet's soliloquy in the third act.
+[SessionDriver] Prompt submitted.
+[Demo] Captured HTML after prompt submission.
+<html lang="en-US" data-build="prod-bfc932963e42e98ba999cdc94644b970e4e8ad68" dir="ltr" class="dark" style="color-scheme: dark;" foxified=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="image" href="https://cdn.oaistatic.com/assets/sora-mutf8tav.webp"><link rel="preload" as="image" href="https://lh3.googleusercontent.com/a/ACg8ocK1FO6Wdk9KIZIZ97qbxBLZSKrNDaWKLhbqd2ScC3erV3ZIZndwYg=s96-c" referrerpolicy="no-referrer"><link rel="preconnect" href="https://cdn.oaistatic.com"><link rel="preconnect" href="https://ab.chatgpt.com"><meta name="robots" content="index, follow"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="apple-itunes-app" content="app-id=6448311069"><meta name="dd-trace-id" content="6325999729740337300"><meta name="dd-trace-time" content="1744575314806"><link rel="icon" href="https://cdn.oaistatic.com/assets/favicon-miwirzcw.ico" sizes="32x32"><link rel="icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%20fill='none'%3e%3cstyle%3e%20:root%20{%20--primary-fill:%20%23000;%20--secondary-fill:%20%23fff;%20}%20@media%20(prefers-color-scheme:%20dark)%20{%20:root%20{%20--primary-fill:%20%23fff;%20--secondary-fill:%20%23000;%20}%20}%20%3c/style%3e%3cg%20clip-path='url(%23a)'%3e%3crect%20width='180'%20height='180'%20fill='var(--primary-fill)'%20rx='90'%20/%3e%3cg%20clip-path='url(%23b)'%3e%3cpath%20fill='var(--secondar
+
+[Demo] Found 4 message bubbles.
+[Bubble 1]: Session Name:AUTO_TESTAcknowledged:AUORORA says HELLO!
+[Bubble 2]: Now, as requested—Here is Hamlet’s soliloquy from Act III, Scene I:
+[Bubble 3]: To be, or not to be: that is the question:Whether ’tis nobler in the mind to sufferThe slings and arrows of outrageous fortune,Or to take arms against a sea of troubles,And by opposing end them. To die—to sleep,No more; and by a sleep to say we endThe heart-ache and the thousand natural shocksThat flesh is heir to: ’tis a consummationDevoutly to be wish’d. To die, to sleep—To sleep—perchance to dream: ay, there’s the rub!For in that sleep of death what dreams may come,When we have shuffled off this mortal coil,Must give us pause—there’s the respectThat makes calamity of so long life.For who would bear the whips and scorns of time,Th’ oppressor’s wrong, the proud man’s contumelyThe pangs of despised love, the law’s delay,The insolence of office, and the spurnsThat patient merit of th’ unworthy takes,When he himself might his quietus makeWith a bare bodkin? Who would fardels bear,To grunt and sweat under a weary life,But that the dread of something after death—The undiscover’d country, from whose bournNo traveller returns—puzzles the will,And makes us rather bear those ills we haveThan fly to others that we know not of?Thus conscience does make cowards of us all,And thus the native hue of resolutionIs sicklied o’er with the pale cast of thought,And enterprises of great pitch and momentWith this regard their currents turn awryAnd lose the name of action.
+[Bubble 4]: 👋 Hello from Aurora! What's next in the test?
+
+[Debug] Raw extracted <p>: <p class="" data-end="1730" data-start="1684">👋 Hello from Aurora! What's next in the test?</p>
+
+[Demo] Latest AI Response:
+👋 Hello from Aurora! What's next in the test?
+[SessionDriver] Closing browser session...
+[SessionDriver] Session closed.
+
+(Python_3_13_2venv) C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA>

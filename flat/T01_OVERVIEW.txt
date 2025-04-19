@@ -1,0 +1,1016 @@
+# === FLAT FILE: T01_OVERVIEW.txt ===
+# Version: 2025.04.12
+# Created by: Mark + ChatGPT
+# Included Modules in (THIS) T01_OVERVIEW:
+#   - FILE: __init__.py
+#   - FILE: README.md
+#   - Folder Layout
+#   - Structure Changelog
+#   - FILE: ui/mainwindow.py
+#   - FILE: core/web/browser_controller.py
+#   - FILE: core/web/session_driver.py
+#   - FILE: core/web/html/html_parser.py
+#   - FILE: core/web/html/element_mapper.py
+#   - FILE: tests/test_session_driver.py
+#   - EVENT: 2025.04.12 # === CONCLUDE BRANCH T01-B01_HTML_CONNECT AS T01-B01-L01_HTML_CONNECT
+#   - EVENT: 2025.04.12 # === BEGIN BRANCH T01-B02_HTML_GPT01
+#   - EVENT: 2025.04.12 # === REFINE CODE WITHIN BRANCH T01-B02_HTML_GPT01
+#   - EVENT: 2025.04.13 # === REFINED ABOVE: FILE: tests/browser_controller.py
+#   - EVENT: 2025.04.13 # === REFINED ABOVE: FILE: tests/test_session_driver.py
+#   - EVENT: 2025.04.13 # === BRANCH T01-B02_HTML_GPT01 RESULTS: DOM elements fully loaded.
+#   - EVENT: 2025.04.13 # === CONCLUDE BRANCH T01-B02_HTML_GPT01 AS T01-B02-L01_HTML_GPT01
+#   - EVENT: 2025.04.13 # === ADDED TEST: Programmatic prompt injection and DOM response capture
+#   - FILE: tests/test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+#   - EVENT: 2025.04.13 # === CONCLUDE TRUNK T01_OVERVIEW_FOCUS
+#   - EVENT: 2025.04.13 # === BEGIN TRUNK T02_INITIAL_PROCESSING
+#   - EVENT: 2025.04.13 # === BEGIN BRANCH T02-B01_RESPONSE_CAPTURE_REFINEMENT
+#   - EVENT: 2025.04.13 # === FLAT FILE "T01_INITIAL_PROCESSING.txt CREATED
+#   - EVENT: 2025.04.13 # === FILE tests/test_submit_prompt_demo.py UPDATED
+#   - EVENT: 2025.04.15 # === INSTRUCTION - CONCLUDE REGISTRATION OF EVENTS AND MODULES IN T01_OVERVIEW.txt
+#   - EVENT: 2025.04.15 # === INSTRUCTION - ALL NEW EVENTS AND MODULES TO BE REGISTERED HERE AND IN T02_INITIAL_PROCESSING.txt
+
+
+
+#   === FILE: __init__.py ===
+
+"""
+AURORA – Autonomous Agent and File Manager
+------------------------------------------------------
+
+Module: __init__.py (Package Root)
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans Colorado
+Project: AURORA
+
+This file marks the root of the AURORA Project Python package hierarchy.
+It exists to satisfy Python's module system and to establish the FLAT structure.
+
+License:
+    This file is part of the AURORA project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: MASTER_INDEX.TXT
+    - Versioning and audit history are maintained via flat-file records.
+    - This file is subject to future FLAT flattening and regeneration tools.
+
+---
+
+Project Root Init
+
+Serves as the formal namespace entry for the AURORA project. Avoid placing logic here;
+this file primarily exists for FLAT alignment and package structure compliance.
+"""
+
+
+
+#   === FILE: README.md ===
+
+# AURORA – Autonomous File Agent and Reflexive Control Framework
+
+---
+
+**Authors:** ChatGPT and Mark  
+**Created:** 2025-04-12  
+**Location:** Evans, Colorado  
+**Project:** AURORA  
+**Milestone:** New SSE/FLAT Compliant "disciplined" project. 
+**License:** MIT  
+**FLAT Registered In:** MASTER_INDEX.txt  
+**WARNING:**  
+> This file may be auto-modified by development tools or AI agents.  
+> (Meddle if you dare, foolish mortal!)
+
+---
+
+## Project Overview
+
+This repository contains the core runtime logic, user interface system, diagnostics modules, database managers, and configuration tools that together form the AURORA, an intelligent agent infrastructure for autonomous and semi-autonomous control of file systems, runtime environments, and modular logic structures. It is built around a reflexive interface model, allowing AI systems to observe, manipulate, and respond to file events, user commands, and runtime conditions with precision and structure.
+
+All components follow the FLAT discipline:  
+> **F**ile-based  
+> **L**ogic  
+> **A**ssembly  
+> **T**ree  
+> *(Still not an acronym.)*
+
+---
+## Project Folder Structure
+
+> Milestone: v0.3.0-dev (2025-04-12)
+New AURORA Project.
+
+This project borrows elements from the folder layout of the **OpenSIM DCS Manager** repository as of **2025-03-29**.
+
+> Built on FLAT principles — the File-based Logic Assembly Tree (Nope, STILL NOT an acronym). 
+> Modularized  
+> Testable  
+> AI-ready  
+> Future-proofed  
+
+---
+
+### Folder Layout
+
+AURORA [PROJECT ROOT]
+        FOLDER [.qtcreator]
+        FOLDER [ARCHIVE]
+                FILE (PLACEHOLDER)
+        FOLDER [core]
+                FOLDER [boot]
+                        FILE (__init__.py)
+                        FILE (pathfix.py)[UNDER CONSTRUCTION]
+                        FILE (README.md)
+                FOLDER [busses]
+                        FOLDER [command_bus]
+                                FILE (__init__.py)
+                                FILE (README.md)
+                        FOLDER [control_bus]
+                                FILE (__init__.py)
+                                FILE (README.md)
+                        FOLDER [diagnostics_bus]
+                                FILE (__init__.py)
+                                FILE (README.md)
+                        FOLDER [edit_bus]
+                                FILE (__init__.py)
+                                FILE (README.md)
+                        FOLDER [interrupt_bus]
+                                FILE (__init__.py)
+                                FILE (README.md)
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [control]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                        FILE reflex_dispatcher.py[UNDER CONSTRUCTION]
+                        FILE sequence_controller.py[UNDER CONSTRUCTION]
+                FOLDER [data]
+                        FILE (__init__.py)
+                        FILE db_interface.py[UNDER CONSTRUCTION]
+                        FILE (README.md)
+                FOLDER [diagnostics]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [gui]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                        FILE (sequence_controller.py)[UNDER CONSTRUCTION]
+                FOLDER [network]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [project]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [ui]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [utils]
+                        FILE (code_foramtter.py)[REVIEW LATER]
+                        FILE (code_restorer.py)[REVIEW LATER]
+                        FILE (__init__.py)
+                        FILE (README.md)
+                FOLDER [web]
+                        FILE (__init__.py)
+                        FILE (browser_controller.py)[UNDER CONSTRUCTION]
+                        FILE (code_sanitizer.py)[REVIEW LATER]
+                        FILE (README.md)
+                        FILE (screen_capture.py)[EMPTY]
+                        FILE (session_driver.py)[UNDER CONSTRUCTION]
+                        FOLDER [html]
+                                FILE (__init__.py)
+                                FILE (element_mapper.py)[UNDER CONSTRUCTION]
+                                FILE (html_parser.py)[UNDER CONSTRUCTION]
+                                FILE (README.md)
+        FOLDER [data]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [DESIGN AND PROMOTION]
+                FOLDER [PLACEHOLDER]
+                        FILE (PLACEHOLDER)
+                FILE (PLACEHOLDER)
+        FOLDER [dist]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [docs]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [flat]
+                FOLDER [ARCHIVE]
+                        FILE (PLACEHOLDER)
+                FILE (DEVELOPER_SECURITY.txt)
+                FILE (DOCS.txt)
+                FILE (FOLDER_TREE.txt)
+                FILE (FUTURE_FEATURES.txt)
+                FILE (MAGIC_BUSES.txt)
+                FILE (MASTER_INDEX.txt)
+                FILE (T01_OVERVIEW.txt)
+        FOLDER [GPT SUBMISSIONS]
+                FOLDER [PLACEHOLDER]
+                        FILE (PLACEHOLDER)
+                FILE (PLACEHOLDER)
+        FOLDER [graphics]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [logs]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [resources]
+                FILE (__init__.py)
+                FILE (README.md)
+        FOLDER [tests]
+                FILE (__init__.py)
+                FILE:(test_element_mapper.py)
+                FILE:(test_session_driver.py)
+                FILE:(test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+                FILE (README.md)
+        FILE (__init__.py)
+        FILE (AURORA.pyproject)
+        FILE (AURORA.pyproject.user)
+        FILE (form.ui)
+        FILE (mainwindow.py)
+        FILE (README.md)
+        FILE (requirements.txt)
+
+PROJECT GRAPHICS
+
+AURORA [PROJECT ROOT]
+	FOLDER [graphics]
+		FILE (__init__.py)
+		FILE (README.md)
+
+---
+
+### Structure Changelog (NOW UPDATED IN T02_INITIAL_PROCESSING.txt)
+
+
+
+#   === FILE: ui/mainwindow.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: ui/mainwindow.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora (v0.1.0-initialization)
+
+This module is part of the Aurora interface system. All modules conform to
+FLAT (File-based Logic Assembly Tree) principles: highly modular, AI-readable, and testable.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora reflexive interaction system. Manual changes should be made cautiously.
+    (You are interfacing with Aurora. She sees you.)
+
+FLAT Compliance:
+    - Registered in: UI_LAYER.txt
+    - Versioning and audit history are maintained via flat-file records.
+    - This file is subject to future FLAT flattening and regeneration tools.
+
+---
+
+Primary UI window stub for Aurora.
+Auto-generated form bindings are assumed to be handled by Qt Creator.
+This module initializes the main application window and prepares it for integration
+with the interrupt queue system, local reflex agent routines, and AI-prompt synchronization infrastructure.
+"""
+
+# This Python file uses the following encoding: utf-8
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'core')))
+from boot.pathfix import patch_path
+patch_path()
+
+from PySide6.QtWidgets import QApplication, QMainWindow
+from ui_form import Ui_MainWindow
+from core.gui.sequencer_controller import (
+    populate_sequence_listview,
+    handle_sequence_selection,
+    arm_selected_sequence
+)
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        # Populate the sequence list on startup
+        populate_sequence_listview(self.ui.lv_sequences)
+        self.ui.lv_sequences.clearSelection()
+        # Ensure ARM, RUN, and EDIT buttons are disabled until interaction
+        self.ui.pb_sequence_arm.setEnabled(False)
+        self.ui.pb_sequence_run.setEnabled(False)
+        self.ui.pb_sequence_edit.setEnabled(False)
+        # When a sequence is clicked, populate the steps
+        self.ui.lv_sequences.selectionModel().selectionChanged.connect(self.on_sequence_selection_changed)
+        # When 'Select' is clicked, arm the sequence
+        self.ui.pb_sequence_arm.clicked.connect(
+            lambda: arm_selected_sequence(self.ui)
+        )
+        self.setWindowTitle("Aurora – Reflexive Control Panel")
+
+    def on_sequence_selection_changed(self, selected, deselected):
+        indexes = self.ui.lv_sequences.selectionModel().selectedIndexes()
+        if indexes:
+            handle_sequence_selection(indexes[0], self.ui.lv_sequences, self.ui)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    widget = MainWindow()
+    widget.show()
+    sys.exit(app.exec())
+
+
+
+# === FILE: core/web/browser_controller.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/web/browser_controller.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora
+
+This module is part of the Aurora web control layer. It handles launching and managing
+an external browser session, typically Chrome, for accessing the ChatGPT HTML GUI interface.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: [T01_OVERVIEW or dedicated FLAT index]
+    - Versioning and audit history are maintained via flat-file records.
+    - This file is subject to future FLAT flattening and regeneration tools.
+
+---
+
+Browser Controller
+
+Handles setup, launch, and teardown of external browser sessions. Provides raw HTML output
+to be passed to HTML parsers and AI prompt systems for inspection or manipulation.
+"""
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+class BrowserController:
+    def __init__(self, headless=False):
+        self.headless = headless
+	self.driver = None
+
+    def launch_browser(self, url="https://chat.openai.com/"):
+        options = Options()
+	if self.headless:
+	    #options.add_argument('--headless=new')
+	    options.add_argument('--disable-gpu')
+	    options.add_argument('--no-sandbox')
+	    options.add_argument('--disable-dev-shm-usage')
+	options.add_argument('--start-maximized')
+	options.add_argument(r"--user-data-dir=C:/Users/MBUNDS/AppData/Local/Google/Chrome/User Data")
+	options.add_argument(r"--profile-directory=Default")
+
+        print(f"[BrowserController] Headless mode is {'ON' if self.headless else 'OFF'}")
+	print("[BrowserController] Launching Chrome browser...")
+
+        self.driver = webdriver.Chrome(service=ChromeService(), options=options)
+
+        start = time.time()
+	self.driver.get(url)
+	self._wait_for_main_ui()
+	print(f"[BrowserController] UI ready after {time.time() - start:.2f} seconds.")
+
+    def _wait_for_main_ui(self, timeout=20):
+        try:
+	    WebDriverWait(self.driver, timeout).until(
+	        EC.presence_of_element_located((By.XPATH, "//button[contains(., 'Create image')]"))
+		)
+	    print("[BrowserController] Detected command chips — page fully loaded.")
+	except Exception as e:
+	    print(f"[BrowserController] Timeout waiting for command chips: {e}")
+	    print("[BrowserController] Falling back to sleep(6).")
+	    time.sleep(6)
+
+    def get_page_source(self):
+        if self.driver:
+	    html = self.driver.page_source
+	    if '<textarea' not in html:
+	        print("[BrowserController] WARNING: Prompt box missing from captured HTML.")
+		return html
+	return None
+
+    def close_browser(self):
+        if self.driver:
+	    self.driver.quit()
+	    self.driver = None
+
+if __name__ == "__main__":
+    controller = BrowserController(headless=False)
+    controller.launch_browser()
+    html = controller.get_page_source()
+    print(html[:1000])  # Show preview
+    controller.close_browser()
+
+
+
+# === FILE: core/web/session_driver.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/web/session_driver.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora
+
+This module manages the coordination of browser-based ChatGPT sessions.
+It serves as a controller layer above `browser_controller.py`, handling
+session logic such as initialization, error handling, and future features
+like cookie management or authentication persistence.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T01_OVERVIEW.txt
+    - This file participates in the T01-B01_HTML_CONNECT branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+Session Driver
+
+Orchestrates browser session startup, teardown, and HTML retrieval.
+Acts as the outer wrapper for user-facing session control logic.
+"""
+
+from core.web.browser_controller import BrowserController
+from core.web.html.html_parser import HTMLParser
+from core.web.html.element_mapper import ElementMapper  # NEW
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+class SessionDriver:
+    def __init__(self, headless=False):
+        self.browser = BrowserController(headless=headless)
+        self.last_html = None
+        self.parser = None
+
+    def start_session(self):
+        print("[SessionDriver] Launching ChatGPT browser session...")
+        self.browser.launch_browser()
+        self.last_html = self.browser.get_page_source()
+        print("[SessionDriver] HTML captured. Initializing parser...")
+        self.parser = HTMLParser(self.last_html)
+        print("[SessionDriver] Initializing element mapper...")
+        self.mapper = ElementMapper()
+        #self.mapper.auto_map_from_parser(self.parser)
+        print("[SessionDriver] ElementMapper ready.")
+
+    def get_mapper(self):
+        return self.mapper
+
+    def get_current_html(self):
+        return self.last_html
+
+    def get_parser(self):
+        return self.parser
+
+    def close_session(self):
+        print("[SessionDriver] Closing browser session...")
+        self.browser.close_browser()
+        print("[SessionDriver] Session closed.")
+
+    def submit_prompt(self, text: str):
+        """Programmatically submit a prompt to the ChatGPT web GUI."""
+        print(f"[SessionDriver] Submitting prompt: {text}")
+
+        wait = WebDriverWait(self.browser.driver, 15)
+
+        # Wait for presence, not clickability
+        textarea = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[contenteditable="true"]')))
+
+        # Scroll it into view
+        self.browser.driver.execute_script("arguments[0].scrollIntoView(true);", textarea)
+
+        # Force focus by clicking it
+        textarea.click()
+
+        # Now send the keys
+        textarea.clear()
+        textarea.send_keys(text)
+        textarea.send_keys(Keys.ENTER)
+
+        self.last_html = self.browser.get_page_source()
+
+        # Optional fallback — click the Send button if needed:
+        # send_button = self.browser.driver.find_element(By.XPATH, "//button[contains(., 'Send')]")
+        # send_button.click()
+
+        print("[SessionDriver] Prompt submitted.")
+
+    def wait_for_any_code_render(self, timeout=30):
+        """Wait until any code rendering signal appears (inline, Monaco, or fullscreen)."""
+        print("[SessionDriver] Waiting for any known code block to render...")
+        wait = WebDriverWait(self.browser.driver, timeout)
+        try:
+            wait.until(
+                EC.presence_of_any_elements_located([
+                    (By.CSS_SELECTOR, 'button[data-testid="copy-turn-action-button"]'),     # Inline
+                    (By.CSS_SELECTOR, 'div.view-lines div.cm-line'),                        # Monaco inline
+                    (By.CSS_SELECTOR, 'div.flex.flex-col[style*="height: 56px"] div[role="button"]')  # Monaco fullscreen
+                ])
+            )
+            print("[SessionDriver] Code render detected — proceeding.")
+        except Exception as e:
+            print(f"[SessionDriver] WARNING: Timeout waiting for code render readiness: {e}")
+
+if __name__ == "__main__":
+    driver = SessionDriver(headless=False)
+    driver.start_session()
+    driver.wait_for_any_code_render()
+    input_field = driver.get_mapper().get("prompt_box")  # ← updated
+    print("[SessionDriver] Prompt input field found:", input_field)
+    html = driver.get_current_html()
+    print(html[:2000])  # Preview
+    driver.close_session()
+
+
+
+# === FILE: core/web/html/html_parser.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/web/html/html_parser.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora
+
+This module parses raw HTML content retrieved from a browser session
+and converts it into a structure usable by internal mapping and AI systems.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T01_OVERVIEW.txt
+    - This file participates in the T01-B01_HTML_CONNECT branch.
+    - Future versions may include interactive AI feedback loops.
+
+---
+
+HTML Parser
+
+This parser ingests raw HTML (from Selenium or other sources), uses BeautifulSoup to
+extract element trees or UI regions of interest (prompt box, message history, buttons),
+and exposes data for use in element mapping and command routing.
+"""
+
+from bs4 import BeautifulSoup
+
+class HTMLParser:
+    def __init__(self, raw_html: str):
+        self.soup = BeautifulSoup(raw_html, 'lxml')
+
+    def find_text_input_area(self):
+        """Attempt to locate the user prompt input field."""
+        return self.soup.find('textarea')  # Naive placeholder
+
+    def find_send_button(self):
+        """Attempt to locate the 'send' button."""
+        return self.soup.find('button', string=lambda x: x and 'send' in x.lower())
+
+    def list_message_bubbles(self):
+        """Return a list of actual message text <p> elements inside chat."""
+        return self.soup.select('div.markdown.prose p')
+
+    def list_code_blocks(self):
+        """Return all <pre><code> text blocks."""
+        return self.soup.select('div.markdown.prose pre code')
+
+    def list_monaco_code_lines(self):
+        """Return all individual lines of code from Monaco-style editor blocks."""
+        return self.soup.select('div.cm-line')
+
+    def debug_dump(self):
+        """Print formatted tree snippet (for diagnostics)."""
+        print(self.soup.prettify()[:1500])  # Limit preview
+
+
+
+# === FILE: core/web/html/element_mapper.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/web/html/element_mapper.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora
+
+This module maps extracted HTML elements (via BeautifulSoup) to standardized
+internal identifiers used across the Aurora automation system. This mapping
+enables consistent logic, regardless of changing DOM structures.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T01_OVERVIEW.txt
+    - This file participates in the T01-B01_HTML_CONNECT branch.
+    - Subject to structural flattening for AI inspection.
+
+---
+
+Element Mapper
+
+Takes parsed DOM elements and assigns canonical names or functional tags.
+Supports DOM stabilization across changing frontend versions.
+"""
+
+from selenium.webdriver.remote.webelement import WebElement
+from typing import List, Callable, Dict
+
+
+def extract_code_blocks_by_innertext(elements: List[WebElement]) -> List[str]:
+    """
+    Takes a list of <pre><code> elements and extracts the visible code using innerText.
+    """
+    code_blocks = []
+    for element in elements:
+        try:
+            text = element.get_attribute('innerText') or ''
+            if text.strip():
+                code_blocks.append(text.strip())
+        except Exception as e:
+            print(f"[ElementMapper] Warning: Failed to extract innerText: {e}")
+    return code_blocks
+
+
+class ElementMapper:
+    """
+    Centralized DOM element parser registry.
+    Maps canonical route tags to element extraction functions.
+    """
+
+    def __init__(self):
+        self.registry: Dict[str, Callable[[List[WebElement]], List[str]]] = {}
+        self._register_defaults()
+
+    def _register_defaults(self):
+        self.register("innertext_code_blocks", extract_code_blocks_by_innertext)
+
+    def register(self, key: str, func: Callable[[List[WebElement]], List[str]]):
+        if key in self.registry:
+            print(f"[ElementMapper] Warning: Overwriting parser for key: {key}")
+        self.registry[key] = func
+
+    def extract(self, key: str, elements: List[WebElement]) -> List[str]:
+        if key not in self.registry:
+            raise KeyError(f"[ElementMapper] No parser registered under key: {key}")
+        return self.registry[key](elements)
+
+
+
+# === FILE: tests/test_session_driver.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: tests/test_session_driver.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans, Colorado
+Project: Aurora
+
+This module performs integrated unit tests across the browser interface pipeline:
+- SessionDriver
+- HTMLParser
+- ElementMapper
+
+It assumes access to a live browser environment. Use `headless=True` to enable testing
+in CI pipelines or when visual inspection is not required.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora reflexive test suite. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T01_OVERVIEW.txt
+    - This test supports branch T01-B01_HTML_CONNECT
+    - Will be included in future unified test runner
+
+---
+
+SessionDriver Integration Test
+
+This suite verifies the live behavior of browser sessions, HTML extraction, DOM parsing,
+and semantic element mapping. It ensures stability across expected interface structures.
+"""
+import sys
+import os
+import unittest
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from core.web.session_driver import SessionDriver
+
+class TestSessionDriverIntegration(unittest.TestCase):
+    def setUp(self):
+        self.driver = SessionDriver(headless=True)
+	self.driver.start_session()
+	self.parser = self.driver.get_parser()
+	self.mapper = self.driver.get_mapper()
+
+    def test_html_capture(self):
+        html = self.driver.get_current_html()
+	self.assertTrue(html)
+	self.assertIn("<html", html.lower())
+	print(f"[Test] Captured HTML length: {len(html)}")
+
+    def test_parser_extraction(self):
+        prompt_box = self.parser.find_text_input_area()
+	message_bubbles = self.parser.list_message_bubbles()
+
+        print(f"[Test] Prompt box found: {'Yes' if prompt_box else 'No'}")
+	print(f"[Test] Message bubbles found: {len(message_bubbles)}")
+
+        self.assertIsNotNone(prompt_box)
+	self.assertIsInstance(message_bubbles, list)
+
+    def test_element_mapping(self):
+        prompt_box = self.mapper.get("prompt_box")
+	send_button = self.mapper.get("send_button")
+	bubbles = self.mapper.get("message_bubbles")
+
+        print(f"[Test] Mapped prompt_box: {'Yes' if prompt_box else 'No'}")
+	print(f"[Test] Mapped send_button: {'Yes' if send_button else 'No'}")
+	print(f"[Test] Mapped message_bubbles: {len(bubbles) if bubbles else 0}")
+
+        self.assertIn("prompt_box", self.mapper.map)
+	self.assertIn("send_button", self.mapper.map)
+	self.assertIsNotNone(prompt_box)
+
+    def tearDown(self):
+        self.driver.close_session()
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+
+# === CONCLUDE BRANCH T01-B01_HTML_CONNECT AS T01-B01-L01_HTML_CONNECT ===
+# === BEGIN BRANCH T01-B02_HTML_GPT01 ===
+# === REFINE CODE WITHIN BRANCH T01-B02_HTML_GPT01 ===
+# === REFINED ABOVE: FILE: tests/browser_controller.py ===
+# === REFINED ABOVE: FILE: tests/test_session_driver.py ===
+# === BRANCH T01-B02_HTML_GPT01 RESULTS: DOM elements fully loaded. ===
+# === CONCLUDE BRANCH T01-B02_HTML_GPT01 AS T01-B02-L01_HTML_GPT01 ===
+
+
+
+# === FILE: tests/test_submit_prompt_demo.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: tests/test_submit_prompt_demo.py
+Authors: ChatGPT and Mark
+Created: 2025-04-13
+Location: Evans, Colorado
+Project: Aurora
+
+This module performs a demonstration of programmatic prompt submission:
+- SessionDriver
+- HTMLParser
+- ElementMapper
+
+It assumes access to a live browser environment.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora reflexive test suite. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T01_OVERVIEW.txt
+    - This test supports branch T01-B01_HTML_CONNECT
+    - Will be included in future unified test runner
+
+---
+
+Programmatic Prompt Entry and Submission Test
+
+This suite verifies the live behavior of browser sessions, HTML extraction, DOM parsing,
+and semantic element mapping. This module will inject then submit a prompt. SSE/FLAT ensures
+stability across expected interface structures.
+"""
+import time
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from core.web.session_driver import SessionDriver
+from selenium.webdriver.common.by import By
+
+if __name__ == "__main__":
+    driver = SessionDriver(headless=False)
+    driver.start_session()
+
+    driver.submit_prompt("Aurora test session phase 10+.  Please name this session AURORA_PHASE_10+. This prompt is from session T02-B03_INNERTEXT_REFACTOR. This is a test of the auto-prompt submission system. Please write a complete Python script that loads a YAML configuration file using the PyYAML library, validates specific required fields, and prints a summary report. Use a class to encapsulate the logic and include a CLI that accepts the config file path. Include argument parsing, error handling, field validation, and a usage example at the bottom. Output a single, complete, well-formatted code block. Render the code using the full-screen code editor.")
+
+    def wait_for_response_completion(
+        driver,
+        timeout=60,
+        pause_threshold=3.0,
+        min_growth=10,
+        min_blocks=4,
+        min_chars=500
+    ):
+        """Wait for assistant response to stabilize, tracking both <p> and <code> blocks."""
+        print("[Wait] Monitoring assistant message for stability...")
+        end_time = time.time() + timeout
+        last_length = 0
+        last_change = time.time()
+
+        while time.time() < end_time:
+            bubbles = driver.browser.driver.find_elements(
+                By.CSS_SELECTOR, 'div[data-message-author-role="assistant"] div.markdown.prose p'
+            )
+            code_blocks = driver.browser.driver.find_elements(
+                By.CSS_SELECTOR, 'div[data-message-author-role="assistant"] pre code'
+            )
+
+            try:
+                all_text = (
+                    "\n".join(b.text.strip() for b in bubbles if b.text.strip()) +
+                    "\n".join(c.text.strip() for c in code_blocks if c.text.strip())
+                )
+            except Exception as e:
+                print(f"[Wait] DOM changed during read: {e}. Retrying...")
+                time.sleep(0.25)
+                continue
+
+            current_length = len(all_text)
+            total_blocks = len(bubbles) + len(code_blocks)
+
+            if current_length > last_length + min_growth:
+                last_length = current_length
+                last_change = time.time()
+
+            elif (
+                time.time() - last_change >= pause_threshold and
+                current_length >= min_chars and
+                total_blocks >= min_blocks
+            ):
+                print("[Wait] Assistant response appears complete.")
+                return
+
+            time.sleep(0.25)
+
+        print("[Wait] Timeout: Assistant response never stabilized.")
+
+    wait_for_response_completion(driver)
+    driver.last_html = driver.browser.get_page_source()
+    html = driver.get_current_html()
+    print("[Demo] Captured HTML after prompt submission.")
+    print(html[:1500])
+
+    from core.web.html.html_parser import HTMLParser
+    parser = HTMLParser(html)
+
+    bubbles = parser.list_message_bubbles()
+
+    if bubbles:
+        print(f"\n[Demo] Found {len(bubbles)} message bubbles.")
+        for i, bubble in enumerate(bubbles):
+            text = bubble.get_text(strip=True)
+            print(f"[Bubble {i+1}]: {text or '[empty]'}")
+
+        latest = bubbles[-1]
+        print(f"\n[Debug] Raw extracted <p>: {repr(latest)}")
+        latest_text = latest.get_text(strip=True)
+
+        if latest_text:
+            print("\n[Demo] Latest AI Response:")
+            print(latest_text)
+        else:
+            print("\n[Demo] Message bubble was empty.")
+    else:
+        print("\n[Demo] No message bubbles found.")
+
+    code_blocks = parser.list_code_blocks()
+
+    if code_blocks:
+        print(f"\n[Demo] Found {len(code_blocks)} code block(s).")
+        for i, block in enumerate(code_blocks):
+            print(f"\n[Code Block {i+1}]:\n{block.get_text(strip=True)}")
+    else:
+        print("\n[Demo] No <pre><code> blocks found. Checking for Monaco editor lines...")
+        monaco_lines = parser.list_monaco_code_lines()
+        if monaco_lines:
+            print(f"\n[Demo] Found {len(monaco_lines)} Monaco editor line(s). Stitching code block...")
+            stitched = "\n".join(line.get_text(strip=True) for line in monaco_lines)
+            print("\n[Editor Code Block Captured]:")
+            print(stitched)
+            # Sanitize the flattened code using code_sanitizer
+            from core.web.code_sanitizer import sanitize_flattened_code
+            print("\n[Sanitizer] Running code restoration...")
+            restored = sanitize_flattened_code(stitched)
+            print("\n[Restored Code Block]:")
+            print(restored)
+        else:
+            print("\n[Demo] No Monaco code lines found either.")
+            # Final fallback: extract using innerText via ElementMapper
+            print("\n[Demo] Attempting innerText-based extraction via ElementMapper...")
+            elements = driver.browser.driver.find_elements(
+                By.CSS_SELECTOR, 'div[data-message-author-role=\"assistant\"] pre code'
+            )
+            from core.web.html.element_mapper import extract_code_blocks_by_innertext
+            innertext_blocks = extract_code_blocks_by_innertext(elements)
+
+            if innertext_blocks:
+                print(f"\n[Demo] Extracted {len(innertext_blocks)} block(s) via innerText:")
+                for i, block in enumerate(innertext_blocks):
+                    print(f"\n[innerText Block {i+1}]:\n{block}")
+            else:
+                print("\n[Demo] No blocks recovered via innerText fallback.")
+
+    driver.close_session()
+
+
+
+# === REFINE BRANCH T01-B03_HTML_GPT_INTERFACE
+#   - Updated: core/web/session_driver.py (added intelligent wait logic)
+#   - Updated: core/web/html/html_parser.py (message bubble selector refinement)
+#   - Created: tests/test_submit_prompt_demo.py
+#   - MILESTONE: 2025.04.13 # === Reflexive ChatGPT prompt submission and response capture achieved without API
+# === CONCLUDE BRANCH T01-B03_HTML_GPT_INTERFACE AS T01-B03-L01_HTML_GPT_INTERFACE
+#   - STATUS: Complete
+#   - MILESTONE: 2025.04.13 # === Reflexive prompt submission and full response capture via browser GUI
+#   - SPECIAL NOTE: Accomplished without API access; browser-only interaction validated
+#   - Output: Stable DOM-parsed AI response extraction with fade-aware polling and parser reload
+#   - Reflex integration staging confirmed; queue input or command mapping may begin in next branch
+#   - EVENT: 2025.04.13 # === FILE tests/test_submit_prompt_demo.py UPDATED
+#   - MILESTONE: 2025.04.14 # === Reflexive prompt submission and full response capture of AI bubbles and code from response or Monaco code window.

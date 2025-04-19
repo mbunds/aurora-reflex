@@ -1,0 +1,1001 @@
+# === FLAT FILE: T02_INITIAL_PROCESSING.txt ===
+# Version: 2025.04.13
+# Created by: Mark + ChatGPT
+# Included Modules in (THIS) T02_INITIAL_PROCESSING:
+#   - FILE: core/utils/code_restorer.py
+#   - FILE: core/utils/code_formatter.py
+#   - FILE: core/web/code_sanitizer.py
+#   - FILE: tests/test_element_mapper.py
+#   - FILE: core/control/sequence_controller.py
+#   - FILE: core/control/reflex_dispatcher.py
+#   - FILE: data/db_interface.py
+#   - FILE: core/gui/sequencer_controller.py
+#   - FILE: core/boot/pathfix.py
+
+### Structure Changelog
+
+| Date           |                                  Change Summary                                        |
+|----------------|----------------------------------------------------------------------------------------|
+| **2025-04-12** | New SSE Project. (AURORA)                                                              |
+| **2025-04-12** | 3 Python modules created.                                                              |
+| **2025-04-12** | 1 Python unit test created.                                                            |
+| **2025-04-12** | UNIT TEST: HTML Connetion to ChatGPT Web DOM Successful.                               |
+| **2025-04-12** | UNIT TEST: Collecion of HTML DOM elements Successful.                                  |
+| **2025-04-12** | UNIT TEST: Confirmation that all ChatGPT web DOM wlements collected deterministically. |
+| **2025-04-13** | Populate GPT prompt and submit programmatically successful.                            |
+|----------------|----------------------------------------------------------------------------------------|
+
+---
+
+
+
+# === FILE: core/utils/code_restorer.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/utils/code_restorer.py
+Authors: ChatGPT and Mark
+Created: 2025-04-15
+Location: Evans, Colorado
+Project: Aurora
+
+This module restores human-readable formatting and indentation to flattened Python
+code blocks extracted from ChatGPT GUI responses where spaces and newlines have
+been stripped.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: [T02_INITIAL_PROCESSING.txt]
+    - This file participates in branch T02-B02_CODE_CAPTURE_CLEAN
+    - Versioning and audit history are maintained via flat-file records.
+
+---
+
+Code Restoration Utility
+
+Restores indentation, newlines, and structure to compacted Python code blocks.
+"""
+
+import re
+
+# --- Phase 10 patch: spacing and punctuation repair ---
+def patch_phase_10_spacing(blob: str) -> str:
+    fixes = [
+        (r'(?<!\w)(if|for|while|with|as|in|def|class|return|raise|print|except|elif|else|try|not)([A-Za-z_])', r'\1 \2'),
+        (r'(?<!\w)(import)([A-Za-z_])', r'\1 \2'),
+        (r'(?<!\w)(except)([A-Za-z_]+)(as)([A-Za-z_]+)', r'\1 \2 as \4'),
+        (r'(?<!\w)(is|not|and|or)([A-Za-z_])', r'\1 \2'),
+        (r'([a-zA-Z0-9_])=([a-zA-Z0-9_])', r'\1 = \2'),
+        (r'\bdef ([a-zA-Z0-9_]+) \(', r'def \1('),
+        (r'\bclass ([a-zA-Z0-9_]+) \(', r'class \1('),
+        (r'([^\s])\(', r'\1 ('),  # space before (
+        (r'\)([^\s])', r') \1'),  # space after )
+    ]
+    for pattern, repl in fixes:
+        blob = re.sub(pattern, repl, blob)
+        return blob
+
+def preprocess_tokens(blob: str) -> str:
+    """
+    Phase 9 Preprocessing — Repair severely flattened logic, import spacing, and docstring padding.
+    """
+    # Ensure triple-quoted docstrings open cleanly after header
+    blob = re.sub(r'(# === FILE: .+?===)"""', r'\1\n"""', blob)
+
+    # Break chained import statements like: importyamlimportsys
+    blob = re.sub(r'import([A-Z_a-z])', r'import \1', blob)
+    blob = re.sub(r'(import [a-zA-Z_]+)(?=import)', r'\1\n', blob)
+    blob = re.sub(
+        r'(import [a-zA-Z_]+(?:\s+import [a-zA-Z_]+)+)',
+        lambda m: '\n'.join(re.findall(r'import [a-zA-Z_]+', m.group())),
+        blob
+    )
+
+    # Newline before each new class or def block if run-together
+    blob = re.sub(r'(class|def)([A-Z_a-z])', r'\1 \2', blob)
+    blob = re.sub(r'(?<!\n)(def .+?:)', r'\n\1', blob)
+    blob = re.sub(r'(?<!\n)(class .+?:)', r'\n\1', blob)
+
+    # Pad between def blocks if crushed together (def x():def y())
+    blob = re.sub(r'(\):)(?=def )', r'\1\n', blob)
+
+    # Ensure closing triple quotes get their own line if packed
+    blob = re.sub(r'("""[^"]+)(?=""")', r'\1\n', blob)
+
+    # Fix jammed flow logic (e.g., ifx: → if x:)
+    logic_keywords = ['if', 'for', 'while', 'elif', 'except']
+    for kw in logic_keywords:
+        blob = re.sub(rf'\b{kw}([A-Za-z_])', rf'{kw} \1', blob)
+
+    # Miscellaneous glue and token repairs
+    replacements = [
+        (r'ifnot', r'if not '),
+        (r'elifnot', r'elif not '),
+        (r'whilenot', r'while not '),
+        (r'([a-zA-Z_])=None', r'\1 = None'),
+        (r'=Noneself', r'= None\nself'),
+        (r'(except)([a-zA-Z_.]+)(as)([a-zA-Z_])', r'\1 \2 as \4'),
+        (r'(\))([a-zA-Z_])', r'\1\n\2'),
+        (r'([a-zA-Z_])\(', r'\1 ('),
+        (r':([a-zA-Z])', r': \1'),
+        (r',([a-zA-Z])', r', \1'),
+        (r'print\(', r'\nprint('),
+        (r'(?<!\n)(if)__name__', r'\n\1 __name__'),
+    ]
+    for pattern, repl in replacements:
+        blob = re.sub(pattern, repl, blob, flags=re.DOTALL)
+
+    return blob
+
+def restore_code_structure(flat_code: str) -> str:
+    """
+    Attempt to restore proper indentation and line breaks to a flattened block of Python code.
+    """
+    flat_code = preprocess_tokens(flat_code)
+
+    keywords = [
+        'def ', 'class ', 'if ', 'elif ', 'else:', 'for ', 'while ',
+        'try:', 'except ', 'finally:', 'with ', 'return ', 'import ',
+        'from ', 'raise ', 'print(', 'input(', '@'
+    ]
+
+    pattern = r'(?:(?<=\s)|(?<=^))(?=(?:' + '|'.join([re.escape(k.strip()) for k in keywords]) + '))'
+    candidates = re.split(pattern, flat_code)
+
+    raw_lines = []
+    buffer = ''
+    for chunk in candidates:
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        if any(chunk.startswith(k.strip()) for k in keywords):
+            if buffer:
+                raw_lines.append(buffer.strip())
+            buffer = chunk
+        else:
+            buffer += ' ' + chunk
+    if buffer:
+        raw_lines.append(buffer.strip())
+
+    # PHASE 1B: Merge stray 'def' or 'class' lines with their continuations
+    final_lines = []
+    i = 0
+    while i < len(raw_lines):
+        line = raw_lines[i]
+        if line in ('def', 'class') and i + 1 < len(raw_lines):
+            final_lines.append(line + ' ' + raw_lines[i + 1])
+            i += 2
+        else:
+            final_lines.append(line)
+            i += 1
+
+    # PHASE 2: Split lines with multiple def/class occurrences
+    split_lines = []
+    for line in final_lines:
+        parts = re.split(r'(?<!^)(?=(?:def |class ))', line)
+        for part in parts:
+            part = part.strip()
+            if part:
+                split_lines.append(part)
+
+    # PHASE 3: Indentation logic
+    indented_lines = []
+    indent = 0
+    for line in split_lines:
+        line = line.strip()
+        indented_lines.append('    ' * indent + line)
+        if line.endswith(':'):
+            indent += 1
+        if re.match(r'^(return|raise|break|continue|pass)\b', line):
+            indent = max(0, indent - 1)
+        if re.match(r'^(except|elif|else):', line):
+            indent = max(0, indent - 1)
+
+    return patch_phase_10_spacing('\n'.join(indented_lines))
+
+    return blob
+
+if __name__ == '__main__':
+    example_flat_code = """
+#!/usr/bin/env python3importyamlimportargparseimportosimportsysclassConfigLoader:def__init__(self, config_path):self.config_path=config_pathself.required_fields=['app_name','version','database.host','database.port','features.enable_logging']self.config={}defload(self):ifnotos.path.exists(self.config_path):raiseFileNotFoundError(f"Config file not found:{self.config_path}")withopen(self.config_path,'r')asf:try:self.config=yaml.safe_load(f)ifself.configisNone:raiseValueError("YAML file is empty.")exceptyaml.YAMLErrorase:raiseValueError(f"Failed to parse YAML:{e}")defvalidate(self):missing=[]forfieldinself.required_fields:keys=field.split('.')value=self.configforkeyinkeys:ifisinstance(value,dict)andkeyinvalue:value=value[key]else:missing.append(field)breakifmissing:raiseValueError(f"Missing required fields:{', '.join(missing)}")defprint_summary(self):print("=== CONFIG SUMMARY ===")print(f"Application:{self.config.get('app_name')}")print(f"Version:{self.config.get('version')}")db=self.config.get('database',{})print(f"DB Host:{db.get('host')}")print(f"DB Port:{db.get('port')}")features=self.config.get('features',{})print(f"Logging:{features.get('enable_logging')}")print("======================")defmain():parser=argparse.ArgumentParser(description='Load and validate a YAML configuration file.')parser.add_argument('config',metavar='CONFIG_FILE',help='Path to the YAML configuration file')args=parser.parse_args()loader=ConfigLoader(args.config)try:loader.load()loader.validate()loader.print_summary()exceptExceptionase:print(f"[ERROR]{e}",file=sys.stderr)sys.exit(1)if__name__=='__main__':main()
+"""
+    restored = restore_code_structure(example_flat_code)
+    print("\n--- Restored Code ---\n")
+    print(restored)
+
+
+
+# === FILE: core/web/code_sanitizer.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/web/code_sanitizer.py
+Authors: ChatGPT and Mark
+Created: 2025-04-15
+Location: Evans, Colorado
+Project: Aurora
+
+This module bridges extracted flattened code blobs from GUI DOM
+captures (Monaco or <pre><code>) to restored, human-readable format
+by delegating logic to `code_restorer.py`.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Will be registered in: [T02_INITIAL_PROCESSING.txt]
+    - This file participates in branch T02-B02_CODE_CAPTURE_CLEAN
+    - Versioning and audit history are maintained via flat-file records.
+
+---
+
+Code Sanitizer Wrapper
+
+Converts stripped Python code captured from GUI output into formatted, indented source.
+"""
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+from core.utils.code_restorer import restore_code_structure
+from core.utils.code_formatter import beautify_code
+
+def sanitize_flattened_code(raw_blob: str) -> str:
+    """
+    Sanitize flattened Python code (typically from ChatGPT GUI DOM capture).
+
+    Args:
+        raw_blob (str): Flattened code string (often a stitched Monaco block)
+
+    Returns:
+        str: Restored, human-readable, and style-consistent Python code
+    """
+    print("[Sanitizer] Starting code restoration...")
+    restored = restore_code_structure(raw_blob)
+    print("[Sanitizer] Running final beautification...")
+    beautified = beautify_code(restored)
+    print("[Sanitizer] Formatting complete.")
+    return beautified
+
+if __name__ == '__main__':
+    print("[Sanitizer] Demo mode activated. Using embedded example.")
+    flattened = """
+#!/usr/bin/env python3importyamlimportargparseimportosimportsysclassDemo:def__init__(self):self.x=5defrun(self):print("Hello")if__name__=='__main__':Demo().run()
+"""
+    print("\n--- Sanitized Code ---\n")
+    print(sanitize_flattened_code(flattened))
+
+
+
+# === FILE: core/utils/code_formatter.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/utils/code_formatter.py
+Authors: ChatGPT and Mark
+Created: 2025-04-15
+Location: Evans, Colorado
+Project: Aurora
+
+This module post-processes restored code blocks to enforce stylistic consistency
+and aesthetic alignment with standard Python formatting. Designed to follow
+code_restorer.py and finalize cleaned output for user or storage.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - To be registered in: [T02_INITIAL_PROCESSING.txt]
+    - This file participates in branch T02-B02_CODE_CAPTURE_CLEAN
+
+---
+
+Code Formatter Utility
+
+Final pass beautifier that makes restored code style-compliant.
+"""
+
+import textwrap
+import re
+
+def beautify_code(source_code: str) -> str:
+    """
+    Apply whitespace normalization, import line splitting,
+    and paragraph indentation consistency to restored Python code.
+
+    Args:
+        source_code (str): The restored Python code block.
+
+    Returns:
+        str: A polished, readable, consistent Python source block.
+    """
+    lines = source_code.splitlines()
+    formatted = []
+
+    for line in lines:
+        line = line.rstrip()
+
+        # Normalize import line spacing
+        if re.match(r'^import [a-zA-Z0-9_, ]+$', line):
+            for imp in line.split(','):
+                formatted.append(imp.strip())
+            continue
+
+        # Normalize excessive spacing
+        line = re.sub(r' +', ' ', line)
+        line = re.sub(r' :', ':', line)
+
+        formatted.append(line)
+
+    # Normalize paragraph indentation
+    block = "\n".join(formatted)
+    block = textwrap.dedent(block)
+
+    return block.strip() + "\n"
+
+if __name__ == '__main__':
+    sample = """
+import os, sys, yaml
+
+class Demo:  def say_hi(self):   print("Hi")
+    """
+    print("\n--- Beautified Output ---\n")
+    print(beautify_code(sample))
+
+
+
+# === FILE NAME: core/control/sequence_controller.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/control/sequence_controller.py
+Authors: ChatGPT and Mark
+Created: 2025-04-16
+Location: Evans, Colorado
+Project: Aurora
+
+Main orchestrator for executing sequence-driven reflex logic. This module reads
+step instructions from the database, triggers reflex execution via dispatcher,
+tracks jump/repeat state, and evaluates completion or interrupts.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - This file participates in the T02-B04_SEQ_CONT branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+# === FILE NAME: core/control/sequence_controller.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/control/sequence_controller.py
+Authors: ChatGPT and Mark
+Created: 2025-04-16
+Location: Evans, Colorado
+Project: Aurora
+
+Main orchestrator for executing sequence-driven reflex logic. This module reads
+step instructions from the database, triggers reflex execution via dispatcher,
+tracks jump/repeat state, and evaluates completion or interrupts.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - This file participates in the T02-B04_SEQ_CONT branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+Sequence Controller
+
+Executes step-based sequences stored in the database. Supports step jumping,
+bounded loops, reflex triggering, and future interrupt integration.
+"""
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from core.control.reflex_dispatcher import dispatch_step
+from data.db_interface import load_sequence_steps
+
+class SequenceController:
+    def __init__(self, sequence_id: int):
+        self.sequence_id = sequence_id
+        self.steps = load_sequence_steps(sequence_id)
+        self.index = 0
+        self.loop_count = 0
+        self.history = []
+
+    def run(self):
+        print(f"[SequenceController] Starting sequence {self.sequence_id}...")
+        while self.index < len(self.steps):
+            step = self.steps[self.index]
+            print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
+
+            result = dispatch_step(step)
+
+            self.history.append({
+                "index": self.index,
+                "step": step,
+                "result": result
+            })
+
+            # Handle per-step repeat logic
+            step_repeat = step.get("repeat", 0)
+            if step_repeat > 0:
+                if "repeat_count" not in step:
+                    step["repeat_count"] = 1
+                else:
+                    step["repeat_count"] += 1
+
+                if step["repeat_count"] < step_repeat:
+                    print(f"[SequenceController] Repeating step {self.index} ({step['repeat_count']}/{step_repeat})")
+                    continue
+                else:
+                    print(f"[SequenceController] Step {self.index} reached repeat limit. Continuing.")
+                    step["repeat_count"] = 0  # Optional cleanup
+
+            # Check for jump
+            if step.get('jump') is not None:
+                target = step['jump']
+                rpt = step.get('jmp_rpt', 0)
+                if rpt == 0 or self.loop_count < rpt:
+                    loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/∞"
+                    target_step = self.steps[target]
+                    print(f"[SequenceController] Jumping to step_order {target_step['step_order']} (index {target}) — loop {loop_display}")
+                    self.index = target
+                    self.loop_count += 1
+                    continue
+                else:
+                    print("[SequenceController] Jump limit reached. Continuing.")
+                    self.loop_count = 0
+
+            self.index += 1
+
+        print(f"[SequenceController] Sequence {self.sequence_id} completed.")
+
+if __name__ == "__main__":
+    controller = SequenceController(sequence_id=4)  # SHOW MODE
+    controller.run()
+
+
+
+# === FILE NAME: core/control/reflex_dispatcher.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/control/reflex_dispatcher.py
+Authors: ChatGPT and Mark
+Created: 2025-04-16
+Location: Evans, Colorado
+Project: Aurora
+
+This module is the reflex dispatcher for sequence steps. Each step's command
+string is interpreted and routed to a reflex action (e.g., prompt injection,
+DOM parse, interrupt check). Designed for modular expansion.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - This file participates in the T02-B04_SEQ_CONT branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+Reflex Dispatcher
+
+Parses a sequence step and triggers the corresponding reflex behavior.
+Supports prompt submission and keyword-based wait cycles for session control.
+"""
+
+import time
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from core.web.session_driver import SessionDriver
+from selenium.webdriver.common.by import By
+
+driver = None
+
+def init_driver():
+    global driver
+    if driver is None:
+        print("[ReflexDispatcher] Initializing session driver...")
+        driver = SessionDriver(headless=False)
+        driver.start_session()
+
+def dispatch_step(step: dict) -> str:
+    """
+    Interpret and execute a single step from a sequence.
+    Args: step (dict): A dictionary with step info, including 'command'.
+    Returns: str: Result message.
+    """
+    # Reflex action takes precedence over command if present
+    if step.get("reflex_action"):
+        import sqlite3
+        try:
+            from core.data.db_interface import DB_PATH, resolve_long_phrase
+        except ModuleNotFoundError:
+            import sys, os
+            sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+            from data.db_interface import DB_PATH, resolve_long_phrase
+
+        reflex_id = step["reflex_action"]
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("SELECT direction, is_phrase, long_phrase, key FROM keys WHERE id = ?", (reflex_id,))
+        row = cur.fetchone()
+        conn.close()
+        # Examine "direction" (1=in, 2=out, 3=bidir, 4=internal) "is_phrase", "long_phrase_id", on "row"
+        #
+        if row:
+            direction, is_phrase, long_phrase_id, key_value = row
+            if direction == 4:
+                if is_phrase > 0 and long_phrase_id > 0:
+                    phrase = resolve_long_phrase(long_phrase_id)
+                    print(f"[ReflexDispatcher] Reflex {reflex_id} → long_phrase → {phrase}")
+                    return dispatch_step({"command": phrase})
+                elif key_value:
+                    print(f"[ReflexDispatcher] Reflex {reflex_id} → key → {key_value}")
+                    return dispatch_step({"command": key_value})
+                else:
+                    print(f"[ReflexDispatcher] Reflex {reflex_id} has no usable string.")
+                    return f"Reflex {reflex_id} empty."
+            else:
+                print(f"[ReflexDispatcher] Reflex {reflex_id} ignored — direction != 4")
+                return f"Reflex {reflex_id} skipped — not internal"
+
+    # Fallback to normal command handling
+    command = step.get("command", "")
+    print(f"[ReflexDispatcher] Dispatching command: {command}")
+
+    if command.upper() == "LAUNCH BROWSER":
+        init_driver()
+        return "Browser launched via internal reflex."
+
+    if command.startswith("PROMPT:"):
+        prompt_text = command[len("PROMPT:"):].strip()
+        init_driver()
+        driver.submit_prompt(prompt_text)
+        wait_for_response_completion()
+        return f"Prompt submitted: {prompt_text[:40]}..."
+
+    elif command.startswith("WAIT:"):
+        seconds = int(command[len("WAIT:"):].strip())
+        print(f"[ReflexDispatcher] Waiting {seconds} seconds...")
+        time.sleep(seconds)
+        return f"Waited {seconds} seconds."
+
+    elif command == "CHECK:/CODE COMPLETE/":
+        html = driver.get_current_html()
+        if "/CODE COMPLETE/" in html:
+            return "Completion token detected."
+        return "No completion token found."
+
+def wait_for_response_completion(timeout=60, pause_threshold=3.0):
+    """
+    Wait for the assistant response to stabilize by monitoring DOM text growth.
+    """
+    print("[ReflexDispatcher] Monitoring assistant message for completion...")
+    end_time = time.time() + timeout
+    last_length = 0
+    last_change = time.time()
+
+    while time.time() < end_time:
+        bubbles = driver.browser.driver.find_elements(
+            By.CSS_SELECTOR, 'div[data-message-author-role="assistant"] div.markdown.prose p'
+        )
+        code_blocks = driver.browser.driver.find_elements(
+            By.CSS_SELECTOR, 'div[data-message-author-role="assistant"] pre code'
+        )
+
+        try:
+            all_text = (
+                "\n".join(b.text.strip() for b in bubbles if b.text.strip()) +
+                "\n".join(c.text.strip() for c in code_blocks if c.text.strip())
+            )
+        except Exception as e:
+            print(f"[ReflexDispatcher] DOM read error: {e}")
+            time.sleep(0.25)
+            continue
+
+        current_length = len(all_text)
+
+        if current_length > last_length + 10:
+            last_length = current_length
+            last_change = time.time()
+
+        elif time.time() - last_change >= pause_threshold:
+            print("[ReflexDispatcher] Assistant response appears complete.")
+            return
+
+        time.sleep(0.25)
+
+    print("[ReflexDispatcher] Timeout: Response may be incomplete.")
+
+if __name__ == "__main__":
+    demo_step = {"command": "PROMPT: Hello world from SHOW MODE!"}
+    print(dispatch_step(demo_step))
+
+
+
+# === FILE NAME: core/data/db_interface.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/data/db_interface.py
+Authors: ChatGPT and Mark
+Created: 2025-04-16
+Location: Evans, Colorado
+Project: Aurora
+
+This module interfaces with Aurora’s sqlite3 database (aurora.db) to load
+sequence definitions and step instructions from the `sequences` and
+`sequence_steps` tables. It provides runtime access for step execution logic.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - This file participates in the T02-B04_SEQ_CONT branch of development.
+    - All session behaviors are tracked and logged through flat file modules.
+
+---
+
+Database Interface
+
+Exposes methods for loading sequences, steps, and metadata for use in
+reflex-driven execution controllers.
+"""
+
+import sqlite3
+from typing import List, Dict
+
+#DB_PATH = r"C:\Users\MBUNDS\Documents\QtDesignStudio\AURORA\data\aurora.db"
+import os
+DB_PATH = os.path.normpath(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'aurora.db')))
+DB_PATH = os.path.normpath(DB_PATH)
+print("[DEBUG] DB_PATH resolved to:", DB_PATH)
+
+def get_sequence_id_by_name(name: str) -> int:
+    """
+    Look up the ID of a sequence by its name from the 'sequences' table.
+
+    Args:
+        name (str): The human-readable name of the sequence.
+
+    Returns:
+        int: The ID of the sequence, or None if not found.
+    """
+    import sqlite3
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM sequences WHERE name = ?", (name,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row else None
+
+def load_sequence_steps(sequence_id: int) -> List[Dict]:
+    """
+    Load all steps for a given sequence from the database.
+
+    Args:  sequence_id (int): The ID of the sequence to load.
+
+    Returns: List[Dict]: Ordered list of step dictionaries.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    query = """
+    SELECT id, sequence_id, step_order, instruction, expected, reflex_action, repeat, jump, jmp_rpt
+    FROM sequence_steps
+    WHERE sequence_id = ?
+    ORDER BY step_order ASC
+    """
+    cur.execute(query, (sequence_id,))
+    rows = cur.fetchall()
+    conn.close()
+
+    steps = []
+    for row in rows:
+        steps.append({
+            "id": row["id"],
+            "sequence_id": row["sequence_id"],
+            "step_order": row["step_order"],
+            "instruction": row["instruction"],
+            "expected": row["expected"],
+            "reflex_action": row["reflex_action"],
+            "repeat": row["repeat"],
+            "jump": row["jump"],
+            "jmp_rpt": row["jmp_rpt"],
+        })
+
+    print(f"[DB] Loaded {len(steps)} steps for sequence {sequence_id}")
+    return steps
+
+def resolve_key_phrase(key_id: int) -> str:
+    """
+    Lookup a key phrase by its ID from the 'keys' table.
+    Args: key_id (int): The key ID to resolve.
+    Returns: str: The associated phrase from the keys table, or '(UNRESOLVED)' if not found.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    query = "SELECT id, type, direction, is_phrase, long_phrase FROM keys WHERE id = ?"
+    cur.execute(query, (key_id,))
+    row = cur.fetchone()
+    conn.close()
+
+    if row is None:
+        return "(UNRESOLVED)"
+
+    # Resolve phrase: use long_phrase if is_phrase is True, else use id (or future lookup strategy)
+    if row[3]:  # is_phrase
+        long_id = row[4]
+        return resolve_long_phrase(long_id)  # Delegated to next helper
+    else:
+        return str(row[0])  # fallback to raw ID string or future mapping
+
+def resolve_long_phrase(long_phrase_id: int) -> str:
+    """
+    Lookup a long phrase string by its ID from the 'long_phrases' table.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    query = "SELECT phrase FROM long_phrases WHERE id = ?"
+    cur.execute(query, (long_phrase_id,))
+    row = cur.fetchone()
+    conn.close()
+
+    return row[0] if row else "(UNRESOLVED-LONG)"
+
+if __name__ == "__main__":
+    name = "SHOW MODE"
+    seq_id = get_sequence_id_by_name(name)
+    if seq_id is None:
+        print(f"[db_interface] Sequence '{name}' not found.")
+    else:
+        steps = load_sequence_steps(seq_id)
+        for i, step in enumerate(steps):
+            print(f"Step {i} (order {step['step_order']}): {step['instruction']}")
+
+
+
+# === FILE NAME: core/gui/sequencer_controller.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/gui/sequencer_controller.py
+Authors: ChatGPT and Mark
+Created: 2025-04-17
+Location: Evans, Colorado
+Project: Aurora
+
+This module manages the GUI control layer for the Sequence Runner subsystem.
+It bridges database-loaded sequence definitions with user-facing list views,
+and manages enabling logic for RUN/EDIT operations based on selection state.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - Category: GUI Controller
+    - Interfaces with: ui_form.py, db_interface.py
+    - Exposes callable functions for list model population and user interaction
+"""
+
+# === PATH PATCH (MANDATORY BEFORE BOOT IMPORTS) ===
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from core.boot.pathfix import patch_path
+patch_path()
+from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtCore import Qt
+import sqlite3
+from data.db_interface import load_sequence_steps, DB_PATH
+#print("[DEBUG] sys.path =", sys.path)
+#print("[DEBUG] Attempting to open DB_PATH:", DB_PATH)
+
+def load_sequences_from_db():
+    """Fetch all sequences from the database."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT id, name, description, sequence_type FROM sequences")
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+def populate_sequence_listview(view):
+    """Populate a QListView with available sequences."""
+    sequence_data = load_sequences_from_db()
+    model = QStandardItemModel()
+
+    for seq in sequence_data:
+        label = f"{seq['name']} | {seq['description']} [{seq['sequence_type']}]"
+        item = QStandardItem(label)
+        item.setData(seq['id'], Qt.UserRole)
+        model.appendRow(item)
+
+    view.setModel(model)
+    return model
+
+def populate_steps_for_sequence(step_data, view):
+    """Populate a QListView with steps (pre-fetched)."""
+    model = QStandardItemModel()
+
+    for step in step_data:
+        label = f"{step['step_order']:02d} – {step['instruction']}"
+        item = QStandardItem(label)
+        model.appendRow(item)
+
+    view.setModel(model)
+    return model
+
+def handle_sequence_selection(index, view, ui):
+    """Called when a sequence is selected. Loads steps and updates buttons."""
+    model = view.model()
+    item = model.itemFromIndex(index)
+    sequence_id = item.data(Qt.UserRole)
+
+    # Load steps directly
+    step_data = load_sequence_steps(sequence_id)
+
+    # Populate the view with them
+    populate_steps_for_sequence(step_data, ui.lv_steps)
+
+    # Enable ARM button
+    ui.pb_sequence_arm.setEnabled(True)
+
+    # Disable RUN and EDIT initially
+    ui.pb_sequence_run.setEnabled(False)
+
+    # EDIT should only be enabled if steps are present *and* RUN is enabled later
+    ui.pb_sequence_edit.setEnabled(True if step_data and ui.pb_sequence_run.isEnabled() else False)
+
+    # Store metadata on the button
+    ui.pb_sequence_arm.setProperty("sequence_id", sequence_id)
+    ui.pb_sequence_arm.setProperty("has_steps", bool(step_data))
+
+def arm_selected_sequence(ui):
+    """Handles the arming logic when 'Select' is clicked."""
+    seq_id = ui.pb_sequence_arm.property("sequence_id")
+    has_steps = ui.pb_sequence_arm.property("has_steps")
+    if seq_id is not None:
+        ui.pb_sequence_run.setEnabled(True if has_steps else False)
+        ui.pb_sequence_edit.setEnabled(True)
+
+
+
+# === FILE NAME: core/boot/pathfix.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/boot/pathfix.py
+Authors: ChatGPT and Mark
+Created: 2025-04-17
+Location: Evans, Colorado
+Project: Aurora
+
+This utility module provides a centralized method to patch the Python sys.path
+during local development. It ensures consistent import resolution from any
+submodule within the Aurora project when executed in non-package mode.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T02_INITIAL_PROCESSING.txt
+    - Category: Bootstrap Utility
+    - Used by all modules requiring guaranteed path stability across contexts.
+
+---
+
+Path Bootstrap Utility
+
+Call patch_path() at the top of any deep module to ensure that the root
+project path is visible to Python, enabling absolute imports of all
+core.* modules and subpackages.
+"""
+
+import sys
+import os
+
+def patch_path():
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    if root not in sys.path:
+        sys.path.insert(0, root)
+        print(f"[PATHFIX] Root path added: {root}")
+    else:
+        print("[PATHFIX] Root path already present.")
+
+

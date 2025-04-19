@@ -1,0 +1,145 @@
+# === FLAT FILE: FUTURE_FEATURES.txt ===
+# Version: 2025.04.12
+# Created by: Mark + ChatGPT
+# Purpose: To capture potential capabilities and growth markers for AURORA
+
+---
+
+## Milestone Log: System Exceeds Prior Scale
+
+**Date:** 2025-04-12  (Date of AURORA project creation also)
+**Summary:**  
+Aurora project archive (`AURORA.rar`) has officially surpassed the size of OpenSIM DCS.  
+This milestone marks the moment Aurora transitioned from an experimental reflex layer  
+into a structurally complete, modular AI-interfacing architecture with:
+
+- Independent GUI control pipeline  
+- Reflex command architecture with visual interrupt queue  
+- Browser-driven ChatGPT interaction  
+- Persistent keyword/phrase DB for composition reflexes  
+- Full FLAT + SSE compliance  
+- Branch-capable planning and execution flow
+
+**Notes:**  
+Aurora is no longer a control system interface — it's the system itself.  
+Future features should honor this shift and continue modular, reflexive expansion.
+
+---
+
+- DATABASE - Add "formal" and "informal" goal types
+"""
+2025.04.16 - I want to complete the project to the point where I can release another video. My impression
+stats on LinkedIn  are "self-sustaining" for the week so far, and another video will keep the
+momentum going. Goals: get an "auto prompt loop" going for the "SHOW MODE".
+Here is where we begin to nail down a typical session procedure for the Aurora routine.
+The user sets up goals and initializes the session...
+There are two "goal types", formal and informal. A "formal goal type" expects hard, deterministic
+selections to be supplied, formal initializations and tasks/task steps/sequences defined in the
+database from which the user selects.
+
+The "Informal goal type" is less structured, but still relies on database instructions to allow
+the Aurora -> remote GPT session -> Aurora loop protocol exchanges. Informal goals allow the
+user to inject specific requests for the purpose of attempting to cause the Aurora/AI to find a
+solution for a task/goal which is not defined formally.
+
+Aurora looks up the initialization for formal or informal goals when the user sets up a new session
+from the database. "formally defined" goals and tasks are "complete" and can be expected to come to
+a resolution as these are common and frequently used "commands" such as those used for folder/file
+manipulation, text injection, and other common local operations, along with complex tasks with a
+large sequence of command events such as those used to initialize a Python project skeleton,
+(one possibility, Aurora can select from any number of "project initialization packages" defined
+in the database, retrieve an associated compressed "project template", place it in a folder defined
+for the project locally or remotely and decompress it, then populate the "__init__.py", "README.md",
+and others with project seed data. This is a well-defined sequence which could be "sequenced" by
+database lookups.), open an existing project and locate sections to be improved, then set up an
+editing session, and many other definable tasks.
+
+Informal goal sessions still follow sequences, but leave much of the task outlining prompts to the
+user, alerting the user for more information or instruction by flashing an alert near a prompting
+box on the Aurora GUI, or popping-up "request for information for the AI". These sessions may be
+"recorded" in a memory log, and successful sequences may be extracted from these to create new formal
+goal session types. Informal sessions therefore, will be used to establish new sequenced routines, or
+just to cause the AI to work toward a user-defined resolution.
+
+NEBULOUS GUI CONTROLS:
+
+[ Prompt Input Box ]   ← User input → Interrupt Queue
+[ Priority Button  ]   ← Send immediately
+[ Normal Button    ]   ← Queue for insertion
+[ Pause / Halt / Reset / Status Buttons ]
+
+---------------------------------------
+
+[ Aurora Output Log ]           ← Prompts being composed
+[ GPT Reply Viewer ]            ← Responses received
+[ Sequence Step Tracker ]       ← Shows current task step (formal goal sessions)
+[ Prompt Composition Window ]   ← Live display of composed prompt before dispatch
+
+---------------------------------------
+
+[ Modal Pop-Up (If info requested) ]
+"GPT wants a file path. Please enter one."
+[ OK ] → Sends directly to reflex controller
+
+So Far, Your GUI Needs to Support:
+
+Feature                     Interaction Type                   GUI Component
+Prompt Injection                Manual                          Input box + buttons
+Reflex Control                  Manual/System                   Global task buttons
+Sequence Monitoring             Informational                   Step tracker display
+Prompt Debugging                Informational                   Composition viewer
+GPT Clarification Responses     Interrupt                       Modal pop-up
+AI Reflex Result Review         Passive/Optional                Code block viewer (later)
+
+GUI Feature: Session & Sequence Manager
+
+Main Interface Panel:
+
+Section         	Functionality
+
+Formal Goal Browser	Dropdown to browse or filter existing formal goals
+New Goal Button         Launches form to define a new formal goal (name, description, tags)
+Sequence Editor         View and edit steps in a selected formal goal’s sequence
+Add Step                Add a step to the current sequence with field validation
+Sanitize Sequence       Auto-fix or validate for missing steps, improper flow, or broken references
+Delete Goal/Step        Soft-deletion or archived removal, not hard deletes
+
+Power Features (Optional Toggles):
+
+AI Suggest Completion
+Let Aurora suggest the next step(s) in a formal sequence
+
+Expert Mode Unlock
+Reveals raw command field for advanced manual input
+
+Import Template
+Allow load of .json, .flat, or .sqlite pre-seeded formal templates
+
+Extract from Informal Log
+Show informal sessions flagged as "promotable" for manual review into formal goals
+
+Future-Ready: AI-Curated Formal Session Manager
+You’re clearly thinking toward:
+
+“Let Aurora observe informal success, then suggest formalizing the loop.”
+
+GUI could then include:
+
+Flag: "Promote this session?"
+Pre-fill: Suggested goal name + task flow
+Require human approval until AI curator is robust
+
+Architectural Bonus:
+The DB Manager interface can itself be built using the same prompt/response reflex engine — meaning
+Aurora can eventually help users create its own instructions via AI interaction.
+
+Summary of GUI Additions
+"Session Manager" panel:
+
+Curated, constrained, safe
+Editable goals and sequences
+Future AI management scaffold in place
+
+"""
+
+# === END OF ENTRY ===

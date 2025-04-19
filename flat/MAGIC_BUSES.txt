@@ -1,0 +1,130 @@
+# === FLAT FILE: MAGIC_BUSES.txt ===
+# Version: 2025.04.12
+# Last Update: 2025.04.12
+# Created by: Mark + ChatGPT for the AURORA Project
+# Included Modules:
+#   - core/busses/__init__.py
+#   - core/busses/README.md
+#   - core/control/(PLACEHOLDER.py)
+
+
+
+#   === FILE: core/busses/__init__.py ===
+
+"""
+OpenSIM DCS – Distributed Control Simulation Framework
+------------------------------------------------------
+
+Module: core/busses/__init__.py
+Authors: ChatGPT and Mark
+Created: 2025-04-12
+Location: Evans Colorado
+Project: AURORA
+
+This module is part of the AURORA Project modular architecture. All modules conform to
+FLAT (File-based Logic Assembly Tree) principles: highly modular, AI-readable, and testable.
+
+License:
+    This file is part of the AURORA project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the AURORA Project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: CONTROL_MAGIC_BUSES.txt
+    - Versioning and audit history are maintained via flat-file records.
+    - This file is subject to future FLAT flattening and regeneration tools.
+
+---
+
+Control Layer Init
+
+Exposes the core utilities for the AURORA system bus architecture. ("magic buses") used throughout the OpenSIM DCS system, but also for future projects.
+This allows centralized message routing, diagnostic feedback, logic edits, and runtime control.
+"""
+
+
+
+#   === FILE: core/busses/README.md ===
+
+# AURORA – "Pseudo Pub/Sub Control Layer" (Magic Buses)
+
+---
+
+**Authors:** ChatGPT and Mark  
+**Created:** 2025-04-12  
+**Location:** Evans, Colorado  
+**Project:** AURORA
+**FLAT Registered In:** MAGIC_BUSES.txt  
+**License:** MIT  
+**WARNING:**  
+> This file may be auto-modified by development tools or AI agents.  
+> (Meddle if you dare, foolish mortal!)
+
+---
+
+## Overview
+
+The `core/busses/` folder implements the **internal routing and coordination system** for AURORA interfaces into AI-enabled projects such as the OpenSIM DCS Manager.
+
+It defines the central event/message buses — referred to as **"magic buses"** — that enable logic modules, GUI elements, and AI agents to communicate through a **loosely coupled, structured messaging system**.
+
+These buses are the nervous system of OpenSIM DCS — forming the backbone of:
+- Logic automation
+- Programmatic editing
+- Runtime command orchestration
+- Health reporting
+- User and AI interrupt routing
+
+---
+
+## Primary Components
+
+| Module             | Purpose |
+|--------------------|---------|
+| `bus_controller.py`   | Instantiates and exposes all buses as module-level singletons. |
+| `edit_bus.py`         | Handles logic editing, tag manipulation, and ST injection signals. |
+| `control_bus.py`      | Routes start/stop/deploy/reset/sync commands across tabs or PLCs. |
+| `diagnostic_bus.py`   | Dispatches health reports, runtime scan results, and fault indicators. |
+| `command_bus.py`      | Accepts structured commands from GUI, scripts, or AI interfaces. |
+| `interrupt_bus.py`    | Provides overrides and emergency abort channels for ongoing processes. |
+
+---
+
+## Coming Soon
+
+| Planned Module        | Description |
+|------------------------|-------------|
+| `ai_agent_hooks.py`     | Will connect subscribed bus events to AI agents for intelligent guidance, live editing, or auto-response feedback. |
+
+---
+
+## Notes
+
+- NEW PROJECT: This is a new file refactored from its twin in the OpenSIM DCS project. Folder structures are different between these projects.
+- NEW PROJECT: There are five folders above "busses" meant to contain functions related to the bus "purpose":
+- NEW PROJECT: [command_bus]
+- NEW PROJECT: [control_bus]
+- NEW PROJECT: [diagnostic_bus]
+- NEW PROJECT: [edit_bus]
+- NEW PROJECT: [interrupt_bus]
+
+- Each bus supports **bidirectional communication** and may act as both a signal router and state tracker.
+- The entire control layer is designed with **AI participation and runtime modularity** in mind.
+
+
+
+#   === FILE: core/control/lost_host_interrupt.py ===
+#[EMPTY]
+
+
+
+#   === FILE: core/control/scan_queue_manager.py ===
+#[EMPTY]
+
+
+
+# === END OF FILES IN: MAGIC_BUSES.txt  ===

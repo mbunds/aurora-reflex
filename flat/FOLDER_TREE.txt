@@ -1,0 +1,127 @@
+PROJECT FOLDERS/FILES:
+
+AURORA [PROJECT ROOT]
+	FOLDER [.qtcreator]
+	FOLDER [ARCHIVE]
+		FILE (PLACEHOLDER)
+	FOLDER [core]
+	        FOLDER [boot]
+		        FILE (__init__.py)
+			FILE (pathfix.py)[UNDER CONSTRUCTION]
+			FILE (README.md)
+		FOLDER [busses]
+			FOLDER [command_bus]
+				FILE (__init__.py)
+				FILE (README.md)
+			FOLDER [control_bus]
+				FILE (__init__.py)
+				FILE (README.md)
+			FOLDER [diagnostics_bus]
+				FILE (__init__.py)
+				FILE (README.md)
+			FOLDER [edit_bus]
+				FILE (__init__.py)
+				FILE (README.md)
+			FOLDER [interrupt_bus]
+				FILE (__init__.py)
+				FILE (README.md)
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [control]
+			FILE (__init__.py)
+			FILE (README.md)
+			FILE reflex_dispatcher.py[UNDER CONSTRUCTION]
+			FILE sequence_controller.py[UNDER CONSTRUCTION]
+		FOLDER [data]
+			FILE (__init__.py)
+			FILE db_interface.py[UNDER CONSTRUCTION]
+			FILE (README.md)
+		FOLDER [diagnostics]
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [gui]
+		        FILE (__init__.py)
+			FILE (README.md)
+			FILE (sequence_controller.py)[UNDER CONSTRUCTION]
+		FOLDER [network]
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [project]
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [ui]
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [utils]
+		        FILE (code_foramtter.py)[REVIEW LATER]
+			FILE (code_restorer.py)[REVIEW LATER]
+			FILE (__init__.py)
+			FILE (README.md)
+		FOLDER [web]
+		        FILE (__init__.py)
+			FILE (browser_controller.py)[UNDER CONSTRUCTION]
+			FILE (code_sanitizer.py)[REVIEW LATER]
+			FILE (README.md)
+			FILE (screen_capture.py)[EMPTY]
+			FILE (session_driver.py)[UNDER CONSTRUCTION]
+			FOLDER [html]
+			        FILE (__init__.py)
+				FILE (element_mapper.py)[UNDER CONSTRUCTION]
+				FILE (html_parser.py)[UNDER CONSTRUCTION]
+				FILE (README.md)
+	FOLDER [data]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [DESIGN AND PROMOTION]
+		FOLDER [PLACEHOLDER]
+			FILE (PLACEHOLDER)
+		FILE (PLACEHOLDER)
+	FOLDER [dist]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [docs]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [flat]
+		FOLDER [ARCHIVE]
+			FILE (PLACEHOLDER)
+		FILE (DEVELOPER_SECURITY.txt)
+		FILE (DOCS.txt)
+		FILE (FOLDER_TREE.txt)
+		FILE (FUTURE_FEATURES.txt)
+		FILE (MAGIC_BUSES.txt)
+		FILE (MASTER_INDEX.txt)
+		FILE (T01_OVERVIEW.txt)
+	FOLDER [GPT SUBMISSIONS]
+		FOLDER [PLACEHOLDER]
+			FILE (PLACEHOLDER)
+		FILE (PLACEHOLDER)
+	FOLDER [graphics]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [logs]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [resources]
+		FILE (__init__.py)
+		FILE (README.md)
+	FOLDER [tests]
+		FILE (__init__.py)
+		FILE:(test_element_mapper.py)
+		FILE:(test_session_driver.py)
+		FILE:(test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+		FILE (README.md)
+	FILE (__init__.py)
+	FILE (AURORA.pyproject)
+	FILE (AURORA.pyproject.user)
+	FILE (form.ui)
+	FILE (mainwindow.py)
+	FILE (README.md)
+	FILE (requirements.txt)
+
+PROJECT GRAPHICS
+
+AURORA [PROJECT ROOT]
+	FOLDER [graphics]
+		FILE (__init__.py)
+		FILE (README.md)
