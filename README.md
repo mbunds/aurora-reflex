@@ -178,7 +178,7 @@ AURORA [PROJECT ROOT]
 | **2025-04-12** | 1 Python unit test created.                                                            |
 | **2025-04-12** | UNIT TEST: HTML Connetion to ChatGPT Web DOM Successful.                               |
 | **2025-04-12** | UNIT TEST: Collecion of HTML DOM elements Successful.                                  |
-| **2025-04-12** | UNIT TEST: Confirmation that all ChatGPT web DOM wlements collected deterministically. |
+| **2025-04-12** | UNIT TEST: Confirmation that all ChatGPT web DOM elements collected deterministically. |
 | **2025-04-13** | Populate GPT prompt and submit programmatically successful.                            |
 | **2025-04-17** | Created "aurora.db" and tables for sequencer operation. GUI loads sequences and        |
 | **2025-04-17** | displays assigned steps. Browser launches but prompt injection not yet tested.         |
