@@ -55,7 +55,7 @@ AURORA [PROJECT ROOT]
 ├── core/
 │   ├── boot/
 │   │   ├── __init__.py
-│   │   ├── pathfix.py         [UNDER CONSTRUCTION]
+│   │   ├── pathfix.py               [UNDER CONSTRUCTION]
 │   │   └── README.md
 │   ├── busses/
 │   │   ├── command_bus/
@@ -77,19 +77,21 @@ AURORA [PROJECT ROOT]
 │   │   └── README.md
 │   ├── control/
 │   │   ├── __init__.py
-│   │   ├── reflex_dispatcher.py   [UNDER CONSTRUCTION]
-│   │   ├── sequence_controller.py [UNDER CONSTRUCTION]
+│   │   ├── reflex_dispatcher.py     [UNDER CONSTRUCTION]
+│   │   ├── simulated_dispatcher.py  [ACTIVE SIMULATION]
+│   │   ├── sequence_controller.py   [UPDATED: SIMULATION-AWARE]
 │   │   └── README.md
 │   ├── data/
 │   │   ├── __init__.py
-│   │   ├── db_interface.py        [UNDER CONSTRUCTION]
+│   │   ├── db_interface.py          [UNDER CONSTRUCTION]
 │   │   └── README.md
 │   ├── diagnostics/
 │   │   ├── __init__.py
 │   │   └── README.md
 │   ├── gui/
 │   │   ├── __init__.py
-│   │   ├── sequence_controller.py [UNDER CONSTRUCTION]
+│   │   ├── sequencer_controller.py  [UNDER CONSTRUCTION]
+│   │   ├── prompt_simulator_window.py [ACTIVE UTILITY]
 │   │   └── README.md
 │   ├── network/
 │   │   ├── __init__.py
@@ -102,20 +104,20 @@ AURORA [PROJECT ROOT]
 │   │   └── README.md
 │   ├── utils/
 │   │   ├── __init__.py
-│   │   ├── code_formatter.py      [REVIEW LATER]
-│   │   ├── code_restorer.py       [REVIEW LATER]
+│   │   ├── code_formatter.py        [REVIEW LATER]
+│   │   ├── code_restorer.py         [REVIEW LATER]
 │   │   └── README.md
 │   └── web/
 │       ├── __init__.py
-│       ├── browser_controller.py  [UNDER CONSTRUCTION]
-│       ├── code_sanitizer.py      [REVIEW LATER]
-│       ├── screen_capture.py      [EMPTY]
-│       ├── session_driver.py      [UNDER CONSTRUCTION]
+│       ├── browser_controller.py    [UNDER CONSTRUCTION]
+│       ├── code_sanitizer.py        [REVIEW LATER]
+│       ├── screen_capture.py        [EMPTY]
+│       ├── session_driver.py        [UNDER CONSTRUCTION]
 │       ├── README.md
 │       └── html/
 │           ├── __init__.py
-│           ├── element_mapper.py  [UNDER CONSTRUCTION]
-│           ├── html_parser.py     [UNDER CONSTRUCTION]
+│           ├── element_mapper.py    [UNDER CONSTRUCTION]
+│           ├── html_parser.py       [UNDER CONSTRUCTION]
 │           └── README.md
 ├── data/
 │   ├── __init__.py
@@ -139,14 +141,16 @@ AURORA [PROJECT ROOT]
 │   ├── FUTURE_FEATURES.txt
 │   ├── MAGIC_BUSES.txt
 │   ├── MASTER_INDEX.txt
-│   └── T01_OVERVIEW.txt
+│   ├── T01_OVERVIEW.txt
+│   ├── T02_INITIAL_PROCESSING.txt
+│   └── T03_SEQUENCING.txt
 ├── GPT SUBMISSIONS/
 │   ├── PLACEHOLDER/
 │   │   └── PLACEHOLDER
 │   └── PLACEHOLDER
 ├── graphics/
 │   ├── __init__.py
-│   ├── AURORA_BG_png
+│   ├── AURORA_BG.png
 │   └── README.md
 ├── logs/
 │   ├── __init__.py
@@ -158,7 +162,7 @@ AURORA [PROJECT ROOT]
 │   ├── __init__.py
 │   ├── test_element_mapper.py
 │   ├── test_session_driver.py
-│   ├── test_submit_prompt_demo.py [UNDER CONSTRUCTION]
+│   ├── test_submit_prompt_demo.py  [UNDER CONSTRUCTION]
 │   └── README.md
 ├── __init__.py
 ├── AURORA.pyproject
