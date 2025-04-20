@@ -92,6 +92,11 @@ class SequenceController:
                 if rpt == 0 or self.loop_count < rpt:
                     loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/(infinite)"
                     target_step = self.steps[target]
+
+                    if target == self.index and rpt == 0:
+                        print(f"[SequenceController] ERROR: Infinite self-jump detected at index {self.index}. Aborting sequence.")
+                        break
+
                     print(f"[SequenceController] Jumping to step_order {target_step['step_order']} (index {target}) — loop {loop_display}")
                     self.index = target
                     self.loop_count += 1
