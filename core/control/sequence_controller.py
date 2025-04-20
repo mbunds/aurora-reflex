@@ -39,7 +39,6 @@ bounded loops, reflex triggering, and future interrupt integration.
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from core.control.reflex_dispatcher import dispatch_step
 from data.db_interface import load_sequence_steps
 
 class SequenceController:
@@ -50,6 +49,12 @@ class SequenceController:
         self.index = 0
         self.loop_count = 0
         self.history = []
+        if simulated:
+            from core.control import simulated_dispatcher as dispatcher
+        else:
+            from core.control import reflex_dispatcher as dispatcher
+
+        self.dispatch_step = dispatcher.dispatch_step
 
     def run(self):
         print(f"[SequenceController] Starting sequence {self.sequence_id}...")
@@ -57,7 +62,7 @@ class SequenceController:
             step = self.steps[self.index]
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
 
-            result = dispatch_step(step)
+            result = self.dispatch_step(step)
 
             self.history.append({
                 "index": self.index,
