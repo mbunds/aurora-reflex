@@ -43,7 +43,7 @@ from PySide6.QtWidgets import (
     QLabel, QListWidget, QTextEdit, QLineEdit, QPushButton
 )
 
-from PySide6.QtCore import QThread, QObject, Signal
+from PySide6.QtCore import QThread, QObject, Signal, Slot
 
 from core.control import simulated_dispatcher
 
@@ -140,12 +140,14 @@ class SequenceRunner(QObject):
         super().__init__()
         self.sequence_id = sequence_id
 
+    @Slot()
     def run(self):
+        import threading
+        print(f"[DEBUG] Running in thread: {threading.current_thread().name}")
         from core.control.sequence_controller import SequenceController
         controller = SequenceController(sequence_id=self.sequence_id, simulated=True)
         controller.run()
         self.finished.emit()
-
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
