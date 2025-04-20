@@ -353,6 +353,7 @@ QTabBar::tab:hover {
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionLaunch_Prompt_Cycle_Test"/>
     <addaction name="actionLaunch_Browser"/>
     <addaction name="actionLaunch_Terminal"/>
     <addaction name="actionLaunch_SQLite_Editor"/>
@@ -416,6 +417,11 @@ QTabBar::tab:hover {
   <action name="actionNew_Sequence">
    <property name="text">
     <string>New Sequence</string>
+   </property>
+  </action>
+  <action name="actionLaunch_Prompt_Cycle_Test">
+   <property name="text">
+    <string>Launch Prompt Cycle Test</string>
    </property>
   </action>
  </widget>
