@@ -56,9 +56,25 @@ def dispatch_step(step: dict) -> str:
         print("[SimulatedDispatcher] ERROR: No simulator attached.")
         return "(Simulator not ready)"
 
-    command = step.get("command", "")
-    if not command.strip():
-        print("[SimulatedDispatcher] ERROR: Step has no command. Skipping.")
+    command = step.get("command", "").strip()
+
+    # If no command, attempt reflex resolution
+    if not command:
+        reflex_id = step.get("reflex_action", 0)
+        if reflex_id:
+            try:
+                from data.db_interface import resolve_reflex_action
+                command = resolve_reflex_action(reflex_id)
+                if command:
+                    print(f"[SimulatedDispatcher] Resolved reflex_action {reflex_id} to command: {command}")
+                else:
+                    print(f"[SimulatedDispatcher] ERROR: reflex_action {reflex_id} returned nothing.")
+            except Exception as e:
+                print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
+
+    # Still nothing? Bail.
+    if not command:
+        print("[SimulatedDispatcher] ERROR: Step has no command after reflex resolution. Skipping.")
         return "(No command found in step)"
 
     if command.startswith("PROMPT:"):
