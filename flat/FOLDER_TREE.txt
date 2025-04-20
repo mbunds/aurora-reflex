@@ -32,6 +32,7 @@ AURORA [PROJECT ROOT]
 			FILE (README.md)
 			FILE reflex_dispatcher.py[UNDER CONSTRUCTION]
 			FILE sequence_controller.py[UNDER CONSTRUCTION]
+			FILE simulated_dispatcher.py[UNDER CONSTRUCTION]
 		FOLDER [data]
 			FILE (__init__.py)
 			FILE db_interface.py[UNDER CONSTRUCTION]
@@ -41,6 +42,7 @@ AURORA [PROJECT ROOT]
 			FILE (README.md)
 		FOLDER [gui]
 		        FILE (__init__.py)
+			FILE (prompt_simulator_window.py)[UNDER CONSTRUCTION]
 			FILE (README.md)
 			FILE (sequence_controller.py)[UNDER CONSTRUCTION]
 		FOLDER [network]
@@ -98,6 +100,7 @@ AURORA [PROJECT ROOT]
 		FILE (PLACEHOLDER)
 	FOLDER [graphics]
 		FILE (__init__.py)
+		FILE (AURORA_BG.png)
 		FILE (README.md)
 	FOLDER [logs]
 		FILE (__init__.py)
@@ -124,4 +127,5 @@ PROJECT GRAPHICS
 AURORA [PROJECT ROOT]
 	FOLDER [graphics]
 		FILE (__init__.py)
+		FILE (AURORA_BG.png)
 		FILE (README.md)

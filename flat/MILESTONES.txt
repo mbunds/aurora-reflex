@@ -76,3 +76,18 @@
     - Demo video successfully demonstrated real-time AI prompt injection, DOM response capture
     - Viewer interest peaked after period of low engagement
     - Confirms narrative + visual proof pairing is highly effective for outreach
+
+[Milestone Log – 2025-04-17]
+
+▶ Milestone: Aurora GUI – Sequencer list and step lis population successful
+▶ Trigger: Clicking the "ARM" button enables "EDIT" only if no assigned steps, plus "RUN" if they are.
+▶ Environment: GUI-driven test harness, no API access
+▶ Behavior Observed:
+    - GUI launches with Aurora fade-in splash
+    - "Sequences tab" displays available sequences
+    - "Prompt composed by ChatGPT itself (self-reflexive)
+    - "Steps" listbox populates with assigned steps per selected sequence
+    - Clicking "ARM" on a selected sequence with no steps enables only the "EDIT" button
+    - Clicking "ARM" on a selected sequence with assigned steps enables the "RUN" and "EDIT" buttons
+    - Clicking "RUN" launches the browser then attempts to inject garbage code
+    - A "prompt simulation utility" will be built to iron-out Aurora prompt composition
