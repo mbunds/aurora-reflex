@@ -86,7 +86,7 @@ class SequenceController:
                     step["repeat_count"] = 0  # Optional cleanup
 
             # Check for jump
-            if step.get('jump') is not None:
+            if step.get('jump') not in (None, 0):
                 target_step_order = step['jump']
                 rpt = step.get('jmp_rpt', 0)
 
