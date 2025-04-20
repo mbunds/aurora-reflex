@@ -42,7 +42,10 @@ from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout,
     QLabel, QListWidget, QTextEdit, QLineEdit, QPushButton
 )
+
 from PySide6.QtCore import Qt
+
+from core.control import simulated_dispatcher
 
 class PromptSimulatorWindow(QDialog):
     def __init__(self, parent=None):
@@ -98,7 +101,7 @@ class PromptSimulatorWindow(QDialog):
             self.reply_log.addItem(f"[User] {response}")
             self.reply_input.clear()
             self.prompt_display.clear()
-            # In future, callback into simulated_dispatcher with this response
+            simulated_dispatcher.response_queue.put(response)
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
@@ -106,4 +109,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PromptSimulatorWindow()
     window.show()
+    simulated_dispatcher.inject_simulator(window)
     sys.exit(app.exec())
