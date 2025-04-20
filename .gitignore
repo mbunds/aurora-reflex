@@ -17,12 +17,6 @@ __pycache__/
 env/
 venv/
 
-# === SQLite DB Files ===
-*.db
-*.sqlite3
-*.db-journal
-*.db-wal
-
 # === LaTeX Temp Files ===
 *.aux
 *.log
