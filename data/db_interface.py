@@ -143,16 +143,15 @@ def resolve_long_phrase(long_phrase_id: int) -> str:
 # === FUNCTION: resolve_reflex_action ===
 def resolve_reflex_action(reflex_id: int) -> str:
     """
-    Returns the command string associated with a given reflex_action ID
-    from the response_templates table.
+    Look up a reflex_action ID in the 'keys' table and return the associated key string.
     """
     import sqlite3
     from data.db_interface import DB_PATH
 
     conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
     try:
-        cur.execute("SELECT template FROM response_templates WHERE id = ?", (reflex_id,))
+        cur = conn.cursor()
+        cur.execute("SELECT key FROM keys WHERE id = ?", (reflex_id,))
         row = cur.fetchone()
         return row[0] if row else ""
     finally:
