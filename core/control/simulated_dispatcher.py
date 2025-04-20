@@ -57,6 +57,9 @@ def dispatch_step(step: dict) -> str:
         return "(Simulator not ready)"
 
     command = step.get("command", "")
+    if not command.strip():
+        print("[SimulatedDispatcher] ERROR: Step has no command. Skipping.")
+        return "(No command found in step)"
 
     if command.startswith("PROMPT:"):
         prompt_text = command[len("PROMPT:"):].strip()
@@ -66,7 +69,7 @@ def dispatch_step(step: dict) -> str:
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
         while response_queue.empty():
-            time.sleep(0.1)
+            time.sleep(0.1000)
 
         reply = response_queue.get()
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
