@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.restore_window_state()
+        self.ui.actionLaunch_Prompt_Cycle_Test.triggered.connect(self.launch_prompt_simulator)
 
         # Adjust path and name to match your file
         #image_path = "graphics/AURORA_BG.png"
@@ -77,6 +78,11 @@ class MainWindow(QMainWindow):
             lambda: arm_selected_sequence(self.ui)
         )
         self.setWindowTitle("Aurora – Reflexive Control Panel")
+
+    def launch_prompt_simulator(self):
+        from core.gui.prompt_simulator_window import PromptSimulatorWindow
+        self.simulator = PromptSimulatorWindow(self)
+        self.simulator.show()
 
     def fade_in_image(self, label, image_path, duration=5000):
         pixmap = QPixmap(image_path)

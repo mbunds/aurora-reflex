@@ -18,6 +18,7 @@
         "core/control/reflex_dispatcher.py",
         "core/gui/__init__.py",
         "core/gui/sequencer_controller.py",
-        "core/boot/pathfix.py"
+        "core/boot/pathfix.py",
+        "core/gui/prompt_simulator_window.py"
     ]
 }
