@@ -129,3 +129,23 @@
     - dispatcher fallback logic complete
     - reflex resolution centralized in db_interface.py
     - FLAT path corrections made; file registered in T02_INITIAL_PROCESSING
+
+[Milestone Log – 2025-04-20]
+
+▶ Milestone: Prompt injection cross-thread fix + status update integration
+▶ Trigger: Simulated prompt injection causes crash due to improper signal invocation
+▶ Environment: PromptSimulatorWindow + SimulatedDispatcher running on threaded SequenceRunner
+▶ Behavior Observed:
+ - Sequence executed from GUI via background thread
+ - Reflex command “LAUNCH BROWSER” resolved to symbolic command
+ - Attempted GUI update triggered crash due to improper QMetaObject.invokeMethod usage
+ - Resolved via use of Q_ARG(str, prompt_text) for thread-safe slot invocation
+ - Prompt now reliably appears in simulator prompt view
+ - User enters a reply, response is dequeued and logged
+ - GUI status label updates upon sequence completion
+
+▶ Notes:
+ - Crash root cause: incorrect argument types passed to QMetaObject.invokeMethod
+ - Fix applied within simulated_dispatcher.py using Q_ARG with Qt.QueuedConnection
+ - Status updates via on_sequence_complete() verified
+ - Milestone confirms full-thread safety in prompt simulation sequence mode
