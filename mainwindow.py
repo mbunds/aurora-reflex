@@ -74,15 +74,30 @@ class MainWindow(QMainWindow):
         # When a sequence is clicked, populate the steps
         self.ui.lv_sequences.selectionModel().selectionChanged.connect(self.on_sequence_selection_changed)
         # When 'Select' is clicked, arm the sequence
-        self.ui.pb_sequence_arm.clicked.connect(
-            lambda: arm_selected_sequence(self.ui)
-        )
+        self.ui.pb_sequence_arm.clicked.connect(self.on_sequence_armed)
+
+    def on_sequence_armed(self):
+        arm_selected_sequence(self.ui)
+        self.ui.actionLaunch_Prompt_Cycle_Test.setEnabled(True)
+
         self.setWindowTitle("Aurora – Reflexive Control Panel")
 
     def launch_prompt_simulator(self):
         from core.gui.prompt_simulator_window import PromptSimulatorWindow
+        from core.control.sequence_controller import SequenceController
+
+        seq_id = self.ui.pb_sequence_arm.property("sequence_id")
+        if seq_id is None:
+            print("[Simulator] No sequence selected.")
+            return
+
+        # Launch prompt simulation window
         self.simulator = PromptSimulatorWindow(self)
         self.simulator.show()
+
+        # Run the controller in simulated mode
+        controller = SequenceController(sequence_id=seq_id, simulated=True)
+        controller.run()
 
     def fade_in_image(self, label, image_path, duration=5000):
         pixmap = QPixmap(image_path)
