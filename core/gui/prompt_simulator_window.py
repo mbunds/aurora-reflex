@@ -43,7 +43,7 @@ from PySide6.QtWidgets import (
     QLabel, QListWidget, QTextEdit, QLineEdit, QPushButton
 )
 
-from PySide6.QtCore import QThread, QObject, Signal, Slot
+from PySide6.QtCore import QThread, QObject, Signal, Slot, Qt, QMetaObject
 
 from core.control import simulated_dispatcher
 
@@ -80,6 +80,9 @@ class PromptSimulatorWindow(QDialog):
         self.reply_log.setFixedHeight(120)
         self.reply_log_label = QLabel("Simulated Response Log:")
 
+        self.status_label = QLabel("Status: Idle")
+        self.layout.addWidget(self.status_label)
+
         # --- Layout Assembly ---
         self.layout.addWidget(self.prompt_label)
         self.layout.addWidget(self.prompt_display)
@@ -99,6 +102,7 @@ class PromptSimulatorWindow(QDialog):
         from core.control.simulated_dispatcher import inject_simulator
         inject_simulator(self)
 
+    @Slot(str)
     def inject_prompt(self, prompt_text: str):
         self.prompt_display.setPlainText(prompt_text)
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
@@ -112,6 +116,7 @@ class PromptSimulatorWindow(QDialog):
             simulated_dispatcher.response_queue.put(response)
 
     def begin_sequence(self):
+        self.status_label.setText("Status: Running...")
         try:
             seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id")
         except AttributeError:
@@ -133,6 +138,10 @@ class PromptSimulatorWindow(QDialog):
         print(f"[PromptSimulatorWindow] Running sequence {seq_id} in background thread.")
         self.thread.start()
 
+    @Slot()
+    def on_sequence_complete(self):
+        self.status_label.setText("Status: Sequence complete.")
+
 class SequenceRunner(QObject):
     finished = Signal()
 
@@ -147,7 +156,14 @@ class SequenceRunner(QObject):
         from core.control.sequence_controller import SequenceController
         controller = SequenceController(sequence_id=self.sequence_id, simulated=True)
         controller.run()
+        QMetaObject.invokeMethod(
+            self.parent(),  # assumes parent is PromptSimulatorWindow
+            "on_sequence_complete",
+            Qt.QueuedConnection
+        )
         self.finished.emit()
+
+
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
