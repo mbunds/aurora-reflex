@@ -63,6 +63,10 @@ class SequenceController:
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
 
             result = self.dispatch_step(step)
+            # Prevent advancement if response token was missing
+            if isinstance(result, str) and "step incomplete" in result:
+                print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
+                continue
 
             self.history.append({
                 "index": self.index,
