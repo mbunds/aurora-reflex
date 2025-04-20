@@ -43,7 +43,7 @@ from PySide6.QtWidgets import (
     QLabel, QListWidget, QTextEdit, QLineEdit, QPushButton
 )
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QThread, QObject, Signal
 
 from core.control import simulated_dispatcher
 
@@ -59,6 +59,11 @@ class PromptSimulatorWindow(QDialog):
         self.prompt_label = QLabel("Injected Prompt (Simulated):")
         self.prompt_display = QTextEdit()
         self.prompt_display.setReadOnly(True)
+
+        # --- Begin Sequence Button ---
+        self.run_button = QPushButton("Run Sequence")
+        self.run_button.clicked.connect(self.begin_sequence)
+        self.layout.addWidget(self.run_button)
 
         # --- Simulated GPT Response ---
         self.reply_label = QLabel("Enter Simulated GPT Response:")
@@ -91,6 +96,9 @@ class PromptSimulatorWindow(QDialog):
         self.layout.addWidget(self.reply_log_label)
         self.layout.addWidget(self.reply_log)
 
+        from core.control.simulated_dispatcher import inject_simulator
+        inject_simulator(self)
+
     def inject_prompt(self, prompt_text: str):
         self.prompt_display.setPlainText(prompt_text)
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
@@ -102,6 +110,42 @@ class PromptSimulatorWindow(QDialog):
             self.reply_input.clear()
             self.prompt_display.clear()
             simulated_dispatcher.response_queue.put(response)
+
+    def begin_sequence(self):
+        try:
+            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id")
+        except AttributeError:
+            print("[PromptSimulatorWindow] Could not access sequence ID.")
+            return
+
+        if seq_id is None:
+            print("[PromptSimulatorWindow] No sequence ID armed.")
+            return
+
+        self.thread = QThread()
+        self.runner = SequenceRunner(seq_id)
+        self.runner.moveToThread(self.thread)
+        self.thread.started.connect(self.runner.run)
+        self.runner.finished.connect(self.thread.quit)
+        self.runner.finished.connect(self.runner.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        print(f"[PromptSimulatorWindow] Running sequence {seq_id} in background thread.")
+        self.thread.start()
+
+class SequenceRunner(QObject):
+    finished = Signal()
+
+    def __init__(self, sequence_id):
+        super().__init__()
+        self.sequence_id = sequence_id
+
+    def run(self):
+        from core.control.sequence_controller import SequenceController
+        controller = SequenceController(sequence_id=self.sequence_id, simulated=True)
+        controller.run()
+        self.finished.emit()
+
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication

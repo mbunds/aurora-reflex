@@ -90,7 +90,7 @@ class SequenceController:
                 target = step['jump']
                 rpt = step.get('jmp_rpt', 0)
                 if rpt == 0 or self.loop_count < rpt:
-                    loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/∞"
+                    loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/(infinite)"
                     target_step = self.steps[target]
                     print(f"[SequenceController] Jumping to step_order {target_step['step_order']} (index {target}) — loop {loop_display}")
                     self.index = target

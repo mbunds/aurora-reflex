@@ -85,7 +85,8 @@ class MainWindow(QMainWindow):
 
     def launch_prompt_simulator(self):
         from core.gui.prompt_simulator_window import PromptSimulatorWindow
-        from core.control.sequence_controller import SequenceController
+        self.simulator = PromptSimulatorWindow(self)
+        self.simulator.show()
 
         seq_id = self.ui.pb_sequence_arm.property("sequence_id")
         if seq_id is None:
