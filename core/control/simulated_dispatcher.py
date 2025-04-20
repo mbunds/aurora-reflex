@@ -24,7 +24,7 @@ WARNING:
     (Meddle if you dare, foolish mortal!)
 
 FLAT Compliance:
-    - Registered in: T02_INITIAL_PROCESSING.txt
+    - Registered in: T03_SEQUENCING.txt
     - This file participates in the T02-B04_SEQ_CONT branch of development.
     - Used in place of reflex_dispatcher during simulation mode.
 ---
@@ -88,15 +88,15 @@ def dispatch_step(step: dict) -> str:
 
     if command.startswith("PROMPT:"):
         prompt_text = command[len("PROMPT:"):].strip()
-        from PySide6.QtCore import QMetaObject, Qt
+        from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
         QMetaObject.invokeMethod(
             simulator_instance,
             "inject_prompt",
             Qt.QueuedConnection,
-            None,
-            prompt_text
+            Q_ARG(str, prompt_text)
         )
+
         print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
 
         # Block until simulated response is received
