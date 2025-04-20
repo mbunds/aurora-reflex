@@ -113,7 +113,6 @@ def dispatch_step(step: dict) -> str:
 
         if expected_key_id:
             try:
-                from data.db_interface import resolve_reflex_action
                 expected_token = resolve_reflex_action(expected_key_id)
             except Exception as e:
                 print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")
