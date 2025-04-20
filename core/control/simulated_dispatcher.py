@@ -106,7 +106,28 @@ def dispatch_step(step: dict) -> str:
 
         reply = response_queue.get()
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
-        return reply
+
+        # Check for expected trigger
+        expected_key_id = step.get("expected", 0)
+        expected_token = None
+
+        if expected_key_id:
+            try:
+                from data.db_interface import resolve_reflex_action
+                expected_token = resolve_reflex_action(expected_key_id)
+            except Exception as e:
+                print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")
+
+        if expected_token:
+            if expected_token in reply:
+                print(f"[SimulatedDispatcher] Expected token '{expected_token}' FOUND in reply.")
+                return "(Simulated) Trigger match: step complete."
+            else:
+                print(f"[SimulatedDispatcher] Expected token '{expected_token}' NOT FOUND. Holding at this step.")
+                return "(Simulated) Trigger missing: step incomplete."
+        else:
+            print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")
+            return reply
 
     elif command.startswith("WAIT:"):
         seconds = int(command[len("WAIT:"):].strip())
