@@ -36,7 +36,13 @@ Prompts appear in the PromptSimulatorWindow; replies are entered manually.
 """
 
 import time
+import os
+import sys
 from queue import Queue
+
+# Ensure 'data' is in sys.path for correct resolution of db_interface
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from data.db_interface import resolve_reflex_action
 
 # This global is populated externally
 simulator_instance = None
@@ -63,7 +69,6 @@ def dispatch_step(step: dict) -> str:
         reflex_id = step.get("reflex_action", 0)
         if reflex_id:
             try:
-                from data.db_interface import resolve_reflex_action
                 command = resolve_reflex_action(reflex_id)
                 if command:
                     print(f"[SimulatedDispatcher] Resolved reflex_action {reflex_id} to command: {command}")
@@ -72,6 +77,10 @@ def dispatch_step(step: dict) -> str:
             except Exception as e:
                 print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
 
+            # === INSERT TRANSLATION LOGIC HERE ===
+            if command and command.upper() == "LAUNCH BROWSER":
+                command = "PROMPT: [Simulated browser launch triggered.]"
+
     # Still nothing? Bail.
     if not command:
         print("[SimulatedDispatcher] ERROR: Step has no command after reflex resolution. Skipping.")
@@ -79,13 +88,21 @@ def dispatch_step(step: dict) -> str:
 
     if command.startswith("PROMPT:"):
         prompt_text = command[len("PROMPT:"):].strip()
-        simulator_instance.inject_prompt(prompt_text)
+        from PySide6.QtCore import QMetaObject, Qt
+
+        QMetaObject.invokeMethod(
+            simulator_instance,
+            "inject_prompt",
+            Qt.QueuedConnection,
+            None,
+            prompt_text
+        )
         print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
 
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
         while response_queue.empty():
-            time.sleep(0.1000)
+            time.sleep(0.1)
 
         reply = response_queue.get()
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
