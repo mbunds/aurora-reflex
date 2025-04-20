@@ -43,7 +43,8 @@ from core.control.reflex_dispatcher import dispatch_step
 from data.db_interface import load_sequence_steps
 
 class SequenceController:
-    def __init__(self, sequence_id: int):
+    def __init__(self, sequence_id: int, simulated: bool = False):
+        self.simulated = simulated
         self.sequence_id = sequence_id
         self.steps = load_sequence_steps(sequence_id)
         self.index = 0
