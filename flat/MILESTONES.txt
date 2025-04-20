@@ -79,7 +79,7 @@
 
 [Milestone Log – 2025-04-17]
 
-▶ Milestone: Aurora GUI – Sequencer list and step lis population successful
+▶ Milestone: Aurora GUI – Sequencer list and step list population successful
 ▶ Trigger: Clicking the "ARM" button enables "EDIT" only if no assigned steps, plus "RUN" if they are.
 ▶ Environment: GUI-driven test harness, no API access
 ▶ Behavior Observed:
@@ -91,3 +91,41 @@
     - Clicking "ARM" on a selected sequence with assigned steps enables the "RUN" and "EDIT" buttons
     - Clicking "RUN" launches the browser then attempts to inject garbage code
     - A "prompt simulation utility" will be built to iron-out Aurora prompt composition
+
+[Milestone Log – 2025-04-19]
+
+▶ Milestone: Aurora Prompt Cycle Simulator operational with reflex resolution
+▶ Trigger: Sequence selected and armed in GUI, then utility launched via menu
+▶ Environment: PromptSimulatorWindow (no browser or API), simulated dispatcher mode
+▶ Behavior Observed:
+    - Menu item only enabled after a sequence is armed
+    - PromptSimulatorWindow launches in single instance
+    - Sequence runs in background thread; GUI updated using QMetaObject.invokeMethod
+    - Reflex action 163 resolved via keys table to symbolic command "LAUNCH BROWSER"
+    - Dispatcher translates symbolic command to "PROMPT: [Simulated browser launch triggered.]"
+    - Prompt injected safely via cross-thread GUI update
+    - GUI displays prompt; user types a simulated reply
+    - Reply dequeued and logged, sequencer continues without crash
+    - Status label updates from "Running..." to "Sequence complete."
+    - Infinite jump loop detection triggers on malformed data
+▶ Notes:
+    - FLAT files T02 and T03 updated with module path corrections
+    - dispatcher now handles symbolic command translation post-reflex resolution
+    - Simulator serves as full-cycle test harness for sequencer logic
+
+[Milestone Log – 2025-04-20]
+
+▶ Milestone: Reflex dispatcher integration with sequencer
+▶ Trigger: Sequence step lacks command, but contains reflex_action key
+▶ Environment: SequenceController and SimulatedDispatcher using fallback logic
+▶ Behavior Observed:
+    - SequenceController passes step to dispatcher
+    - Dispatcher detects missing command and attempts reflex lookup
+    - resolve_reflex_action pulls mapped key string from keys table
+    - Dispatcher uses resolved key string as command input
+    - Jump loop protection halts infinite retries
+    - Steps recorded in history log
+▶ Notes:
+    - dispatcher fallback logic complete
+    - reflex resolution centralized in db_interface.py
+    - FLAT path corrections made; file registered in T02_INITIAL_PROCESSING
