@@ -140,6 +140,24 @@ def resolve_long_phrase(long_phrase_id: int) -> str:
 
     return row[0] if row else "(UNRESOLVED-LONG)"
 
+# === FUNCTION: resolve_reflex_action ===
+def resolve_reflex_action(reflex_id: int) -> str:
+    """
+    Returns the command string associated with a given reflex_action ID
+    from the response_templates table.
+    """
+    import sqlite3
+    from data.db_interface import DB_PATH
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT template FROM response_templates WHERE id = ?", (reflex_id,))
+        row = cur.fetchone()
+        return row[0] if row else ""
+    finally:
+        conn.close()
+
 if __name__ == "__main__":
     name = "SHOW MODE"
     seq_id = get_sequence_id_by_name(name)
