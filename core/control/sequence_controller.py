@@ -87,20 +87,29 @@ class SequenceController:
 
             # Check for jump
             if step.get('jump') is not None:
-                target = step['jump']
+                target_step_order = step['jump']
                 rpt = step.get('jmp_rpt', 0)
+
                 if rpt == 0 or self.loop_count < rpt:
-                    loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/(infinite)"
-                    target_step = self.steps[target]
+                    # Locate the step with matching step_order
+                    target_index = next(
+                        (i for i, s in enumerate(self.steps) if s["step_order"] == target_step_order),
+                        None
+                    )
 
-                    if target == self.index and rpt == 0:
-                        print(f"[SequenceController] ERROR: Infinite self-jump detected at index {self.index}. Aborting sequence.")
-                        break
+                    if target_index is None:
+                        print(f"[SequenceController] ERROR: jump target step_order {target_step_order} not found. Skipping jump.")
+                    else:
+                        loop_display = f"{self.loop_count + 1}/{rpt}" if rpt else f"{self.loop_count + 1}/(infinite)"
 
-                    print(f"[SequenceController] Jumping to step_order {target_step['step_order']} (index {target}) — loop {loop_display}")
-                    self.index = target
-                    self.loop_count += 1
-                    continue
+                        if target_index == self.index and rpt == 0:
+                            print(f"[SequenceController] ERROR: Infinite self-jump detected at index {self.index}. Aborting sequence.")
+                            break
+
+                        print(f"[SequenceController] Jumping to step_order {target_step_order} (index {target_index}) — loop {loop_display}")
+                        self.index = target_index
+                        self.loop_count += 1
+                        continue
                 else:
                     print("[SequenceController] Jump limit reached. Continuing.")
                     self.loop_count = 0
