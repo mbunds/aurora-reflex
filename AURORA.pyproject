@@ -19,6 +19,7 @@
         "core/gui/__init__.py",
         "core/gui/sequencer_controller.py",
         "core/boot/pathfix.py",
-        "core/gui/prompt_simulator_window.py"
+        "core/gui/prompt_simulator_window.py",
+        "core/control/simulated_dispatcher.py"
     ]
 }
