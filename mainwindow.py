@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.restore_window_state()
+        self.ui.actionLaunch_Prompt_Cycle_Test.setEnabled(False)
         self.ui.actionLaunch_Prompt_Cycle_Test.triggered.connect(self.launch_prompt_simulator)
 
         # Adjust path and name to match your file
