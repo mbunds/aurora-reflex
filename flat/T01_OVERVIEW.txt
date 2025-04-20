@@ -254,7 +254,7 @@ AURORA [PROJECT ROOT]
 
 
 
-#   === FILE: ui/mainwindow.py ===
+#   === FILE: mainwindow.py ===
 
 """
 Aurora – Reflexive AI Control Framework
@@ -314,12 +314,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.restore_window_state()
+        self.ui.actionLaunch_Prompt_Cycle_Test.setEnabled(False)
         self.ui.actionLaunch_Prompt_Cycle_Test.triggered.connect(self.launch_prompt_simulator)
 
         # Adjust path and name to match your file
         #image_path = "graphics/AURORA_BG.png"
         self.fade_in_image(self.ui.lbl_aurora_large, "graphics/AURORA_BG.png")
-
+        self.setWindowTitle("Aurora – Reflexive Control Panel")
         # Populate the sequence list on startup
         populate_sequence_listview(self.ui.lv_sequences)
         self.ui.lv_sequences.clearSelection()
@@ -330,15 +331,21 @@ class MainWindow(QMainWindow):
         # When a sequence is clicked, populate the steps
         self.ui.lv_sequences.selectionModel().selectionChanged.connect(self.on_sequence_selection_changed)
         # When 'Select' is clicked, arm the sequence
-        self.ui.pb_sequence_arm.clicked.connect(
-            lambda: arm_selected_sequence(self.ui)
-        )
-        self.setWindowTitle("Aurora – Reflexive Control Panel")
+        self.ui.pb_sequence_arm.clicked.connect(self.on_sequence_armed)
+
+    def on_sequence_armed(self):
+        arm_selected_sequence(self.ui)
+        self.ui.actionLaunch_Prompt_Cycle_Test.setEnabled(True)
 
     def launch_prompt_simulator(self):
         from core.gui.prompt_simulator_window import PromptSimulatorWindow
         self.simulator = PromptSimulatorWindow(self)
         self.simulator.show()
+
+        seq_id = self.ui.pb_sequence_arm.property("sequence_id")
+        if seq_id is None:
+            print("[Simulator] No sequence selected.")
+            return
 
     def fade_in_image(self, label, image_path, duration=5000):
         pixmap = QPixmap(image_path)

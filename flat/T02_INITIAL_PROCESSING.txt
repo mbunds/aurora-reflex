@@ -25,6 +25,7 @@
 | **2025-04-13** | Populate GPT prompt and submit programmatically successful.                            |
 | **2025-04-20** | Create prompt simulation test environemt utility.                                      |
 | **2025-04-20** | Module/file list resumes in T03_SEQUENCING.txt" .                                      |
+| **2025-04-20** | Structure Changelog resumes in T03_SEQUENCING.txt".                                    |
 |----------------|----------------------------------------------------------------------------------------|
 
 ---
@@ -822,6 +823,23 @@ def resolve_long_phrase(long_phrase_id: int) -> str:
     conn.close()
 
     return row[0] if row else "(UNRESOLVED-LONG)"
+
+# === FUNCTION: resolve_reflex_action ===
+def resolve_reflex_action(reflex_id: int) -> str:
+    """
+    Look up a reflex_action ID in the 'keys' table and return the associated key string.
+    """
+    import sqlite3
+    from data.db_interface import DB_PATH
+
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT key FROM keys WHERE id = ?", (reflex_id,))
+        row = cur.fetchone()
+        return row[0] if row else ""
+    finally:
+        conn.close()
 
 if __name__ == "__main__":
     name = "SHOW MODE"
