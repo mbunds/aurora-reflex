@@ -97,10 +97,6 @@ class MainWindow(QMainWindow):
         self.simulator = PromptSimulatorWindow(self)
         self.simulator.show()
 
-        # Run the controller in simulated mode
-        controller = SequenceController(sequence_id=seq_id, simulated=True)
-        controller.run()
-
     def fade_in_image(self, label, image_path, duration=5000):
         pixmap = QPixmap(image_path)
         if pixmap.isNull():
