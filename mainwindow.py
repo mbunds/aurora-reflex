@@ -149,6 +149,16 @@ class MainWindow(QMainWindow):
         self._was_maximized = maximized  # Save for later in __main__
 
 if __name__ == "__main__":
+    import os
+    if os.getenv("AURORA_DEBUG") == "1":
+        import debugpy
+        debugpy.listen(("localhost", 5678))
+        print("Waiting for debugger attach…")
+        for _ in range(40):  # wait ~10s
+            if debugpy.is_client_connected():
+                break
+            time.sleep(0.25)
+
     app = QApplication(sys.argv)
     widget = MainWindow()
 
