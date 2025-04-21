@@ -101,19 +101,24 @@ def dispatch_step(step: dict) -> str:
 
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
-        while response_queue.empty():
-            time.sleep(0.1)
 
-        reply = response_queue.get()
-        print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
+        try:
+            reply = response_queue.get(timeout=300)  # Wait max 5 minutes
+            print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
+        except Exception as e:
+            print(f"[SimulatedDispatcher] ERROR: response queue timeout or crash: {e}")
+            return "(Simulated) Dispatcher timeout or abort."
 
         # Check for expected trigger
         expected_key_id = step.get("expected", 0)
         expected_token = None
+        print(f"[SimulatedDispatcher] DEBUG: Step metadata -> step_order = {step.get('step_order')}, expected_id = {expected_key_id}")
 
         if expected_key_id:
             try:
-                expected_token = resolve_reflex_action(expected_key_id)
+                from data.db_interface import resolve_key_phrase
+                expected_token = resolve_key_phrase(expected_key_id)
+                print(f"[SimulatedDispatcher] DEBUG: Resolved expected_token = '{expected_token}'")
             except Exception as e:
                 print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")
 
