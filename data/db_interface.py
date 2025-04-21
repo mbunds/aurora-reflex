@@ -143,17 +143,25 @@ def resolve_long_phrase(long_phrase_id: int) -> str:
 # === FUNCTION: resolve_reflex_action ===
 def resolve_reflex_action(reflex_id: int) -> str:
     """
-    Look up a reflex_action ID in the 'keys' table and return the associated key string.
+    Resolves a key ID from the 'keys' table to a usable command or token.
+    If 'is_phrase' is True and 'long_phrase' > 0, returns the long_phrase text.
+    Otherwise returns the 'key' directly.
     """
-    import sqlite3
-    from data.db_interface import DB_PATH
-
     conn = sqlite3.connect(DB_PATH)
     try:
         cur = conn.cursor()
-        cur.execute("SELECT key FROM keys WHERE id = ?", (reflex_id,))
+        cur.execute("SELECT key, is_phrase, long_phrase FROM keys WHERE id = ?", (reflex_id,))
         row = cur.fetchone()
-        return row[0] if row else ""
+
+        if not row:
+            return "(UNRESOLVED)"
+
+        key, is_phrase, long_phrase_id = row
+
+        if is_phrase and long_phrase_id:
+            return resolve_long_phrase(long_phrase_id)
+        else:
+            return key
     finally:
         conn.close()
 
