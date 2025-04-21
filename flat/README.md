@@ -93,8 +93,8 @@ goal for the DB, which ALMOST sounded plausible, but it never complained, and
 instead happily helped me embed my self-sabotage deeply into code loaded with
 misaligned intent.
 
-I finally got the session more "aligned", but this required days, and even now it suggests tearing down the whole procedure
-and starting over.
+I finally got the session more "aligned", but this required days, and even now
+it suggests tearing down the whole procedure and starting over.
 
 ## Integration Notes
 
