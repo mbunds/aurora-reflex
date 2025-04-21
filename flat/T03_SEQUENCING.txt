@@ -44,7 +44,7 @@ WARNING:
     (Meddle if you dare, foolish mortal!)
 
 FLAT Compliance:
-    - Registered in: T02_INITIAL_PROCESSING.txt
+    - Registered in: T03_SEQUENCING.txt
     - This file participates in the T02-B04_SEQ_CONT branch of development.
     - All session behaviors are tracked and logged through flat file modules.
 
