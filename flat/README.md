@@ -89,7 +89,7 @@ the databse and naming of tables and columns in parallel with support code
 generation, but my "rogue" contribution after the fact, when critical modules
 were already developed with intent shared by myself and the session, mis-matched
 the AI context, and caused it to start "guessing" (not hallucinating) about my
-goal for the DB, which ALMOST sounded plausible, but it never complained, but
+goal for the DB, which ALMOST sounded plausible, but it never complained, and
 instead happily helped me embed my self-sabotage deeply into code loaded with
 misaligned intent.
 
