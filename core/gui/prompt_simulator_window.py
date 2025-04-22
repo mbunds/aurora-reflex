@@ -55,78 +55,78 @@ class PromptSimulatorWindow(QDialog):
 
         self.layout = QVBoxLayout(self)
 
-        # --- Prompt Preview ---
-        self.prompt_label = QLabel("Injected Prompt (Simulated):")
-        self.prompt_display = QTextEdit()
-        self.prompt_display.setReadOnly(True)
-
         # --- Begin Sequence Button ---
-        self.run_button = QPushButton("Run Sequence")
+        self.run_button = QPushButton("Run Sequence") # ******************************** "Run sequence" button
         self.run_button.clicked.connect(self.begin_sequence)
         self.layout.addWidget(self.run_button)
 
+        # --- Prompt Preview ---
+        self.prompt_label = QLabel("Injected Prompt (Simulated):") # ******************* Injected Prompt (Simulated) listbox
+        self.prompt_display = QTextEdit()
+        self.prompt_display.setReadOnly(True)
+
         # --- Simulated GPT Response ---
-        self.reply_label = QLabel("Enter Simulated GPT Response:")
+        self.reply_label = QLabel("Enter Simulated GPT Response:") # ******************* User entry box
         self.reply_input = QLineEdit()
-        self.send_button = QPushButton("Send Response")
+        self.send_button = QPushButton("Send Response") # ****************************** "Send Response" button
         self.send_button.clicked.connect(self.send_response)
 
         # --- Step History and Response Log ---
         self.step_log = QListWidget()
         self.step_log.setFixedHeight(120)
-        self.step_log_label = QLabel("Sequence Step Log:")
+        self.step_log_label = QLabel("Sequence Step Log:") # ************************** Sequencer Step Log listbox
 
         self.reply_log = QListWidget()
         self.reply_log.setFixedHeight(120)
-        self.reply_log_label = QLabel("Simulated Response Log:")
+        self.reply_log_label = QLabel("Simulated Response Log:") # ******************** Sequencer Response Log listbox
 
-        self.status_label = QLabel("Status: Idle")
+        self.status_label = QLabel("Status: Idle") # ********************************** Sequencer status label
         self.layout.addWidget(self.status_label)
 
         # --- Layout Assembly ---
-        self.layout.addWidget(self.prompt_label)
-        self.layout.addWidget(self.prompt_display)
-        self.layout.addWidget(self.reply_label)
+        self.layout.addWidget(self.prompt_label) #    Injected Prompt label
+        self.layout.addWidget(self.prompt_display) #  Injected Prompt text edit box
+        self.layout.addWidget(self.reply_label) #     User entry box label
 
         hbox = QHBoxLayout()
-        hbox.addWidget(self.reply_input)
-        hbox.addWidget(self.send_button)
-        self.layout.addLayout(hbox)
+        hbox.addWidget(self.reply_input) #            User entry box
+        hbox.addWidget(self.send_button) #            User entry box send button
+        self.layout.addLayout(hbox) #                 Horizonal container
 
-        self.layout.addWidget(self.step_log_label)
-        self.layout.addWidget(self.step_log)
+        self.layout.addWidget(self.step_log_label) #  Step Log label
+        self.layout.addWidget(self.step_log) #        Step Log listbox
 
-        self.layout.addWidget(self.reply_log_label)
-        self.layout.addWidget(self.reply_log)
+        self.layout.addWidget(self.reply_log_label) # Response Log box label
+        self.layout.addWidget(self.reply_log) #       Respons Log listbox
 
-        from core.control.simulated_dispatcher import inject_simulator
+        from core.control.simulated_dispatcher import inject_simulator # Call function inject_simulator
         inject_simulator(self)
 
     @Slot(str)
-    def inject_prompt(self, prompt_text: str):
+    def inject_prompt(self, prompt_text: str): # *********************** Should display incoming prompts
         self.prompt_display.setPlainText(prompt_text)
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
         print("[PromptSimulatorWindow Injected] {prompt_text[:80]}")
 
-    def send_response(self):
+    def send_response(self): # ***************************************** Should display user responses
         response = self.reply_input.text().strip()
         if response:
-            self.reply_log.addItem(f"[User] {response}")
+            self.reply_log.addItem(f"[User] {response}") # ################################ REPLY LOG ##############################
             print("[PromptSimulatorWindow Added User Response:] {response}")
             self.reply_input.clear()
             self.prompt_display.clear()
-            simulated_dispatcher.response_queue.put(response)
+            simulated_dispatcher.response_queue.put(response) # ########################## DISPATCHER RESPONSE_QUEUE ##############
 
     def begin_sequence(self):
         self.status_label.setText("Status: Running...")
         try:
-            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id")
+            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # ******************** Grab sequence id from the arm button, assign to "seq_id"
         except AttributeError:
-            print("[PromptSimulatorWindow] Could not access sequence ID.")
+            print("[PromptSimulatorWindow] Could not access sequence ID.") # ****** If oops
             return
 
         if seq_id is None:
-            print("[PromptSimulatorWindow] No sequence ID armed.")
+            print("[PromptSimulatorWindow] No sequence ID armed.") # ************** If oops
             return
 
         self.thread = QThread()
@@ -138,7 +138,7 @@ class PromptSimulatorWindow(QDialog):
         self.thread.finished.connect(self.thread.deleteLater)
 
         print(f"[PromptSimulatorWindow] Running sequence {seq_id} in background thread.")
-        self.thread.start()
+        self.thread.start() # ********************************************************************* Launch sequencer routines
 
     @Slot()
     def on_sequence_complete(self):
@@ -156,8 +156,8 @@ class SequenceRunner(QObject):
         import threading
         print(f"[DEBUG] Running in thread: {threading.current_thread().name}")
         from core.control.sequence_controller import SequenceController
-        controller = SequenceController(sequence_id=self.sequence_id, simulated=True)
-        controller.run()
+        controller = SequenceController(sequence_id=self.sequence_id, simulated=True)# ************ Assign values to pass to sequence controller
+        controller.run() # ************************************************************************ Run sequence controller
         QMetaObject.invokeMethod(
             self.parent(),  # assumes parent is PromptSimulatorWindow
             "on_sequence_complete",

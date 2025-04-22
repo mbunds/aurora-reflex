@@ -39,48 +39,57 @@ bounded loops, reflex triggering, and future interrupt integration.
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from data.db_interface import load_sequence_steps
+from data.db_interface import load_sequence_steps # ************************************ Chat with aurora.db to use the "load_sequence_steps" function
 
 class SequenceController:
     def __init__(self, sequence_id: int, simulated: bool = False):
         self.simulated = simulated
         self.sequence_id = sequence_id
-        self.steps = load_sequence_steps(sequence_id)
+        self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id
         self.index = 0
         self.index_store = 0
         self.loop_count = 0
         self.resume = 0
         self.history = []
         if simulated:
-            from core.control import simulated_dispatcher as dispatcher
+            from core.control import simulated_dispatcher as dispatcher # ************* If we're simulated, grab the "simulated_dispatcher" routine
         else:
-            from core.control import reflex_dispatcher as dispatcher
+            from core.control import reflex_dispatcher as dispatcher # **************** If we're not simulated, grab the "reflex_dispatcher" routine
 
-        self.dispatch_step = dispatcher.dispatch_step
+        self.dispatch_step = dispatcher.dispatch_step # ******************************* CALL DISPATCH ROUTINE, RETURNS STEPS **********************
 
-    def run(self):
-        print(f"[SequenceController] Starting sequence {self.sequence_id}...")
+    def run(self): # ****************************************************************** Imaginatively named function "run" - run a loop
+
+        print(f"[SequenceController] Starting sequence {self.sequence_id}...") # ****** Debug print sequence startup data
+
         while self.index < len(self.steps):
+
             if self.resume:
-                step = self.resume
-                self.index = self.index_store
+                step = self.steps[self.index_store]
             else:
                 step = self.steps[self.index]
 
+
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
-
             result = self.dispatch_step(step)
-            # Prevent advancement if response token was missing
-            if isinstance(result, str) and "step incomplete" in result:
-                print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
-                self.resume = 0
-                self.index_store = 0
-                continue
-            if isinstance(result, str) and "step complete" in result:#*************************************** USER INPUT ACCEPTED ******************
-                self.resume = step
-                self.index_store = self.index + 1
+
+            if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" *****************
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
+                self.resume = 1
+                self.index_store = self.index + 1
+                continue
+
+            elif isinstance(result, str) and "step incomplete" in result: # ************ If the function returned "step incomplete" **************
+                print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
+                self.resume = 1
+                self.index_store = self.index
+                continue
+
+            else:
+                print(f"[SequenceController] Step {self.index} would have runaway. Result was: {result}")
+                self.resume = 0
+                #break
                 continue
 
             self.history.append({

@@ -48,13 +48,13 @@ from data.db_interface import resolve_reflex_action
 simulator_instance = None
 response_queue = Queue()
 
-#Define THIS object...
-def inject_simulator(sim):
+
+def inject_simulator(sim): # ************************************* Called by prompt_simulator_window
     global simulator_instance
     simulator_instance = sim
     print("[SimulatedDispatcher] Simulator connected.")
 
-def dispatch_step(step: dict) -> str:
+def dispatch_step(step: dict) -> str: # *************************** Define function "dispatch_step"
     """
     Handle a single sequence step in simulation mode.
     Instead of browser actions, prompt and response are handled via UI.
@@ -63,16 +63,16 @@ def dispatch_step(step: dict) -> str:
         print("[SimulatedDispatcher] ERROR: No simulator attached.")
         return "(Simulator not ready)"
 
-    expected_id  = step.get("expected", 0)
-    if expected_id:
+    expected_id  = step.get("expected", 0) # ********************** Get the value from the "expected" field and assign it to expected_id
+    if expected_id: # ********************************************* If the value in expected_id is not empty
         try:
-            expected = resolve_reflex_action(expected_id)
-            if expected:
-                print(f"[SimulatedDispatcher] Resolved expected {expected_id} to expected: {expected}")
+            expected = resolve_reflex_action(expected_id) # ******* Chat with aurora.db to return the value in the "expected_id" field and assign it to "expected"
+            if expected: # **************************************** If expected is not empty
+                print(f"[SimulatedDispatcher] Resolved expected {expected_id} to expected: {expected}") # **** Debug print resolved value in expected
             else:
-                print(f"[SimulatedDispatcher] ERROR: expected {expected_id} returned nothing.")
+                print(f"[SimulatedDispatcher] ERROR: expected {expected_id} returned nothing.") # ************ Debug print failure to resolve value in expected_id
         except Exception as e:
-            print(f"[SimulatedDispatcher] ERROR resolving expectd {expected_id}: {e}")
+            print(f"[SimulatedDispatcher] ERROR resolving expectd {expected_id}: {e}") # ********************* Debug print error resolving value in expected_id
 
     # If no command, attempt reflex resolution
 
@@ -91,11 +91,12 @@ def dispatch_step(step: dict) -> str:
     if not expected:
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named  expected. Skipping.")
         return "(Value for expected not found in step)"
-    if not reflex:
+
+    elif not reflex:
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named reflex. Skipping.")
         return "(Value for expected not found in step)"
 
-    # Check for the "expected" contents...
+    # *************************************************************************** Check the contents of the "expected" field
     if expected.startswith("PROMPT:"):
         print(f"[Command Starts With:] {expected_id}; command: {expected}")
         # Block until simulated response is received
@@ -106,26 +107,27 @@ def dispatch_step(step: dict) -> str:
         reply = response_queue.get()
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
 
-        # Check for expected trigger
-        expected_key_id = step.get("reflex_action", 0)
+        #  *********************************************************************** Check for trigger in the "expected" field
+
+        expected_key_id = step.get("reflex_action", 0)# ************************** Assign the string value in the "reflex_action" field
         expected_token = None
 
-        if expected_key_id:
+        if expected_key_id:# ***************************************************** If the "expected_key_id" value is not empty
             try:
-                expected_token = resolve_reflex_action(expected_key_id)
+                expected_token = resolve_reflex_action(expected_key_id)# ********* Chat with aurora.db to see if there is a match to expected_token
             except Exception as e:
-                print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")
+                print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")# *************** If oops
 
-            if expected_token:
-                if expected_token in reply:
-                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' FOUND in reply.")#*************** FOUND ******************
-                    return "(Simulated) Trigger match: step complete."#**********************************************  OUT  ******************
+            if expected_token:# ************************************************** If the "expected_token" value is not empty
+                if expected_token in reply:# ************************************* If expected_token matches the user input
+                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' FOUND in reply.")#*************************** Debug print token found
+                    return "(Simulated) Trigger match: step complete."# ********** Back to routine report "step complete" >>>>>>>>>>>>>>>>>
                 else:
-                    return "(Simulated) Trigger missing: step incomplete."
-                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' NOT FOUND. Holding at this step.")
+                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' NOT FOUND. Holding at this step.")# ********* Debug print token not found
+                    return "(Simulated) Trigger missing: step incomplete."# ****** Back to routine report "step incomplete" >>>>>>>>>>>>>>>
         else:
-            print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")
-            return reply
+            print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")# ******** If the "expected_key_id" value is empty
+            return reply# ******************************************************** Back to routine return user input
 
     elif expected.startswith("WAIT:"):
         seconds = int(expected[len("WAIT:"):].strip())
