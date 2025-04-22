@@ -48,6 +48,7 @@ from data.db_interface import resolve_reflex_action
 simulator_instance = None
 response_queue = Queue()
 
+#Define THIS object...
 def inject_simulator(sim):
     global simulator_instance
     simulator_instance = sim
@@ -62,88 +63,94 @@ def dispatch_step(step: dict) -> str:
         print("[SimulatedDispatcher] ERROR: No simulator attached.")
         return "(Simulator not ready)"
 
-    command = step.get("command", "").strip()
+    expected_id  = step.get("expected", 0)
+    if expected_id:
+        try:
+            expected = resolve_reflex_action(expected_id)
+            if expected:
+                print(f"[SimulatedDispatcher] Resolved expected {expected_id} to expected: {expected}")
+            else:
+                print(f"[SimulatedDispatcher] ERROR: expected {expected_id} returned nothing.")
+        except Exception as e:
+            print(f"[SimulatedDispatcher] ERROR resolving expectd {expected_id}: {e}")
 
     # If no command, attempt reflex resolution
-    if not command:
-        reflex_id = step.get("reflex_action", 0)
-        if reflex_id:
-            try:
-                command = resolve_reflex_action(reflex_id)
-                if command:
-                    print(f"[SimulatedDispatcher] Resolved reflex_action {reflex_id} to command: {command}")
-                else:
-                    print(f"[SimulatedDispatcher] ERROR: reflex_action {reflex_id} returned nothing.")
-            except Exception as e:
-                print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
 
-            # === INSERT TRANSLATION LOGIC HERE ===
-            if command and command.upper() == "LAUNCH BROWSER":
-                command = "PROMPT: [Simulated browser launch triggered.]"
+    reflex_id = step.get("reflex_action", 0)
+    if reflex_id:
+        try:
+            reflex = resolve_reflex_action(reflex_id)
+            if reflex:
+                print(f"[SimulatedDispatcher] Resolved reflex_action {reflex_id} to reflex: {reflex}")
+            else:
+                print(f"[SimulatedDispatcher] ERROR: reflex_action {reflex_id} returned nothing.")
+        except Exception as e:
+            print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
 
     # Still nothing? Bail.
-    if not command:
-        print("[SimulatedDispatcher] ERROR: Step has no command after reflex resolution. Skipping.")
-        return "(No command found in step)"
+    if not expected:
+        print("[SimulatedDispatcher] ERROR: Step has no value in the field named  expected. Skipping.")
+        return "(Value for expected not found in step)"
+    if not reflex:
+        print("[SimulatedDispatcher] ERROR: Step has no value in the field named reflex. Skipping.")
+        return "(Value for expected not found in step)"
 
-    if command.startswith("PROMPT:"):
-        prompt_text = command[len("PROMPT:"):].strip()
-        from PySide6.QtCore import QMetaObject, Qt, Q_ARG
-
-        QMetaObject.invokeMethod(
-            simulator_instance,
-            "inject_prompt",
-            Qt.QueuedConnection,
-            Q_ARG(str, prompt_text)
-        )
-
-        print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
-
+    # Check for the "expected" contents...
+    if expected.startswith("PROMPT:"):
+        print(f"[Command Starts With:] {expected_id}; command: {expected}")
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
+        while response_queue.empty():
+            time.sleep(0.1)
 
-        try:
-            reply = response_queue.get(timeout=300)  # Wait max 5 minutes
-            print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
-        except Exception as e:
-            print(f"[SimulatedDispatcher] ERROR: response queue timeout or crash: {e}")
-            return "(Simulated) Dispatcher timeout or abort."
+        reply = response_queue.get()
+        print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
 
         # Check for expected trigger
-        expected_key_id = step.get("expected", 0)
+        expected_key_id = step.get("reflex_action", 0)
         expected_token = None
-        print(f"[SimulatedDispatcher] DEBUG: Step metadata -> step_order = {step.get('step_order')}, expected_id = {expected_key_id}")
 
         if expected_key_id:
             try:
-                from data.db_interface import resolve_key_phrase
-                expected_token = resolve_key_phrase(expected_key_id)
-                print(f"[SimulatedDispatcher] DEBUG: Resolved expected_token = '{expected_token}'")
+                expected_token = resolve_reflex_action(expected_key_id)
             except Exception as e:
                 print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")
 
-        if expected_token:
-            if expected_token in reply:
-                print(f"[SimulatedDispatcher] Expected token '{expected_token}' FOUND in reply.")
-                return "(Simulated) Trigger match: step complete."
-            else:
-                print(f"[SimulatedDispatcher] Expected token '{expected_token}' NOT FOUND. Holding at this step.")
-                return "(Simulated) Trigger missing: step incomplete."
+            if expected_token:
+                if expected_token in reply:
+                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' FOUND in reply.")#*************** FOUND ******************
+                    return "(Simulated) Trigger match: step complete."#**********************************************  OUT  ******************
+                else:
+                    return "(Simulated) Trigger missing: step incomplete."
+                    print(f"[SimulatedDispatcher] Expected token '{expected_token}' NOT FOUND. Holding at this step.")
         else:
             print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")
             return reply
 
-    elif command.startswith("WAIT:"):
-        seconds = int(command[len("WAIT:"):].strip())
+    elif expected.startswith("WAIT:"):
+        seconds = int(expected[len("WAIT:"):].strip())
         print(f"[SimulatedDispatcher] Simulated wait for {seconds} seconds.")
         time.sleep(seconds)
         return f"(Simulated) Waited {seconds} seconds."
 
-    elif command.upper().startswith("CHECK:"):
-        token = command[6:].strip().strip("/")
+    elif expected.upper().startswith("CHECK:"):
+        token = expected[6:].strip().strip("/")
         print(f"[SimulatedDispatcher] Simulated check for token: /{token}/ (not implemented)")
         return f"(Simulated) CHECK:/{token}/"
 
     else:
-        print(f"[SimulatedDispatcher] Unhandled command: {command}")
-        return f"(Simulated) Unhandled: {command}"
+        print(f"[SimulatedDispatcher] Unhandled command: {expected}")
+        return f"(Simulated) Unhandled: {expected}"
+
+    prompt_text = expected
+    from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+    QMetaObject.invokeMethod(
+        simulator_instance,
+        "inject_prompt",
+        Qt.QueuedConnection,
+        Q_ARG(str, prompt_text)
+    )
+
+    print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
+

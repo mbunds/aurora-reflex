@@ -103,26 +103,28 @@ def load_sequence_steps(sequence_id: int) -> List[Dict]:
     return steps
 
 def resolve_key_phrase(key_id: int) -> str:
+    """
+    Lookup a key phrase by its ID from the 'keys' table.
+    Args: key_id (int): The key ID to resolve.
+    Returns: str: The associated phrase from the keys table, or '(UNRESOLVED)' if not found.
+    """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
-    query = "SELECT key, is_phrase, long_phrase FROM keys WHERE id = ?"
+    query = "SELECT id, type, direction, is_phrase, long_phrase FROM keys WHERE id = ?"
     cur.execute(query, (key_id,))
     row = cur.fetchone()
     conn.close()
 
-    if not row:
+    if row is None:
         return "(UNRESOLVED)"
 
-    key, is_phrase, long_phrase_id = row
-
-    if is_phrase:
-        if long_phrase_id:
-            return resolve_long_phrase(long_phrase_id)
-        else:
-            return key  # ← This was the missing logic
+    # Resolve phrase: use long_phrase if is_phrase is True, else use id (or future lookup strategy)
+    if row[3]:  # is_phrase
+        long_id = row[4]
+        return resolve_long_phrase(long_id)  # Delegated to next helper
     else:
-        return key
+        return str(row[0])  # fallback to raw ID string or future mapping
 
 def resolve_long_phrase(long_phrase_id: int) -> str:
     """
@@ -141,25 +143,17 @@ def resolve_long_phrase(long_phrase_id: int) -> str:
 # === FUNCTION: resolve_reflex_action ===
 def resolve_reflex_action(reflex_id: int) -> str:
     """
-    Resolves a key ID from the 'keys' table to a usable command or token.
-    If 'is_phrase' is True and 'long_phrase' > 0, returns the long_phrase text.
-    Otherwise returns the 'key' directly.
+    Look up a reflex_action ID in the 'keys' table and return the associated key string.
     """
+    import sqlite3
+    from data.db_interface import DB_PATH
+
     conn = sqlite3.connect(DB_PATH)
     try:
         cur = conn.cursor()
-        cur.execute("SELECT key, is_phrase, long_phrase FROM keys WHERE id = ?", (reflex_id,))
+        cur.execute("SELECT key FROM keys WHERE id = ?", (reflex_id,))
         row = cur.fetchone()
-
-        if not row:
-            return "(UNRESOLVED)"
-
-        key, is_phrase, long_phrase_id = row
-
-        if is_phrase and long_phrase_id:
-            return resolve_long_phrase(long_phrase_id)
-        else:
-            return key
+        return row[0] if row else ""
     finally:
         conn.close()
 

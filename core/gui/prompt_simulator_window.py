@@ -25,7 +25,7 @@ WARNING:
     (Meddle if you dare, foolish mortal!)
 
 FLAT Compliance:
-    - Registered in: T02_INITIAL_PROCESSING.txt
+    - Registered in: T03_SEQUENCING.txt
     - This file participates in the T02-B04_SEQ_CONT branch of development.
     - All session behaviors are tracked and logged through flat file modules.
 
@@ -106,11 +106,13 @@ class PromptSimulatorWindow(QDialog):
     def inject_prompt(self, prompt_text: str):
         self.prompt_display.setPlainText(prompt_text)
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print("[PromptSimulatorWindow Injected] {prompt_text[:80]}")
 
     def send_response(self):
         response = self.reply_input.text().strip()
         if response:
             self.reply_log.addItem(f"[User] {response}")
+            print("[PromptSimulatorWindow Added User Response:] {response}")
             self.reply_input.clear()
             self.prompt_display.clear()
             simulated_dispatcher.response_queue.put(response)

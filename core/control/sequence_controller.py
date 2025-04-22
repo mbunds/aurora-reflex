@@ -47,7 +47,9 @@ class SequenceController:
         self.sequence_id = sequence_id
         self.steps = load_sequence_steps(sequence_id)
         self.index = 0
+        self.index_store = 0
         self.loop_count = 0
+        self.resume = 0
         self.history = []
         if simulated:
             from core.control import simulated_dispatcher as dispatcher
@@ -59,13 +61,26 @@ class SequenceController:
     def run(self):
         print(f"[SequenceController] Starting sequence {self.sequence_id}...")
         while self.index < len(self.steps):
-            step = self.steps[self.index]
+            if self.resume:
+                step = self.resume
+                self.index = self.index_store
+            else:
+                step = self.steps[self.index]
+
+            print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
 
             result = self.dispatch_step(step)
             # Prevent advancement if response token was missing
             if isinstance(result, str) and "step incomplete" in result:
                 print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
+                self.resume = 0
+                self.index_store = 0
+                continue
+            if isinstance(result, str) and "step complete" in result:#*************************************** USER INPUT ACCEPTED ******************
+                self.resume = step
+                self.index_store = self.index + 1
+                print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
                 continue
 
             self.history.append({
@@ -118,7 +133,7 @@ class SequenceController:
                     print("[SequenceController] Jump limit reached. Continuing.")
                     self.loop_count = 0
 
-            self.index += 1
+        self.index += 1
 
         print(f"[SequenceController] Sequence {self.sequence_id} completed.")
 
