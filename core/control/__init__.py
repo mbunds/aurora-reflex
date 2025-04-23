@@ -1,10 +1,24 @@
 #   === FILE: core/control/__init__.py ===
 
 """
-FLAT Package Init – core.web or similar
+Aurora – Reflexive AI Control Framework
+---------------------------------------
 
-This file exists to satisfy Python's package system.
-Do not place logic here.
+Module: core/control/__init__.py
+Authors: ChatGPT and Mark
+Created: 2025-04-32
+Location: Evans, Colorado
+Project: Aurora
+
+This file marks the root of the AURORA core module namespace.
+It is required for Python to treat the `core/` directory as a package.
+
+No logic should reside here.
+
+FLAT Compliance:
+    - Registered in: T03_SEQUENCER.txt
 """
+
+# (Intentionally empty)
 
 
