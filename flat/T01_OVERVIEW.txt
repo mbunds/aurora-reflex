@@ -118,135 +118,125 @@ This project borrows elements from the folder layout of the **OpenSIM DCS Manage
 
 ### Folder Layout
 
-AURORA [PROJECT ROOT]
-        FOLDER [.qtcreator]
-        FOLDER [ARCHIVE]
-                FILE (PLACEHOLDER)
-        FOLDER [core]
-                FOLDER [boot]
-                        FILE (__init__.py)
-                        FILE (pathfix.py)[UNDER CONSTRUCTION]
-                        FILE (README.md)
-                FOLDER [busses]
-                        FOLDER [command_bus]
-                                FILE (__init__.py)
-                                FILE (README.md)
-                        FOLDER [control_bus]
-                                FILE (__init__.py)
-                                FILE (README.md)
-                        FOLDER [diagnostics_bus]
-                                FILE (__init__.py)
-                                FILE (README.md)
-                        FOLDER [edit_bus]
-                                FILE (__init__.py)
-                                FILE (README.md)
-                        FOLDER [interrupt_bus]
-                                FILE (__init__.py)
-                                FILE (README.md)
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [control]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                        FILE reflex_dispatcher.py[UNDER CONSTRUCTION]
-                        FILE sequence_controller.py[UNDER CONSTRUCTION]
-                        FILE simulated_dispatcher.py[UNDER CONSTRUCTION]
-                FOLDER [data]
-                        FILE (__init__.py)
-                        FILE db_interface.py[UNDER CONSTRUCTION]
-                        FILE (README.md)
-                FOLDER [diagnostics]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [gui]
-                        FILE (__init__.py)
-                        FILE (prompt_simulator_window.py)[UNDER CONSTRUCTION]
-                        FILE (README.md)
-                        FILE (sequence_controller.py)[UNDER CONSTRUCTION]
-                FOLDER [network]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [project]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [ui]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [utils]
-                        FILE (code_foramtter.py)[REVIEW LATER]
-                        FILE (code_restorer.py)[REVIEW LATER]
-                        FILE (__init__.py)
-                        FILE (README.md)
-                FOLDER [web]
-                        FILE (__init__.py)
-                        FILE (browser_controller.py)[UNDER CONSTRUCTION]
-                        FILE (code_sanitizer.py)[REVIEW LATER]
-                        FILE (README.md)
-                        FILE (screen_capture.py)[EMPTY]
-                        FILE (session_driver.py)[UNDER CONSTRUCTION]
-                        FOLDER [html]
-                                FILE (__init__.py)
-                                FILE (element_mapper.py)[UNDER CONSTRUCTION]
-                                FILE (html_parser.py)[UNDER CONSTRUCTION]
-                                FILE (README.md)
-        FOLDER [data]
-                FILE (__init__.py)
-                FILE (README.md)
-        FOLDER [DESIGN AND PROMOTION]
-                FOLDER [PLACEHOLDER]
-                        FILE (PLACEHOLDER)
-                FILE (PLACEHOLDER)
-        FOLDER [dist]
-                FILE (__init__.py)
-                FILE (README.md)
-        FOLDER [docs]
-                FILE (__init__.py)
-                FILE (README.md)
-        FOLDER [flat]
-                FOLDER [ARCHIVE]
-                        FILE (PLACEHOLDER)
-                FILE (DEVELOPER_SECURITY.txt)
-                FILE (DOCS.txt)
-                FILE (FOLDER_TREE.txt)
-                FILE (FUTURE_FEATURES.txt)
-                FILE (MAGIC_BUSES.txt)
-                FILE (MASTER_INDEX.txt)
-                FILE (T01_OVERVIEW.txt)
-        FOLDER [GPT SUBMISSIONS]
-                FOLDER [PLACEHOLDER]
-                        FILE (PLACEHOLDER)
-                FILE (PLACEHOLDER)
-        FOLDER [graphics]
-                FILE (__init__.py)
-                FILE (AURORA_BG.png)
-                FILE (README.md)
-        FOLDER [logs]
-                FILE (__init__.py)
-                FILE (README.md)
-        FOLDER [resources]
-                FILE (__init__.py)
-                FILE (README.md)
-        FOLDER [tests]
-                FILE (__init__.py)
-                FILE:(test_element_mapper.py)
-                FILE:(test_session_driver.py)
-                FILE:(test_submit_prompt_demo.py[UNDER CONSTRUCTION]
-                FILE (README.md)
-        FILE (__init__.py)
-        FILE (AURORA.pyproject)
-        FILE (AURORA.pyproject.user)
-        FILE (form.ui)
-        FILE (mainwindow.py)
-        FILE (README.md)
-        FILE (requirements.txt)
+AURORA PROJECT FOLDERS/FILES:
 
-PROJECT GRAPHICS
-
-AURORA [PROJECT ROOT]
-	FOLDER [graphics]
-		FILE (__init__.py)
-                FILE (AURORA_BG.png)
-		FILE (README.md)
+.qtcreator/
+    ARCHIVE/
+        PLACEHOLDER
+    core/
+        boot/
+            __init__.py
+            pathfix.py [UNDER CONSTRUCTION]
+            README.md
+            busses/
+                command_bus/
+                    __init__.py
+                    README.md
+                control_bus/
+                    __init__.py
+                    README.md
+                diagnostics_bus/
+                    __init__.py
+                    README.md
+                edit_bus/
+                    __init__.py
+                    README.md
+                interrupt_bus/
+                    __init__.py
+                    README.md
+                __init__.py
+                README.md
+        control/
+            __init__.py
+            README.md
+        data/
+            __init__.py
+            README.md
+        diagnostics/
+            __init__.py
+            README.md
+        gui/
+            __init__.py
+            prompt_simulator_window.py [UNDER CONSTRUCTION]
+            README.md
+            sequence_controller.py [UNDER CONSTRUCTION]
+        network/
+            __init__.py
+            README.md
+        project/
+            __init__.py
+            README.md
+        ui/
+            __init__.py
+            README.md
+        utils/
+            __init__.py
+            code_foramtter.py [REVIEW LATER]
+            code_restorer.py [REVIEW LATER]
+            README.md
+            reflex_token_parser.py [UNDER CONSTRUCTION]
+        web/
+            __init__.py
+            browser_controller.py [UNDER CONSTRUCTION]
+            code_sanitizer.py [REVIEW LATER]
+            README.md
+            screen_capture.py [EMPTY]
+            session_driver.py [UNDER CONSTRUCTION]
+            html/
+                __init__.py
+                element_mapper.py [UNDER CONSTRUCTION]
+                html_parser.py [UNDER CONSTRUCTION]
+                README.md
+    data/
+        __init__.py
+        README.md
+    DESIGN AND PROMOTION/
+        PLACEHOLDER/
+            PLACEHOLDER
+            PLACEHOLDER
+    dist/
+        __init__.py
+        README.md
+    docs/
+        __init__.py
+        README.md
+    flat/
+        ARCHIVE/
+            PLACEHOLDER
+            DEVELOPER_SECURITY.txt
+            DOCS.txt
+            FOLDER_TREE.txt
+            FUTURE_FEATURES.txt
+            MAGIC_BUSES.txt
+            MASTER_INDEX.txt
+            T01_OVERVIEW.txt
+    GPT SUBMISSIONS/
+        PLACEHOLDER/
+            PLACEHOLDER
+            PLACEHOLDER
+    graphics/
+        __init__.py
+        AURORA_BG.png
+        README.md
+    logs/
+        __init__.py
+        README.md
+    resources/
+        __init__.py
+        README.md
+    tests/
+        __init__.py
+        test_element_mapper.py
+        test_session_driver.py
+        test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+    README.md
+    __init__.py
+    AURORA.pyproject
+    AURORA.pyproject.user
+    form.ui
+    mainwindow.py
+    README.md
+    requirements.txt
 
 ---
 

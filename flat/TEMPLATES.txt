@@ -100,7 +100,7 @@ FLAT Compliance:
 
 
 #   - TEMPLATE: FILE - README.md TEMPLATE
-#   === FILE: README.md ===
+#   === FILE: [PATH]README.md ===
 
 [PROJECT NAME] – [PROJECT SHORT DESCRIPTION] 
 

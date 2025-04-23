@@ -21,120 +21,118 @@ AURORA PROJECT FOLDERS/FILES:
 .qtcreator/
     ARCHIVE/
         PLACEHOLDER
-	core/
-	    boot/
-	        __init__.py
-		pathfix.py [UNDER CONSTRUCTION]
+    core/
+        boot/
+	    __init__.py
+	    pathfix.py [UNDER CONSTRUCTION]
+	    README.md
+	    busses/
+	        command_bus/
+		    __init__.py
+		    README.md
+		control_bus/
+		    __init__.py
+		    README.md
+		diagnostics_bus/
+		    __init__.py
+		    README.md
+		edit_bus/
+		    __init__.py
+		    README.md
+		interrupt_bus/
+		    __init__.py
+		    README.md
+		__init__.py
 		README.md
-		busses/
-		    command_bus/
-		        __init__.py
-			README.md
-			control_bus/
-			    __init__.py
-			    README.md
-			    diagnostics_bus/
-			        __init__.py
-				README.md
-				edit_bus/
-				    __init__.py
-				    README.md
-				    interrupt_bus/
-				        __init__.py
-					README.md
-					__init__.py
-					README.md
-					control/
-					    __init__.py
-					    README.md
-					    data/
-					        __init__.py
-						README.md
-						diagnostics/
-						    __init__.py
-						    README.md
-						    gui/
-						        __init__.py
-							prompt_simulator_window.py [UNDER CONSTRUCTION]
-							README.md
-							sequence_controller.py [UNDER CONSTRUCTION]
-							network/
-							    __init__.py
-							    README.md
-							    project/
-							        __init__.py
-								README.md
-								ui/
-								    __init__.py
-								    README.md
-								    utils/
-								        code_foramtter.py [REVIEW LATER]
-									code_restorer.py [REVIEW LATER]
-									__init__.py
-									README.md
-									web/
-									    __init__.py
-									    browser_controller.py [UNDER CONSTRUCTION]
-									    code_sanitizer.py [REVIEW LATER]
-									    README.md
-									    screen_capture.py [EMPTY]
-									    session_driver.py [UNDER CONSTRUCTION]
-									    html/
-									        __init__.py
-										element_mapper.py [UNDER CONSTRUCTION]
-										html_parser.py [UNDER CONSTRUCTION]
-										README.md
-										data/
-										    __init__.py
-										    README.md
-										    DESIGN AND PROMOTION/
-										        PLACEHOLDER/
-											    PLACEHOLDER
-											    PLACEHOLDER
-											    dist/
-											        __init__.py
-												README.md
-												docs/
-												    __init__.py
-												    README.md
-												    flat/
-												        ARCHIVE/
-													    PLACEHOLDER
-													    DEVELOPER_SECURITY.txt
-													    DOCS.txt
-													    FOLDER_TREE.txt
-													    FUTURE_FEATURES.txt
-													    MAGIC_BUSES.txt
-													    MASTER_INDEX.txt
-													    T01_OVERVIEW.txt
-													    GPT SUBMISSIONS/
-													        PLACEHOLDER/
-														    PLACEHOLDER
-														    PLACEHOLDER
-														    graphics/
-														        __init__.py
-															AURORA_BG.png
-															README.md
-															logs/
-															    __init__.py
-															    README.md
-															    resources/
-															        __init__.py
-																README.md
-																tests/
-																    __init__.py
-																    test_element_mapper.py
-																    test_session_driver.py
-																    test_submit_prompt_demo.py[UNDER CONSTRUCTION]
-																    README.md
-																    __init__.py
-																    AURORA.pyproject
-																    AURORA.pyproject.user
-																    form.ui
-																    mainwindow.py
-																    README.md
-																    requirements.txt
-																    graphics/
-																        __init__.py
-																	AURORA_BG.png
-																	README.m
+	control/
+	    __init__.py
+	    README.md
+	data/
+	    __init__.py
+	    README.md
+	diagnostics/
+	    __init__.py
+	    README.md
+	gui/
+	    __init__.py
+	    prompt_simulator_window.py [UNDER CONSTRUCTION]
+	    README.md
+	    sequence_controller.py [UNDER CONSTRUCTION]
+	network/
+	    __init__.py
+	    README.md
+	project/
+	    __init__.py
+	    README.md
+	ui/
+	    __init__.py
+	    README.md
+	utils/
+	    __init__.py
+	    code_foramtter.py [REVIEW LATER]
+	    code_restorer.py [REVIEW LATER]
+	    README.md
+	    reflex_token_parser.py [UNDER CONSTRUCTION]
+	web/
+	    __init__.py
+	    browser_controller.py [UNDER CONSTRUCTION]
+	    code_sanitizer.py [REVIEW LATER]
+	    README.md
+	    screen_capture.py [EMPTY]
+	    session_driver.py [UNDER CONSTRUCTION]
+	    html/
+	        __init__.py
+		element_mapper.py [UNDER CONSTRUCTION]
+		html_parser.py [UNDER CONSTRUCTION]
+		README.md
+    data/
+        __init__.py
+	README.md
+    DESIGN AND PROMOTION/
+        PLACEHOLDER/
+	    PLACEHOLDER
+	    PLACEHOLDER
+    dist/
+        __init__.py
+	README.md
+    docs/
+        __init__.py
+	README.md
+    flat/
+        ARCHIVE/
+	    PLACEHOLDER
+	    DEVELOPER_SECURITY.txt
+	    DOCS.txt
+	    FOLDER_TREE.txt
+	    FUTURE_FEATURES.txt
+	    MAGIC_BUSES.txt
+	    MASTER_INDEX.txt
+	    T01_OVERVIEW.txt
+    GPT SUBMISSIONS/
+        PLACEHOLDER/
+	    PLACEHOLDER
+	    PLACEHOLDER
+    graphics/
+        __init__.py
+	AURORA_BG.png
+	README.md
+    logs/
+        __init__.py
+	README.md
+    resources/
+        __init__.py
+	README.md
+    tests/
+        __init__.py
+	test_element_mapper.py
+	test_session_driver.py
+	test_submit_prompt_demo.py[UNDER CONSTRUCTION]
+    README.md
+    __init__.py
+    AURORA.pyproject
+    AURORA.pyproject.user
+    form.ui
+    mainwindow.py
+    README.md
+    requirements.txt
+
