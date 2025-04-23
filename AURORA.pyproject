@@ -20,6 +20,7 @@
         "core/gui/sequencer_controller.py",
         "core/boot/pathfix.py",
         "core/gui/prompt_simulator_window.py",
-        "core/control/simulated_dispatcher.py"
+        "core/control/simulated_dispatcher.py",
+        "core/utils/reflex_token_parser.py"
     ]
 }
