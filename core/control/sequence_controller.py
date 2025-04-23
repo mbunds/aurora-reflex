@@ -79,7 +79,8 @@ class SequenceController:
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
                 self.resume = 1
                 self.index_store = self.index + 1
-                prompt_text = "This is a prompt injection test from step controller"
+
+                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
                 from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
                 if self.simulator_gui:
