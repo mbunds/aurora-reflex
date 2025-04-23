@@ -155,4 +155,3 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
     )
 
     print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
-

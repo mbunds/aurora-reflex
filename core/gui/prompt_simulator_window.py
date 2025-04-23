@@ -130,7 +130,7 @@ class PromptSimulatorWindow(QDialog):
             return
 
         self.thread = QThread()
-        self.runner = SequenceRunner(seq_id)
+        self.runner = SequenceRunner(seq_id, self)
         self.runner.moveToThread(self.thread)
         self.thread.started.connect(self.runner.run)
         self.runner.finished.connect(self.thread.quit)
@@ -147,16 +147,17 @@ class PromptSimulatorWindow(QDialog):
 class SequenceRunner(QObject):
     finished = Signal()
 
-    def __init__(self, sequence_id):
+    def __init__(self, sequence_id, simulator_gui):
         super().__init__()
         self.sequence_id = sequence_id
+        self.simulator_gui = simulator_gui
 
     @Slot()
     def run(self):
         import threading
         print(f"[DEBUG] Running in thread: {threading.current_thread().name}")
         from core.control.sequence_controller import SequenceController
-        controller = SequenceController(sequence_id=self.sequence_id, simulated=True)# ************ Assign values to pass to sequence controller
+        controller = SequenceController(sequence_id=self.sequence_id, simulated=True, simulator_gui=self.simulator_gui)# ************ Assign values to pass to sequence controller
         controller.run() # ************************************************************************ Run sequence controller
         QMetaObject.invokeMethod(
             self.parent(),  # assumes parent is PromptSimulatorWindow
@@ -173,3 +174,4 @@ if __name__ == "__main__":
     window.show()
     simulated_dispatcher.inject_simulator(window)
     sys.exit(app.exec())
+

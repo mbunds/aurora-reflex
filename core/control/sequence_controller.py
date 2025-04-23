@@ -39,11 +39,12 @@ bounded loops, reflex triggering, and future interrupt integration.
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from data.db_interface import load_sequence_steps # ************************************ Chat with aurora.db to use the "load_sequence_steps" function
+from data.db_interface import load_sequence_steps # ************************************ Chat with aurora.db to use the "load_sequence_steps" function <<<<<<<<<<<<<<<<<<<<<<<<
 
 class SequenceController:
-    def __init__(self, sequence_id: int, simulated: bool = False):
+    def __init__(self, sequence_id: int, simulated: bool = False, simulator_gui=None):
         self.simulated = simulated
+        self.simulator_gui = simulator_gui
         self.sequence_id = sequence_id
         self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id
         self.index = 0
@@ -65,9 +66,9 @@ class SequenceController:
         while self.index < len(self.steps):
 
             if self.resume:
-                step = self.steps[self.index_store]
+                step = self.steps[self.index_store] # ******************************* While running after first pass
             else:
-                step = self.steps[self.index]
+                step = self.steps[self.index] # ************************************* For first entry
 
 
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
@@ -78,6 +79,16 @@ class SequenceController:
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
                 self.resume = 1
                 self.index_store = self.index + 1
+                prompt_text = "This is a prompt injection test from step controller"
+                from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+                if self.simulator_gui:
+                    QMetaObject.invokeMethod(
+                        self.simulator_gui,
+                        "inject_prompt",  # this is defined in PromptSimulatorWindow
+                        Qt.QueuedConnection,
+                        Q_ARG(str, prompt_text)
+                    )
                 continue
 
             elif isinstance(result, str) and "step incomplete" in result: # ************ If the function returned "step incomplete" **************
@@ -156,3 +167,4 @@ if __name__ == "__main__":
 
     controller = SequenceController(sequence_id=seq_id)
     controller.run()
+
