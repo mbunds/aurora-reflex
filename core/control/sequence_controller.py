@@ -63,19 +63,30 @@ class SequenceController:
 
         print(f"[SequenceController] Starting sequence {self.sequence_id}...") # ****** Debug print sequence startup data
 
-        while self.index < len(self.steps):
+        while self.index < len(self.steps): # >>>>>>>>>>> RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE <<<<<<<<<<
 
             if self.resume:
-                step = self.steps[self.index_store] # ******************************* While running after first pass
-            else:
-                step = self.steps[self.index] # ************************************* For first entry
 
+                """ SUB STEP ROUTINE BLOCK
+                if "substeps" in step and step.get("repeat_count", 0) < len(step["substeps"]):
+                    substep_text = step["substeps"][step["repeat_count"]]
+                    print(f"[SequenceController] Processing substep: {substep_text}")
+                    result = self.dispatch_step({"instruction": substep_text})
+                else:
+                    result = self.dispatch_step(step)
+                """
+
+                step = self.steps[self.index_store] # ******************************* While running after first pass
+
+            else:
+
+                step = self.steps[self.index] # ************************************* For first entry
 
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
             result = self.dispatch_step(step)
 
-            if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" *****************
+            if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
                 self.resume = 1
                 self.index_store = self.index + 1
