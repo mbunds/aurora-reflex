@@ -129,22 +129,11 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
             print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")# ******** If the "expected_key_id" value is empty
             return reply# ******************************************************** Back to routine return user input
 
-    elif expected.startswith("WAIT:"):
-        seconds = int(expected[len("WAIT:"):].strip())
-        print(f"[SimulatedDispatcher] Simulated wait for {seconds} seconds.")
-        time.sleep(seconds)
-        return f"(Simulated) Waited {seconds} seconds."
-
-    elif expected.upper().startswith("CHECK:"):
-        token = expected[6:].strip().strip("/")
-        print(f"[SimulatedDispatcher] Simulated check for token: /{token}/ (not implemented)")
-        return f"(Simulated) CHECK:/{token}/"
-
     else:
         print(f"[SimulatedDispatcher] Unhandled command: {expected}")
         return f"(Simulated) Unhandled: {expected}"
 
-    prompt_text = expected
+    prompt_text = expected # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANOTHER MESSAGE INJECTOR THAT WORKS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
     QMetaObject.invokeMethod(
