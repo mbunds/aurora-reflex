@@ -124,6 +124,15 @@ AURORA PROJECT FOLDERS/FILES:
     ARCHIVE/
         PLACEHOLDER
     core/
+        __init__.py
+        README.md
+        api/
+            lnx/
+                __init__.py
+                README.md
+            win/
+            __init__.py
+            README.md
         boot/
             __init__.py
             pathfix.py [UNDER CONSTRUCTION]
