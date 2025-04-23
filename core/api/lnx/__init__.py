@@ -45,16 +45,17 @@ When parsing a structured GPT response like:
 Linux-specific handlers are defined in:
     core/api/lnx/__init__.py
 
-These commands should be:
-    - Shell-safe
-    - Log-returning
-    - Executable from both GUI-triggered sequences and background threads
+Each command must be:
 
-Avoid hardcoded shell strings or `shell=True` unless fully sanitized.
-This layer is **reflex-privileged** and should never route through raw shell execution.
+Parsed with arguments (arg)
+Executed using Linux-safe subprocess handling
 
-Integration is triggered via token parsing in the response handler,
-typically through a `/TOKEN: ARG/` structure in parsed reflex responses.
+- Logged or returned with a reflex-compatible status string
+- Tokens and argument mapping are typically obtained from:
+- parse_reflex_tokens_with_args(response_text)
+- or higher-level command blocks parsed from structured response sequences
+
+Ensure xdg-open and direct subprocess.Popen() calls are safe and properly backgrounded, particularly in environments without GUI context (e.g., SSH-only servers).
 """
 
 def open_file(path):
