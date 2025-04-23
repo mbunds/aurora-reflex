@@ -25,7 +25,56 @@ WARNING:
 FLAT Compliance:
     - Registered in: T03_SEQUENCING.txt
     - Category: API - Linux Platform
+
+DEV NOTES (Linux Edition):
+
+When parsing a structured GPT response like:
+
+    /LAUNCH APP: gedit/
+    /OPEN FOLDER: /home/mark/projects/
+    /CODE COMPLETE/
+
+...your reflex dispatcher might extract:
+
+    if token == "/LAUNCH APP/":
+        result = launch_app(arg)  # Launches the application using subprocess.Popen([arg])
+
+    elif token == "/OPEN FOLDER/":
+        result = open_folder(arg)  # Opens the path using xdg-open
+
+Linux-specific handlers are defined in:
+    core/api/lnx/__init__.py
+
+These commands should be:
+    - Shell-safe
+    - Log-returning
+    - Executable from both GUI-triggered sequences and background threads
+
+Avoid hardcoded shell strings or `shell=True` unless fully sanitized.
+This layer is **reflex-privileged** and should never route through raw shell execution.
+
+Integration is triggered via token parsing in the response handler,
+typically through a `/TOKEN: ARG/` structure in parsed reflex responses.
 """
 
 def open_file(path):
     raise NotImplementedError("Windows API handler not yet implemented.")
+
+import subprocess
+import os
+
+def launch_app(path):
+    """Launches an application on Linux."""
+    try:
+        subprocess.Popen([path])
+        return f"Application launched: {path}"
+    except Exception as e:
+        return f"ERROR: Failed to launch app – {e}"
+
+def open_folder(path):
+    """Opens a folder using the default Linux file manager."""
+    try:
+        subprocess.Popen(["xdg-open", path])
+        return f"Folder opened: {path}"
+    except Exception as e:
+        return f"ERROR: Failed to open folder – {e}"

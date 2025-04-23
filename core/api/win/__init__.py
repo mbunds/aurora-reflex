@@ -25,7 +25,42 @@ WARNING:
 FLAT Compliance:
     - Registered in: TEMPLATES.txt
     - Category: API - Windows Platform
+
+DEV NOTES (Windows Edition):
+
+When parsing something like:
+
+    /LAUNCH APP: notepad.exe/
+    /OPEN FOLDER: C:/Users/Mark/Desktop/
+    /CODE COMPLETE/
+
+…your dispatcher might extract:
+
+    if token == "/LAUNCH APP/":
+        result = launch_app(arg)
+    elif token == "/OPEN FOLDER/":
+        result = open_folder(arg)
+
 """
 
 def open_file(path):
     raise NotImplementedError("Windows API handler not yet implemented.")
+
+import os
+import subprocess
+
+def launch_app(path):
+    """Launches an application on Windows."""
+    try:
+        os.startfile(path)
+        return f"Application launched: {path}"
+    except Exception as e:
+        return f"ERROR: Failed to launch app – {e}"
+
+def open_folder(path):
+    """Opens a folder in Windows Explorer."""
+    try:
+        subprocess.Popen(f'explorer "{path}"')
+        return f"Folder opened: {path}"
+    except Exception as e:
+        return f"ERROR: Failed to open folder – {e}"
