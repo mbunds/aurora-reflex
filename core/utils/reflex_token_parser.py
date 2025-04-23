@@ -43,35 +43,28 @@ def parse_reflex_tokens_with_args(response_text, expected=None):
 
     Returns:
         dict: {
-            "matched": bool,           # Whether the final token matched expected.
+            "expected_matched": bool,  # Whether the final token matched expected.
             "finalizer": str or None,  # The last token found.
             "all_tokens": list of str, # All /TOKEN/ strings found.
             "arguments": dict,         # Mapping of each token to its ARGUMENT (or None if not present).
             "raw": str,                # The original response text.
-            "reason": str,             # Explanation if no tokens were found.
+            "match_reason": str,       # Explanation if no tokens were found.
         }
     """
     pattern = r"/([A-Z_]+)(?::([^/]+))?/"
     matches = re.findall(pattern, response_text)
 
-    if not matches:
-        return {
-            "matched": False,
-            "finalizer": None,
-            "all_tokens": [],
-            "arguments": {},
-            "raw": response_text,
-            "reason": "No tokens found"
-        }
-
     tokens = [f"/{token}/" for token, _ in matches]
-    final_token = tokens[-1]
-    matched = final_token == expected if expected else True
+    final_token = tokens[-1] if tokens else None
+    expected_found = expected in response_text if expected else False
 
     return {
-        "matched": matched,
+        "expected_matched": expected_found,
         "finalizer": final_token,
         "all_tokens": tokens,
-        "arguments": {f"/{token}/": arg.strip() if arg else None for token, arg in matches},
-        "raw": response_text
+        "arguments": {
+            f"/{token}/": arg.strip() if arg else None for token, arg in matches
+        },
+        "raw": response_text,
+        "match_reason": "Matched expected string in input" if expected_found else "Expected not found"
     }
