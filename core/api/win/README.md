@@ -52,3 +52,43 @@ Commands in this folder are dynamically selected at runtime based on platform de
 /WRITE FILE: C:/Temp/output.log/
 /EXECUTE COMMAND: ping 8.8.8.8/
 /CODE COMPLETE/
+
+---
+
+## Safety and Philosophy
+
+This module executes commands that **affect real state**.  
+It must never be used for arbitrary shell passthrough unless:
+
+- The command is sanitized  
+- The operation is registered  
+- The output is structured  
+
+This is not a shell injection system.  
+This is Aurora **acting on your machine**, with deliberate control.
+
+---
+
+## FLAT Compliance
+
+- Registered in: `T03_SEQUENCING.txt`  
+- Indexed in: `MASTER_INDEX.txt`  
+- Mirrors platform intent and structure defined in `core/api/lnx/`  
+- All commands must be testable and reflex-addressable via tokenized instructions
+
+---
+
+## Notes
+
+This module will expand to include advanced Windows automation tasks, including:
+
+- File explorer integration  
+- Task manager/process control  
+- Registry-safe configurations  
+- Shortcut and startup item generation  
+- Reflex-driven environment variable manipulation
+
+---
+
+**On Windows, she learns to interact.  
+This is where intention becomes action.**
