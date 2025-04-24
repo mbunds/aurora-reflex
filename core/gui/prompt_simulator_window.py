@@ -103,19 +103,29 @@ class PromptSimulatorWindow(QDialog):
         inject_simulator(self)
 
     @Slot(str)
-    def inject_prompt(self, prompt_text: str): # *********************** Should display incoming prompts
+    def update_injected_prompt(self, prompt_text: str): # *********************** DISPLAYS SIMULATED GPT RESPONSE BLOCKS IN "prompt_display"
         self.prompt_display.setPlainText(prompt_text)
+        #self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print("[Prompt Injected Display Updated] {prompt_text[:80]}")
+
+    @Slot(str)
+    def update_step_log(self, prompt_text: str): # *********************** DISPLAYS STEPS IN "step_log"
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
         print("[PromptSimulatorWindow Injected] {prompt_text[:80]}")
 
-    def send_response(self): # ***************************************** Should display user responses
+    @Slot(str)
+    def update_response_log(self, prompt_text: str): # *********************** DISPLAYS USER RESPONSES IN "reply_log"
+        self.reply_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print("[PromptSimulatorWindow Injected] {prompt_text[:80]}")
+
+    def send_response(self): # ***************************************** DISPLAYS USER RESPONSE FROM "reply_input"
         response = self.reply_input.text().strip()
         if response:
-            self.reply_log.addItem(f"[User] {response}") # ################################ REPLY LOG ##############################
+            #self.reply_log.addItem(f"[User] {response}") # ################################ REPLY LOG ##############################
             print("[PromptSimulatorWindow Added User Response:] {response}")
             self.reply_input.clear()
-            self.prompt_display.clear()
-            simulated_dispatcher.response_queue.put(response) # ########################## DISPATCHER RESPONSE_QUEUE ##############
+            #self.prompt_display.clear()
+            simulated_dispatcher.response_queue.put(response) # ########################## DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS ##############
 
     def begin_sequence(self):
         self.status_label.setText("Status: Running...")

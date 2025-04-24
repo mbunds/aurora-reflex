@@ -91,13 +91,13 @@ class SequenceController:
                 self.resume = 1
                 self.index_store = self.index + 1
 
-                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
+                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...") # <<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
                 from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
                 if self.simulator_gui:
                     QMetaObject.invokeMethod(
                         self.simulator_gui,
-                        "inject_prompt",  # this is defined in PromptSimulatorWindow
+                        "update_response_log",  # ********************************* this is defined in PromptSimulatorWindow
                         Qt.QueuedConnection,
                         Q_ARG(str, prompt_text)
                     )
@@ -107,6 +107,17 @@ class SequenceController:
                 print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
                 self.resume = 1
                 self.index_store = self.index
+
+                prompt_text = (f"[SequenceController] Step {self.index} Inomplete. Awaiting retry. Holding...") # <<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+                from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+                if self.simulator_gui:
+                    QMetaObject.invokeMethod(
+                        self.simulator_gui,
+                        "update_response_log",  # ********************************* this is defined in PromptSimulatorWindow
+                        Qt.QueuedConnection,
+                        Q_ARG(str, prompt_text)
+                    )
                 continue
 
             else:

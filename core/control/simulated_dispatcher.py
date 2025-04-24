@@ -14,6 +14,8 @@ Simulated dispatcher module that replaces browser interaction with GUI-driven
 manual prompt/response exchange. Used for development, testing, and verification
 of sequence behavior without launching an actual ChatGPT session.
 
+04/23/2025 - UNDER EXAMINATION FOR REFACTOR - REFLEX_TOKEN_PARSER.PY WILL PASS STEP PERMISSIVES
+
 License:
     This file is part of the Aurora project and is distributed under the terms of
     the MIT License. See the LICENSE file in the project root for details.
@@ -39,6 +41,8 @@ import time
 import os
 import sys
 from queue import Queue
+from core.utils.reflex_token_parser import parse_reflex_tokens_with_args
+from core.api import launch_app, open_folder  # From routed __init__.py (platform-safe)
 
 # Ensure 'data' is in sys.path for correct resolution of db_interface
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -46,7 +50,7 @@ from data.db_interface import resolve_reflex_action
 
 # This global is populated externally
 simulator_instance = None
-response_queue = Queue()
+response_queue = Queue() # ########################## DISPATCHER RESPONSE_QUEUE DEFINED IN PROMPT_SIMULATOR_WINDOW - CRITICAL ##############
 
 
 def inject_simulator(sim): # ************************************* Called by prompt_simulator_window
@@ -74,9 +78,9 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         except Exception as e:
             print(f"[SimulatedDispatcher] ERROR resolving expectd {expected_id}: {e}") # ********************* Debug print error resolving value in expected_id
 
-    # If no command, attempt reflex resolution
+    # *************************************************************************** If no command, attempt reflex resolution
 
-    reflex_id = step.get("reflex_action", 0)
+    reflex_id = step.get("reflex_action", 0) # <- <- <- <- <- <- CAUSE OF THREAD RUNAWAY <- <- <- <- <- <-
     if reflex_id:
         try:
             reflex = resolve_reflex_action(reflex_id)
@@ -87,7 +91,7 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         except Exception as e:
             print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
 
-    # Still nothing? Bail.
+    # *************************************************************************** Still nothing? Bail. <- <- <- <- <- <- WON'T HAPPEN AFTER REFACTOR
     if not expected:
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named  expected. Skipping.")
         return "(Value for expected not found in step)"
@@ -96,25 +100,68 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named reflex. Skipping.")
         return "(Value for expected not found in step)"
 
-    # *************************************************************************** Check the contents of the "expected" field
+    # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
     if expected.startswith("PROMPT:"):
         print(f"[Command Starts With:] {expected_id}; command: {expected}")
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
-        while response_queue.empty():
+        while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             time.sleep(0.1)
 
         reply = response_queue.get()
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
 
-        #  *********************************************************************** Check for trigger in the "expected" field
+        # ==========================================================
+        # Parse reflex tokens and attempt API command dispatch
+        # ==========================================================
+        #from core.utils.reflex_token_parser import parse_reflex_tokens_with_args
+        #from core.api import launch_app, open_folder  # Routed by OS
+
+        """
+        Parses reflex-style tokens of the format /TOKEN/ or /TOKEN: ARGUMENT/ from response text.
+
+        Args:
+            response_text (str): The full GPT response or any string Aurora should parse.
+            expected (str, optional): If provided, the parser will check if the final token matches this.
+
+        Returns:
+            dict: {
+                "expected_matched": bool,  # Whether the final token matched expected.
+                "finalizer": str or None,  # The last token found.
+                "all_tokens": list of str, # All /TOKEN/ strings found.
+                "arguments": dict,         # Mapping of each token to its ARGUMENT (or None if not present).
+                "raw": str,                # The original response text.
+                "match_reason": str,       # Explanation if no tokens were found.
+            }
+        """
+
+        parsed = parse_reflex_tokens_with_args(reply, expected)
+
+        if parsed["expected_matched"]:
+            print("[SimulatedDispatcher] Expected token matched. Proceeding with reflex command(s)...")
+
+            for token, arg in parsed["arguments"].items():
+                if token == "/LAUNCH APP/":
+                    result = launch_app(arg)
+                    print(f"[SimulatedDispatcher] [EXEC] launch_app('{arg}') → {result}")
+                elif token == "/OPEN FOLDER/":
+                    result = open_folder(arg)
+                    print(f"[SimulatedDispatcher] [EXEC] open_folder('{arg}') → {result}")
+
+            return "(Simulated) Trigger match: step complete."
+        else:
+            print(f"[SimulatedDispatcher] Finalizer '{expected}' not found in reply. Holding at step.")
+            return "(Simulated) Trigger missing: step incomplete."
+
+
+        #  *********************************************************************** Check for trigger in the "expected" field <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         expected_key_id = step.get("reflex_action", 0)# ************************** Assign the string value in the "reflex_action" field
         expected_token = None
 
         if expected_key_id:# ***************************************************** If the "expected_key_id" value is not empty
             try:
-                expected_token = resolve_reflex_action(expected_key_id)# ********* Chat with aurora.db to see if there is a match to expected_token
+                expected_token = resolve_reflex_action(expected_key_id)# ********* Chat with aurora.db to see if there is a match to expected_token. <- <- <- <- <- <- MATCH TOKEN
             except Exception as e:
                 print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")# *************** If oops
 
@@ -132,15 +179,5 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
     else:
         print(f"[SimulatedDispatcher] Unhandled command: {expected}")
         return f"(Simulated) Unhandled: {expected}"
-
-    prompt_text = expected # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANOTHER MESSAGE INJECTOR THAT WORKS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    from PySide6.QtCore import QMetaObject, Qt, Q_ARG
-
-    QMetaObject.invokeMethod(
-        simulator_instance,
-        "inject_prompt",
-        Qt.QueuedConnection,
-        Q_ARG(str, prompt_text)
-    )
 
     print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
