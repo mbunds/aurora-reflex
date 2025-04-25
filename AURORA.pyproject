@@ -21,6 +21,8 @@
         "core/boot/pathfix.py",
         "core/gui/prompt_simulator_window.py",
         "core/control/simulated_dispatcher.py",
-        "core/utils/reflex_token_parser.py"
+        "core/utils/reflex_token_parser.py",
+        "core/watchdog/watchdog_core.py",
+        "core/watchdog/timeout_recovery.py"
     ]
 }
