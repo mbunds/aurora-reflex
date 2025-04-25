@@ -82,6 +82,12 @@ AURORA PROJECT FOLDERS/FILES:
 	    code_restorer.py [REVIEW LATER]
 	    README.md
 	    reflex_token_parser.py [UNDER CONSTRUCTION]
+	watchdog/
+	    __init__.py
+	    README.md
+	    timeout_recovery.py [UNDER CONSTRUCTION]
+	    watchdog_core.py [UNDER CONSTRUCTION]
+	    watchdog manager,py [UNDER CONSTRUCTION]
 	web/
 	    __init__.py
 	    browser_controller.py [UNDER CONSTRUCTION]

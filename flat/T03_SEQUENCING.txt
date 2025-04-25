@@ -6,7 +6,10 @@
 #   - FILE: core/boot/pathfix.py
 #   - FILE: core/gui/prompt_simulator_window.py
 #   - FILE: core/control/simulated_dispatcher.py
-#   - FILE: core/utils/reflex_token_parser.py ===
+#   - FILE: core/utils/reflex_token_parser.py
+#   - FILE: core/watchdog/timeout_recovery.py
+#   - FILE: core/watchdog/watchdog_core.py
+#   - FILE: core/watchdog/watchdog_manager.py
 
 ### Structure Changelog
 
@@ -652,6 +655,196 @@ def parse_reflex_tokens_with_args(response_text, expected=None):
         "arguments": {f"/{token}/": arg.strip() if arg else None for token, arg in matches},
         "raw": response_text
     }
+
+
+
+# === FILE NAME: core/watchdog/timeout_recovery.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/watchdog/timeout_recovery.py
+Authors: ChatGPT and Mark
+Created: 2025-04-25
+Location: Evans, Colorado
+Project: Aurora
+
+This module defines structured recovery routines invoked when
+the watchdog timer triggers due to session timeout, step failure,
+or missing reflex completion. Recovery strategies include retries,
+sequence aborts, or diagnostic escalation based on reflex context.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T03_SEQUENCING.txt
+    - Category: Reflex Recovery / Watchdog Systems
+    - Interfaces with: watchdog_core.py, sequence_controller.py
+"""
+
+def retry_current_step(context):
+    """
+    Attempt to retry the current step after timeout.
+    Context may include sequence ID, current index, and retry policy.
+    """
+    print("[TimeoutRecovery] Retrying current step... (Placeholder)")
+    # TODO: Implement step retry logic
+    return "(TimeoutRecovery) Retry triggered."
+
+def abort_sequence(context):
+    """
+    Abort the running sequence after unrecoverable timeout.
+    """
+    print("[TimeoutRecovery] Aborting sequence... (Placeholder)")
+    # TODO: Implement sequence abort and session cleanup
+    return "(TimeoutRecovery) Sequence aborted."
+
+def diagnose_timeout(context):
+    """
+    Generate a diagnostic report after timeout event.
+    """
+    print("[TimeoutRecovery] Generating timeout diagnostic report... (Placeholder)")
+    # TODO: Capture session state, timing history, and active reflex info
+    return "(TimeoutRecovery) Diagnostic report generated."
+
+
+
+# === FILE NAME: core/watchdog/watchdog_core.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/watchdog/watchdog_core.py
+Authors: ChatGPT and Mark
+Created: 2025-04-25
+Location: Evans, Colorado
+Project: Aurora
+
+This module implements the core watchdog timer that monitors elapsed time
+following a reflex action dispatch. If a finalizer token or expected response
+is not received within the configured timeout window, a recovery action
+is triggered. This prevents Aurora from becoming stalled in non-responsive
+or partial states.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T03_SEQUENCING.txt
+    - Category: Reflex Safety / Watchdog Systems
+    - Interfaces with: sequence_controller.py, simulated_dispatcher.py, timeout_recovery.py
+"""
+
+import threading
+import time
+
+class WatchdogTimer:
+    def __init__(self, timeout_seconds, on_timeout_callback):
+        self.timeout_seconds = timeout_seconds
+        self.on_timeout_callback = on_timeout_callback
+        self.timer_thread = None
+        self.start_time = None
+        self.running = False
+
+    def start(self):
+        if self.running:
+            self.cancel()
+        self.running = True
+        self.start_time = time.time()
+        self.timer_thread = threading.Thread(target=self._watch)
+        self.timer_thread.daemon = True
+        self.timer_thread.start()
+
+    def _watch(self):
+        while self.running:
+            if time.time() - self.start_time >= self.timeout_seconds:
+                self.running = False
+                if self.on_timeout_callback:
+                    self.on_timeout_callback()
+            time.sleep(0.1)
+
+    def cancel(self):
+        self.running = False
+
+
+
+# === FILE NAME: core/watchdog/watchdog_manager.py ===
+
+"""
+Aurora – Reflexive AI Control Framework
+---------------------------------------
+
+Module: core/watchdog/watchdog_manager.py
+Authors: ChatGPT and Mark
+Created: 2025-04-25
+Location: Evans, Colorado
+Project: Aurora
+
+This module provides high-level control over the watchdog system,
+handling timer initialization, cancellation, and timeout escalation
+via recovery routines. It acts as the central interface between
+runtime step execution and reflexive fault handling.
+
+License:
+    This file is part of the Aurora project and is distributed under the terms of
+    the MIT License. See the LICENSE file in the project root for details.
+
+WARNING:
+    This file may be auto-modified by development tools or AI agents as part of
+    the Aurora project workflow. Manual changes should be made cautiously.
+    (Meddle if you dare, foolish mortal!)
+
+FLAT Compliance:
+    - Registered in: T03_SEQUENCING.txt
+    - Category: Reflex Supervision / Watchdog Manager
+    - Interfaces with: watchdog_core.py, timeout_recovery.py, sequence_controller.py
+"""
+
+from core.watchdog.watchdog_core import WatchdogTimer
+from core.watchdog import timeout_recovery
+
+# Global watchdog timer instance
+_active_watchdog = None
+
+def start_watchdog(timeout_seconds, context=None):
+    """
+    Start a new watchdog timer for the current step or reflex operation.
+    """
+    global _active_watchdog
+    print(f"[WatchdogManager] Starting watchdog timer: {timeout_seconds} seconds")
+
+    def on_timeout():
+        print("[WatchdogManager] Watchdog triggered timeout event.")
+        timeout_recovery.retry_current_step(context)
+
+    _active_watchdog = WatchdogTimer(timeout_seconds, on_timeout)
+    _active_watchdog.start()
+
+def cancel_watchdog():
+    """
+    Cancel any active watchdog timer.
+    """
+    global _active_watchdog
+    if _active_watchdog:
+        print("[WatchdogManager] Cancelling active watchdog timer.")
+        _active_watchdog.cancel()
+        _active_watchdog = None
+
 
 
 
