@@ -36,6 +36,8 @@ Executes step-based sequences stored in the database. Supports step jumping,
 bounded loops, reflex triggering, and future interrupt integration.
 """
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SEQUENCES BEGIN HERE. A DISPATCHER FUNCTION IS CALLED WHEN A DISPATCH MESSAGE HAS BEEN COMPOSED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -46,11 +48,11 @@ class SequenceController:
         self.simulated = simulated
         self.simulator_gui = simulator_gui
         self.sequence_id = sequence_id
-        self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id
-        self.index = 0
-        self.index_store = 0
-        self.loop_count = 0
-        self.resume = 0
+        self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id. This defines the steps to be retrieved...
+        self.index = 0 # <<<<<<<<<<< Maybe 1-based instead?
+        self.index_store = 0 # <<<<< Sequence control after?
+        self.loop_count = 0 # <<<<<< Works afaik
+        self.resume = 0 # <<<<<<<<<< Works afaik
         self.history = []
         if simulated:
             from core.control import simulated_dispatcher as dispatcher # ************* If we're simulated, grab the "simulated_dispatcher" routine
@@ -63,7 +65,7 @@ class SequenceController:
 
         print(f"[SequenceController] Starting sequence {self.sequence_id}...") # ****** Debug print sequence startup data
 
-        while self.index < len(self.steps): # >>>>>>>>>>> RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE <<<<<<<<<<
+        while self.index < len(self.steps): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE <<<<<
 
             if self.resume:
 
@@ -84,12 +86,14 @@ class SequenceController:
 
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
-            result = self.dispatch_step(step)
+
+            result = self.dispatch_step(step) # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Call the dispatcher
 
             if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
+                self.index += 1
                 self.resume = 1
-                self.index_store = self.index + 1
+                self.index_store = self.index
 
                 prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...") # <<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
                 from PySide6.QtCore import QMetaObject, Qt, Q_ARG
@@ -97,7 +101,7 @@ class SequenceController:
                 if self.simulator_gui:
                     QMetaObject.invokeMethod(
                         self.simulator_gui,
-                        "update_response_log",  # ********************************* this is defined in PromptSimulatorWindow
+                        "update_response_log",  # ********************************* Write to GUI "response_log"; this is defined in PromptSimulatorWindow
                         Qt.QueuedConnection,
                         Q_ARG(str, prompt_text)
                     )
@@ -114,7 +118,7 @@ class SequenceController:
                 if self.simulator_gui:
                     QMetaObject.invokeMethod(
                         self.simulator_gui,
-                        "update_response_log",  # ********************************* this is defined in PromptSimulatorWindow
+                        "update_response_log",  # ********************************* Write to GUI "response_log"; this is defined in PromptSimulatorWindow
                         Qt.QueuedConnection,
                         Q_ARG(str, prompt_text)
                     )

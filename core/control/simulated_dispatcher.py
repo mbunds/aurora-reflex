@@ -101,14 +101,15 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         return "(Value for expected not found in step)"
 
     # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
-    if expected.startswith("PROMPT:"):
+    #if expected.startswith("PROMPT:"):
+    if expected: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have a value in "expected" <<<<<<<<<<<<<<<<<<
         print(f"[Command Starts With:] {expected_id}; command: {expected}")
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
-        while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE HOLD HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             time.sleep(0.1)
 
-        reply = response_queue.get()
+        reply = response_queue.get() # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have the simulated response representing that expected from the AI <<<<<<<<<<<<<<<<<<<<
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
 
         # ==========================================================
@@ -135,17 +136,17 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
             }
         """
 
-        parsed = parse_reflex_tokens_with_args(reply, expected)
+        parsed = parse_reflex_tokens_with_args(reply, expected) # >>>>>>>>>>>>>>>>>>>>>>>> Supply the parsing function with "reply" and "expected" for comparison.
 
-        if parsed["expected_matched"]:
+        if parsed["expected_matched"]: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If the function returns this string, "expected_matched".
             print("[SimulatedDispatcher] Expected token matched. Proceeding with reflex command(s)...")
 
-            for token, arg in parsed["arguments"].items():
-                if token == "/LAUNCH APP/":
-                    result = launch_app(arg)
+            for token, arg in parsed["arguments"].items(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>> Test for specific reflex tokens, in this instance "system commands"....
+                if token == "/LAUNCH APP/": # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> In this instance looking for the string "/LAUNCH APP/"...
+                    result = launch_app(arg)# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If so launch this...
                     print(f"[SimulatedDispatcher] [EXEC] launch_app('{arg}') → {result}")
-                elif token == "/OPEN FOLDER/":
-                    result = open_folder(arg)
+                elif token == "/OPEN FOLDER/": # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> In this instance looking for the string "/OPEN FOLDER/"...
+                    result = open_folder(arg)# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If so launch this...
                     print(f"[SimulatedDispatcher] [EXEC] open_folder('{arg}') → {result}")
 
             return "(Simulated) Trigger match: step complete."
@@ -180,4 +181,4 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         print(f"[SimulatedDispatcher] Unhandled command: {expected}")
         return f"(Simulated) Unhandled: {expected}"
 
-    print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
+    print(f"[SimulatedDispatcher] Prompt sent to simulator: {reply}")
