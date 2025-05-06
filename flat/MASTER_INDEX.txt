@@ -118,6 +118,7 @@ T01_OVERVIEW.txt
 #   - EVENT: 2025.04.22 === FILE CREATED: - NEW FILE - core/watchdog/timeout_recovery.py
 #   - EVENT: 2025.04.22 === FILE CREATED: - NEW FILE - core/watchdog/watchdog_core.py
 #   - EVENT: 2025.04.22 === FILE CREATED: - NEW FILE - core/watchdog/watchdog_manager.py
+#   - EVENT: 2025.05.06 === EVENT: BACK ON TASK - CLEANED UP SEQUENCER ROUTINES AND INDEXING
 
 UNLISTED (EMPTY IF NO 'ORPHANED" MODULES EXIST):
 #   - [NO ORPHANS]

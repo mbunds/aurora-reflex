@@ -65,21 +65,25 @@ Executes step-based sequences stored in the database. Supports step jumping,
 bounded loops, reflex triggering, and future interrupt integration.
 """
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SEQUENCES BEGIN HERE. A DISPATCHER FUNCTION IS CALLED WHEN A DISPATCH MESSAGE HAS BEEN COMPOSED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from data.db_interface import load_sequence_steps # ************************************ Chat with aurora.db to use the "load_sequence_steps" function
+from data.db_interface import load_sequence_steps # *********************************** Chat with aurora.db to use the "load_sequence_steps" function <<<<<<<<<<<<<<<<<<<<<<<<
 
 class SequenceController:
-    def __init__(self, sequence_id: int, simulated: bool = False):
+    def __init__(self, sequence_id: int, simulated: bool = False, simulator_gui=None):
         self.simulated = simulated
+        self.simulator_gui = simulator_gui
         self.sequence_id = sequence_id
-        self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id
-        self.index = 0
-        self.index_store = 0
-        self.loop_count = 0
-        self.resume = 0
+        self.steps = load_sequence_steps(sequence_id) # ******************************* Chat with aurora.db to retrieve the sequence id. This defines the steps to be retrieved...
+        self.index = 0 # <<<<<<<<<<< Maybe 1-based instead?
+        self.index_store = 0 # <<<<< Sequence control after?
+        self.loop_count = 0 # <<<<<< Works afaik
+        self.resume = 0 # <<<<<<<<<< Works afaik
         self.history = []
+        self.halted = 0
         if simulated:
             from core.control import simulated_dispatcher as dispatcher # ************* If we're simulated, grab the "simulated_dispatcher" routine
         else:
@@ -90,35 +94,85 @@ class SequenceController:
     def run(self): # ****************************************************************** Imaginatively named function "run" - run a loop
 
         print(f"[SequenceController] Starting sequence {self.sequence_id}...") # ****** Debug print sequence startup data
-
+        # ***************************************************************************** RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE
         while self.index < len(self.steps):
-
             if self.resume:
-                step = self.steps[self.index_store]
-            else:
-                step = self.steps[self.index]
 
+                """ SUB STEP ROUTINE BLOCK
+                if "substeps" in step and step.get("repeat_count", 0) < len(step["substeps"]):
+                    substep_text = step["substeps"][step["repeat_count"]]
+                    print(f"[SequenceController] Processing substep: {substep_text}")
+                    result = self.dispatch_step({"instruction": substep_text})
+                else:
+                    result = self.dispatch_step(step)
+                """
+
+                step = self.steps[self.index_store] # ******************** While running after first pass - DB CALL <<<<
+            else:
+                step = self.steps[self.index] # ************************** For first entry - DB CALL <<<<
 
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
-            result = self.dispatch_step(step)
+            from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
-            if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" *****************
+            prompt_text = (f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}") # <<<<<< UPDATE LOG WINDOW
+            if self.simulator_gui:
+                QMetaObject.invokeMethod(
+                    self.simulator_gui,
+                    #"update_injected_prompt", # ************************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                    "update_step_log", # ********************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                    #"update_response_log", # ***************************** Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                    Qt.QueuedConnection,
+                    Q_ARG(str, prompt_text)
+                )
+
+            result = self.dispatch_step(step) # <<<<<<<<<<<<<<<<<<<<<<<<<<< CALL THE DISPATCHER
+
+            if isinstance(result, str) and "step complete" in result: # ************* If the function returned "step complete" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 print(f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...")
+                self.index += 1
                 self.resume = 1
-                self.index_store = self.index + 1
+                self.index_store = self.index
+
+                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+                from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+                if self.simulator_gui:
+                    QMetaObject.invokeMethod(
+                        self.simulator_gui,
+                        #"update_injected_prompt", # ********************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                        #"update_step_log", # ***************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                        "update_response_log", # ************************** Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                        Qt.QueuedConnection,
+                        Q_ARG(str, prompt_text)
+                    )
                 continue
 
             elif isinstance(result, str) and "step incomplete" in result: # ************ If the function returned "step incomplete" **************
                 print(f"[SequenceController] Step {self.index} incomplete due to missing response trigger. Holding...")
                 self.resume = 1
                 self.index_store = self.index
+
+                prompt_text = (f"[SequenceController] Step {self.index} Inomplete. Awaiting retry. Holding...") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+                from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+                if self.simulator_gui:
+                    QMetaObject.invokeMethod(
+                        self.simulator_gui,
+                        #"update_injected_prompt", # ********************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                        #"update_step_log", # ***************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                        "update_response_log", # ************************** Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                        Qt.QueuedConnection,
+                        Q_ARG(str, prompt_text)
+                    )
                 continue
 
+            elif isinstance(result, str) and "HALT" in result: # ********** IF THE FUNCTION RETURNED "HALT"
+                self.index = 6 # Sets self.index to "6" for this experiment; NEEDS TO EQUAL STEP COUNT
+                self.halted = 1
             else:
-                print(f"[SequenceController] Step {self.index} would have runaway. Result was: {result}")
+                print(f"[SequenceController] Step {self.index} would have runaway. Result was: {result}") # ###### CATCH RUNAWAY
                 self.resume = 0
-                #break
                 continue
 
             self.history.append({
@@ -142,7 +196,7 @@ class SequenceController:
                     print(f"[SequenceController] Step {self.index} reached repeat limit. Continuing.")
                     step["repeat_count"] = 0  # Optional cleanup
 
-            # Check for jump
+            # ############################################################################################################## CHECK FOR JUMP
             if step.get('jump') not in (None, 0):
                 target_step_order = step['jump']
                 rpt = step.get('jmp_rpt', 0)
@@ -171,9 +225,28 @@ class SequenceController:
                     print("[SequenceController] Jump limit reached. Continuing.")
                     self.loop_count = 0
 
-        self.index += 1
+        self.index += 1 # #################################################################################################### IF EVERYTHING PASSES, INCREMENT SELF.INDEX
 
-        print(f"[SequenceController] Sequence {self.sequence_id} completed.")
+        # #################################################################################################################### END LOOP
+        if self.halted == 0:
+            print(f"[SequenceController] Sequence {self.sequence_id} completed.")
+            prompt_text = (f"[SequenceController] Sequence {self.sequence_id} completed.") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+            from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+            if self.simulator_gui:
+                QMetaObject.invokeMethod(
+                    self.simulator_gui,
+                    #"update_injected_prompt",  # ******************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                    "update_step_log", # ***************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                    #"update_response_log", # ************************ Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                    Qt.QueuedConnection,
+                    Q_ARG(str, prompt_text)
+                )
+
+        if self.halted == 0 and self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_complete'):
+            self.simulator_gui.on_sequence_complete()
+        elif self.halted == 1 and self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_halted'):
+            self.simulator_gui.on_sequence_halted()
 
 if __name__ == "__main__":
     from data.db_interface import get_sequence_id_by_name
@@ -289,123 +362,154 @@ from PySide6.QtCore import QThread, QObject, Signal, Slot, Qt, QMetaObject
 
 from core.control import simulated_dispatcher
 
-class PromptSimulatorWindow(QDialog):
+class PromptSimulatorWindow(QDialog): # ####################################### DEFINE GUI
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Aurora – Prompt Cycle Simulator")
-        self.setMinimumSize(700, 500)
+        self.setMinimumSize(700, 800) # Width, Height
 
         self.layout = QVBoxLayout(self)
 
         # --- Begin Sequence Button ---
-        self.run_button = QPushButton("Run Sequence") # ******************************** "Run sequence" button
+        self.run_button = QPushButton("Run Sequence") # ************************ "Run sequence" button
         self.run_button.clicked.connect(self.begin_sequence)
         self.layout.addWidget(self.run_button)
 
         # --- Prompt Preview ---
-        self.prompt_label = QLabel("Injected Prompt (Simulated):") # ******************* Injected Prompt (Simulated) listbox
+        self.prompt_label = QLabel("Injected Prompt (Simulated):") # *********** Injected Prompt (Simulated) listbox
         self.prompt_display = QTextEdit()
         self.prompt_display.setReadOnly(True)
 
         # --- Simulated GPT Response ---
-        self.reply_label = QLabel("Enter Simulated GPT Response:") # ******************* User entry box
+        self.reply_label = QLabel("Enter Simulated GPT Response:") # *********** User entry box
         self.reply_input = QLineEdit()
-        self.send_button = QPushButton("Send Response") # ****************************** "Send Response" button
+        self.send_button = QPushButton("Send Response") # ********************** "Send Response" button
         self.send_button.clicked.connect(self.send_response)
 
         # --- Step History and Response Log ---
         self.step_log = QListWidget()
-        self.step_log.setFixedHeight(120)
-        self.step_log_label = QLabel("Sequence Step Log:") # ************************** Sequencer Step Log listbox
+        self.step_log.setFixedHeight(300)
+        self.step_log_label = QLabel("Sequence Step Log:") # ******************** Sequencer Step Log listbox
 
         self.reply_log = QListWidget()
-        self.reply_log.setFixedHeight(120)
-        self.reply_log_label = QLabel("Simulated Response Log:") # ******************** Sequencer Response Log listbox
+        self.reply_log.setFixedHeight(200)
+        self.reply_log_label = QLabel("Simulated Response Log:") # ************** Sequencer Response Log listbox
 
-        self.status_label = QLabel("Status: Idle") # ********************************** Sequencer status label
+        self.status_label = QLabel("Status: Idle") # **************************** Sequencer status label
         self.layout.addWidget(self.status_label)
 
         # --- Layout Assembly ---
-        self.layout.addWidget(self.prompt_label) #    Injected Prompt label
-        self.layout.addWidget(self.prompt_display) #  Injected Prompt text edit box
-        self.layout.addWidget(self.reply_label) #     User entry box label
+        self.layout.addWidget(self.prompt_label) # ****************************** Injected Prompt label
+        self.layout.addWidget(self.prompt_display) # **************************** Injected Prompt text edit box
+        self.layout.addWidget(self.reply_label) # ******************************* User entry box label
 
         hbox = QHBoxLayout()
-        hbox.addWidget(self.reply_input) #            User entry box
-        hbox.addWidget(self.send_button) #            User entry box send button
-        self.layout.addLayout(hbox) #                 Horizonal container
+        hbox.addWidget(self.reply_input) # ************************************** User entry box
+        hbox.addWidget(self.send_button) # ************************************** User entry box send button
+        self.layout.addLayout(hbox) # ******************************************* Horizonal container
 
-        self.layout.addWidget(self.step_log_label) #  Step Log label
-        self.layout.addWidget(self.step_log) #        Step Log listbox
+        self.layout.addWidget(self.step_log_label) # **************************** Step Log label
+        self.layout.addWidget(self.step_log) # ********************************** Step Log listbox
 
-        self.layout.addWidget(self.reply_log_label) # Response Log box label
-        self.layout.addWidget(self.reply_log) #       Respons Log listbox
+        self.layout.addWidget(self.reply_log_label) # *************************** Response Log box label
+        self.layout.addWidget(self.reply_log) # ********************************* Respons Log listbox
 
-        from core.control.simulated_dispatcher import inject_simulator # Call function inject_simulator
+        self.sequence_running = False
+
+        from core.control.simulated_dispatcher import inject_simulator # ******** Call function inject_simulator
         inject_simulator(self)
 
     @Slot(str)
-    def inject_prompt(self, prompt_text: str): # *********************** Should display incoming prompts
+    def update_injected_prompt(self, prompt_text: str): # *********************** DISPLAYS SIMULATED GPT RESPONSE BLOCKS IN "prompt_display"
         self.prompt_display.setPlainText(prompt_text)
-        self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
-        print("[PromptSimulatorWindow Injected] {prompt_text[:80]}")
+        #self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print(f"[Prompt Injected Display Updated] {prompt_text[:80]}")
 
-    def send_response(self): # ***************************************** Should display user responses
+    @Slot(str)
+    def update_step_log(self, prompt_text: str): # ****************************** DISPLAYS STEPS IN "step_log"
+        self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print(f"[PromptSimulatorWindow Injected] {prompt_text[:80]}")
+
+    @Slot(str)
+    def update_response_log(self, prompt_text: str): # ************************** DISPLAYS USER RESPONSES IN "reply_log"
+        self.reply_log.addItem(f"[Injected] {prompt_text[:80]}")
+        print(f"[PromptSimulatorWindow Injected] {prompt_text[:80]}")
+
+    def send_response(self): # ************************************************** RECEIVES USER RESPONSE FROM "reply_input"
         response = self.reply_input.text().strip()
         if response:
-            self.reply_log.addItem(f"[User] {response}") # ################################ REPLY LOG ##############################
-            print("[PromptSimulatorWindow Added User Response:] {response}")
+            #self.reply_log.addItem(f"[User] {response}") # ##################### REPLY LOG
+            print(f"[PromptSimulatorWindow Added User Response:] {response}")
             self.reply_input.clear()
-            self.prompt_display.clear()
-            simulated_dispatcher.response_queue.put(response) # ########################## DISPATCHER RESPONSE_QUEUE ##############
+            #self.prompt_display.clear()
+            simulated_dispatcher.response_queue.put(response) # ################# DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS
 
     def begin_sequence(self):
-        self.status_label.setText("Status: Running...")
-        try:
-            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # ******************** Grab sequence id from the arm button, assign to "seq_id"
-        except AttributeError:
-            print("[PromptSimulatorWindow] Could not access sequence ID.") # ****** If oops
-            return
+        if not self.sequence_running:
+            self.sequence_running = True # ########################################## START THE SEQUENCE IF NOT RUNNING
+            self.status_label.setText("Status: Running...") # ####################### SET STATUS LABEL TEXT
+            self.run_button.setText("Halt Sequence") # ############################## SET RUN BUTTON TEXT
+            try:
+                seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # # Grab sequence id from the arm button, assign to "seq_id"
+            except AttributeError:
+                print("[PromptSimulatorWindow] Could not access sequence ID.") # #### If oops
+                return
 
-        if seq_id is None:
-            print("[PromptSimulatorWindow] No sequence ID armed.") # ************** If oops
-            return
+            if seq_id is None:
+                print("[PromptSimulatorWindow] No sequence ID armed.") # ############ If oops
+                return
 
-        self.thread = QThread()
-        self.runner = SequenceRunner(seq_id)
-        self.runner.moveToThread(self.thread)
-        self.thread.started.connect(self.runner.run)
-        self.runner.finished.connect(self.thread.quit)
-        self.runner.finished.connect(self.runner.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
+            self.thread = QThread()
+            self.runner = SequenceRunner(seq_id, self)
+            self.runner.moveToThread(self.thread)
+            self.thread.started.connect(self.runner.run)
+            self.runner.finished.connect(self.thread.quit)
+            self.runner.finished.connect(self.runner.deleteLater)
+            self.thread.finished.connect(self.thread.deleteLater)
 
-        print(f"[PromptSimulatorWindow] Running sequence {seq_id} in background thread.")
-        self.thread.start() # ********************************************************************* Launch sequencer routines
+            print(f"[PromptSimulatorWindow] Running sequence {seq_id} in background thread.")
+            self.thread.start() # *************************************************** LAUNCH SEQUENCER ROUTINES
+        else:
+            self.sequence_running = False
+            self.status_label.setText("Status: Halted") # ########################### SET STATUS LABEL TEXT
+            self.run_button.setText("Restart Sequence") # ########################### SET RUN BUTTON TEXT
+            response = "HALT"
+            print(f"[PromptSimulatorWindow Halt Command Received:] {response}")
+            simulated_dispatcher.response_queue.put(response) # ##################### DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS
 
     @Slot()
     def on_sequence_complete(self):
         self.status_label.setText("Status: Sequence complete.")
 
-class SequenceRunner(QObject):
+    @Slot()
+    def on_sequence_halted(self):
+        self.status_label.setText("Status: Sequence halted.")
+        self.reply_input.clear() # ################################################## CLEAR REPLY INPUT
+        self.step_log.clear() # ##################################################### CLEAR STEP LOG
+        self.reply_log.clear() # #################################################### CLEAR REPLY LOG
+
+class SequenceRunner(QObject): # #################################################### DEFINE THE SEQUENCE RUNNER
     finished = Signal()
 
-    def __init__(self, sequence_id):
+    def __init__(self, sequence_id, simulator_gui):
         super().__init__()
         self.sequence_id = sequence_id
+        self.simulator_gui = simulator_gui
 
     @Slot()
     def run(self):
         import threading
         print(f"[DEBUG] Running in thread: {threading.current_thread().name}")
         from core.control.sequence_controller import SequenceController
-        controller = SequenceController(sequence_id=self.sequence_id, simulated=True)# ************ Assign values to pass to sequence controller
-        controller.run() # ************************************************************************ Run sequence controller
+        controller = SequenceController(sequence_id=self.sequence_id, simulated=True, simulator_gui=self.simulator_gui)# ************ Assign values to pass to sequence controller
+        controller.run() # ********************************************************** RUN SEQUENCE CONTROLLER
         QMetaObject.invokeMethod(
-            self.parent(),  # assumes parent is PromptSimulatorWindow
+            self.parent(), # ######################################################## Assumes parent is PromptSimulatorWindow
             "on_sequence_complete",
             Qt.QueuedConnection
         )
         self.finished.emit()
+        print(f"[DEBUG] THREAD COMPLETE: {threading.current_thread().name}")
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
@@ -434,6 +538,8 @@ Simulated dispatcher module that replaces browser interaction with GUI-driven
 manual prompt/response exchange. Used for development, testing, and verification
 of sequence behavior without launching an actual ChatGPT session.
 
+04/23/2025 - UNDER EXAMINATION FOR REFACTOR - REFLEX_TOKEN_PARSER.PY WILL PASS STEP PERMISSIVES
+
 License:
     This file is part of the Aurora project and is distributed under the terms of
     the MIT License. See the LICENSE file in the project root for details.
@@ -459,6 +565,8 @@ import time
 import os
 import sys
 from queue import Queue
+from core.utils.reflex_token_parser import parse_reflex_tokens_with_args
+from core.api import launch_app, open_folder  # From routed __init__.py (platform-safe)
 
 # Ensure 'data' is in sys.path for correct resolution of db_interface
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -466,7 +574,7 @@ from data.db_interface import resolve_reflex_action
 
 # This global is populated externally
 simulator_instance = None
-response_queue = Queue()
+response_queue = Queue() # ########################## DISPATCHER RESPONSE_QUEUE DEFINED IN PROMPT_SIMULATOR_WINDOW - CRITICAL ##############
 
 
 def inject_simulator(sim): # ************************************* Called by prompt_simulator_window
@@ -494,9 +602,9 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         except Exception as e:
             print(f"[SimulatedDispatcher] ERROR resolving expectd {expected_id}: {e}") # ********************* Debug print error resolving value in expected_id
 
-    # If no command, attempt reflex resolution
+    # *************************************************************************** If no command, attempt reflex resolution
 
-    reflex_id = step.get("reflex_action", 0)
+    reflex_id = step.get("reflex_action", 0) # <- <- <- <- <- <- CAUSE OF THREAD RUNAWAY <- <- <- <- <- <-
     if reflex_id:
         try:
             reflex = resolve_reflex_action(reflex_id)
@@ -507,7 +615,7 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         except Exception as e:
             print(f"[SimulatedDispatcher] ERROR resolving reflex_action {reflex_id}: {e}")
 
-    # Still nothing? Bail.
+    # *************************************************************************** Still nothing? Bail. <- <- <- <- <- <- WON'T HAPPEN AFTER REFACTOR
     if not expected:
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named  expected. Skipping.")
         return "(Value for expected not found in step)"
@@ -516,25 +624,70 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         print("[SimulatedDispatcher] ERROR: Step has no value in the field named reflex. Skipping.")
         return "(Value for expected not found in step)"
 
-    # *************************************************************************** Check the contents of the "expected" field
-    if expected.startswith("PROMPT:"):
-        print(f"[Command Starts With:] {expected_id}; command: {expected}")
+    # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
+    if expected: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have a value in "expected" <<<<<<<<<<<<<<<<<<
+        print(f"[SimulatedDispatcher] Command: {expected_id}; command: {expected}")
         # Block until simulated response is received
-        print("[SimulatedDispatcher] Waiting for user response...")
-        while response_queue.empty():
+        print("[SimulatedDispatcher] Waiting for prompt input...")
+        while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE HOLD HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             time.sleep(0.1)
 
-        reply = response_queue.get()
+        reply = response_queue.get() # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have the simulated response representing that expected from the AI <<<<<<<<<<<<<<<<<<<<
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
+        if reply == "HALT":
+            return reply
 
-        #  *********************************************************************** Check for trigger in the "expected" field
+        # ==========================================================
+        # Parse reflex tokens and attempt API command dispatch
+        # ==========================================================
+        #from core.utils.reflex_token_parser import parse_reflex_tokens_with_args
+        #from core.api import launch_app, open_folder  # Routed by OS
+
+        """
+        Parses reflex-style tokens of the format /TOKEN/ or /TOKEN: ARGUMENT/ from response text.
+
+        Args:
+            response_text (str): The full GPT response or any string Aurora should parse.
+            expected (str, optional): If provided, the parser will check if the final token matches this.
+
+        Returns:
+            dict: {
+                "expected_matched": bool,  # Whether the final token matched expected.
+                "finalizer": str or None,  # The last token found.
+                "all_tokens": list of str, # All /TOKEN/ strings found.
+                "arguments": dict,         # Mapping of each token to its ARGUMENT (or None if not present).
+                "raw": str,                # The original response text.
+                "match_reason": str,       # Explanation if no tokens were found.
+            }
+        """
+
+        parsed = parse_reflex_tokens_with_args(reply, expected) # >>>>>>>>>>>>>>>>>>>>>>>> Supply the parsing function with "reply" and "expected" for comparison.
+
+        if parsed["expected_matched"]: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If the function returns this string, "expected_matched".
+            print("[SimulatedDispatcher] Expected token matched. Proceeding with reflex command(s)...")
+
+            for token, arg in parsed["arguments"].items(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>> Test for specific reflex tokens, in this instance "system commands"....
+                if token == "/LAUNCH APP/": # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> In this instance looking for the string "/LAUNCH APP/"...
+                    result = launch_app(arg)# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If so launch this...
+                    print(f"[SimulatedDispatcher] [EXEC] launch_app('{arg}') → {result}")
+                elif token == "/OPEN FOLDER/": # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> In this instance looking for the string "/OPEN FOLDER/"...
+                    result = open_folder(arg)# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> If so launch this...
+                    print(f"[SimulatedDispatcher] [EXEC] open_folder('{arg}') → {result}")
+
+            return "(Simulated) Trigger match: step complete."
+        else:
+            print(f"[SimulatedDispatcher] Finalizer '{expected}' not found in reply. Holding at step.")
+            return "(Simulated) Trigger missing: step incomplete."
+
+
+        #  *********************************************************************** Check for trigger in the "expected" field <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         expected_key_id = step.get("reflex_action", 0)# ************************** Assign the string value in the "reflex_action" field
         expected_token = None
 
         if expected_key_id:# ***************************************************** If the "expected_key_id" value is not empty
             try:
-                expected_token = resolve_reflex_action(expected_key_id)# ********* Chat with aurora.db to see if there is a match to expected_token
+                expected_token = resolve_reflex_action(expected_key_id)# ********* Chat with aurora.db to see if there is a match to expected_token. <- <- <- <- <- <- MATCH TOKEN
             except Exception as e:
                 print(f"[SimulatedDispatcher] WARNING: Could not resolve expected token {expected_key_id}: {e}")# *************** If oops
 
@@ -547,34 +700,13 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
                     return "(Simulated) Trigger missing: step incomplete."# ****** Back to routine report "step incomplete" >>>>>>>>>>>>>>>
         else:
             print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")# ******** If the "expected_key_id" value is empty
-            return reply# ******************************************************** Back to routine return user input
-
-    elif expected.startswith("WAIT:"):
-        seconds = int(expected[len("WAIT:"):].strip())
-        print(f"[SimulatedDispatcher] Simulated wait for {seconds} seconds.")
-        time.sleep(seconds)
-        return f"(Simulated) Waited {seconds} seconds."
-
-    elif expected.upper().startswith("CHECK:"):
-        token = expected[6:].strip().strip("/")
-        print(f"[SimulatedDispatcher] Simulated check for token: /{token}/ (not implemented)")
-        return f"(Simulated) CHECK:/{token}/"
+            return reply # ******************************************************** Back to routine return user input
 
     else:
         print(f"[SimulatedDispatcher] Unhandled command: {expected}")
         return f"(Simulated) Unhandled: {expected}"
 
-    prompt_text = expected
-    from PySide6.QtCore import QMetaObject, Qt, Q_ARG
-
-    QMetaObject.invokeMethod(
-        simulator_instance,
-        "inject_prompt",
-        Qt.QueuedConnection,
-        Q_ARG(str, prompt_text)
-    )
-
-    print(f"[SimulatedDispatcher] Prompt sent to simulator: {prompt_text[:80]}")
+    print(f"[SimulatedDispatcher] Prompt sent to simulator: {reply}")
 
 
 
