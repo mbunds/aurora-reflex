@@ -41,19 +41,20 @@ bounded loops, reflex triggering, and future interrupt integration.
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from data.db_interface import load_sequence_steps # ************************************ Chat with aurora.db to use the "load_sequence_steps" function <<<<<<<<<<<<<<<<<<<<<<<<
+from data.db_interface import load_sequence_steps # *********************************** Chat with aurora.db to use the "load_sequence_steps" function <<<<<<<<<<<<<<<<<<<<<<<<
 
 class SequenceController:
     def __init__(self, sequence_id: int, simulated: bool = False, simulator_gui=None):
         self.simulated = simulated
         self.simulator_gui = simulator_gui
         self.sequence_id = sequence_id
-        self.steps = load_sequence_steps(sequence_id) # ******************************** Chat with aurora.db to retrieve the sequence id. This defines the steps to be retrieved...
+        self.steps = load_sequence_steps(sequence_id) # ******************************* Chat with aurora.db to retrieve the sequence id. This defines the steps to be retrieved...
         self.index = 0 # <<<<<<<<<<< Maybe 1-based instead?
         self.index_store = 0 # <<<<< Sequence control after?
         self.loop_count = 0 # <<<<<< Works afaik
         self.resume = 0 # <<<<<<<<<< Works afaik
         self.history = []
+        self.halted = 0
         if simulated:
             from core.control import simulated_dispatcher as dispatcher # ************* If we're simulated, grab the "simulated_dispatcher" routine
         else:
@@ -64,9 +65,8 @@ class SequenceController:
     def run(self): # ****************************************************************** Imaginatively named function "run" - run a loop
 
         print(f"[SequenceController] Starting sequence {self.sequence_id}...") # ****** Debug print sequence startup data
-
-        while self.index < len(self.steps): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE <<<<<
-
+        # ***************************************************************************** RMEMEBER: STEPS ARE INDEXED FROM OUTSIDE THIS ROUTINE
+        while self.index < len(self.steps):
             if self.resume:
 
                 """ SUB STEP ROUTINE BLOCK
@@ -140,6 +140,10 @@ class SequenceController:
                     )
                 continue
 
+            elif isinstance(result, str) and "HALT" in result: # ********* IF THE FUNCTION RETURNED "HALT" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                self.index = 6
+                self.halted = 1
+
             else:
                 print(f"[SequenceController] Step {self.index} would have runaway. Result was: {result}")
                 self.resume = 0
@@ -167,7 +171,7 @@ class SequenceController:
                     print(f"[SequenceController] Step {self.index} reached repeat limit. Continuing.")
                     step["repeat_count"] = 0  # Optional cleanup
 
-            # Check for jump
+            # ############################################################################################################## CHECK FOR JUMP
             if step.get('jump') not in (None, 0):
                 target_step_order = step['jump']
                 rpt = step.get('jmp_rpt', 0)
@@ -212,8 +216,10 @@ class SequenceController:
                 Q_ARG(str, prompt_text)
             )
 
-        if self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_complete'):
+        if self.halted == 0 and self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_complete'):
             self.simulator_gui.on_sequence_complete()
+        elif self.halted == 1 and self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_halted'):
+            self.simulator_gui.on_sequence_halted()
 
 if __name__ == "__main__":
     from data.db_interface import get_sequence_id_by_name

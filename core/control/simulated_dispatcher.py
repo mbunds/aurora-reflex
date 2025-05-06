@@ -101,7 +101,6 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
         return "(Value for expected not found in step)"
 
     # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
-    #if expected.startswith("PROMPT:"):
     if expected: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have a value in "expected" <<<<<<<<<<<<<<<<<<
         print(f"[SimulatedDispatcher] Command: {expected_id}; command: {expected}")
         # Block until simulated response is received
@@ -111,6 +110,8 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
 
         reply = response_queue.get() # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have the simulated response representing that expected from the AI <<<<<<<<<<<<<<<<<<<<
         print(f"[SimulatedDispatcher] Received simulated reply: {reply}")
+        if reply == "HALT":
+            return reply
 
         # ==========================================================
         # Parse reflex tokens and attempt API command dispatch
@@ -175,7 +176,7 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
                     return "(Simulated) Trigger missing: step incomplete."# ****** Back to routine report "step incomplete" >>>>>>>>>>>>>>>
         else:
             print("[SimulatedDispatcher] No expected token defined. Proceeding by default.")# ******** If the "expected_key_id" value is empty
-            return reply# ******************************************************** Back to routine return user input
+            return reply # ******************************************************** Back to routine return user input
 
     else:
         print(f"[SimulatedDispatcher] Unhandled command: {expected}")
