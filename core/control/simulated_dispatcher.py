@@ -103,7 +103,7 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
     # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
     #if expected.startswith("PROMPT:"):
     if expected: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have a value in "expected" <<<<<<<<<<<<<<<<<<
-        print(f"[Command Starts With:] {expected_id}; command: {expected}")
+        print(f"[SimulatedDispatcher] Command: {expected_id}; command: {expected}")
         # Block until simulated response is received
         print("[SimulatedDispatcher] Waiting for user response...")
         while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE HOLD HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
