@@ -51,7 +51,7 @@ class PromptSimulatorWindow(QDialog): # ####################################### 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Aurora – Prompt Cycle Simulator")
-        self.setMinimumSize(700, 800) # Width, Height
+        self.setMinimumSize(700, 800) # (Width, Height)
 
         self.layout = QVBoxLayout(self)
 
@@ -70,6 +70,7 @@ class PromptSimulatorWindow(QDialog): # ####################################### 
         self.reply_input = QLineEdit()
         self.send_button = QPushButton("Send Response") # ********************** "Send Response" button
         self.send_button.clicked.connect(self.send_response)
+        self.send_button.setEnabled(False)  # ################################## Disable the prompt submit button
 
         # --- Step History and Response Log ---
         self.step_log = QListWidget()
@@ -131,9 +132,13 @@ class PromptSimulatorWindow(QDialog): # ####################################### 
 
     def begin_sequence(self):
         if not self.sequence_running:
-            self.sequence_running = True # ########################################## START THE SEQUENCE IF NOT RUNNING
-            self.status_label.setText("Status: Running...") # ####################### SET STATUS LABEL TEXT
-            self.run_button.setText("Halt Sequence") # ############################## SET RUN BUTTON TEXT
+            self.prompt_display.clear() # ####################################### CLEAR PROMPT DISPLAY
+            self.step_log.clear() # ############################################# CLEAR STEP LOG
+            self.reply_log.clear() # ############################################ CLEAR REPLY LOG
+            self.sequence_running = True # ###################################### START THE SEQUENCE IF NOT RUNNING
+            self.status_label.setText("Status: Running...") # ################### SET STATUS LABEL TEXT
+            self.run_button.setText("Halt Sequence") # ########################## SET RUN BUTTON TEXT
+            self.send_button.setEnabled(True) # ################################# Enable the prompt submit button
             try:
                 seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # # Grab sequence id from the arm button, assign to "seq_id"
             except AttributeError:
@@ -158,6 +163,7 @@ class PromptSimulatorWindow(QDialog): # ####################################### 
             self.sequence_running = False
             self.status_label.setText("Status: Halted") # ########################### SET STATUS LABEL TEXT
             self.run_button.setText("Restart Sequence") # ########################### SET RUN BUTTON TEXT
+            self.send_button.setEnabled(False) # #################################### Disable the prompt submit button
             response = "HALT"
             print(f"[PromptSimulatorWindow Halt Command Received:] {response}")
             simulated_dispatcher.response_queue.put(response) # ##################### DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS
@@ -165,15 +171,20 @@ class PromptSimulatorWindow(QDialog): # ####################################### 
     @Slot()
     def on_sequence_complete(self):
         self.status_label.setText("Status: Sequence complete.")
+        self.run_button.setText("RUN Sequence") # ################################### SET RUN BUTTON TEXT
+        self.send_button.setEnabled(False) # ######################################## DISABLE PROMPT SUBMIT
+        self.sequence_running = False
 
     @Slot()
     def on_sequence_halted(self):
         self.status_label.setText("Status: Sequence halted.")
+        self.prompt_display.clear() # ############################################### CLEAR PROMPT DISPLAY
         self.reply_input.clear() # ################################################## CLEAR REPLY INPUT
         self.step_log.clear() # ##################################################### CLEAR STEP LOG
         self.reply_log.clear() # #################################################### CLEAR REPLY LOG
+        self.send_button.setEnabled(False) # ######################################## DISABLE PROMPT SUBMIT
 
-class SequenceRunner(QObject):
+class SequenceRunner(QObject): # #################################################### DEFINE THE SEQUENCE RUNNER
     finished = Signal()
 
     def __init__(self, sequence_id, simulator_gui):
@@ -189,7 +200,7 @@ class SequenceRunner(QObject):
         controller = SequenceController(sequence_id=self.sequence_id, simulated=True, simulator_gui=self.simulator_gui)# ************ Assign values to pass to sequence controller
         controller.run() # ********************************************************** RUN SEQUENCE CONTROLLER
         QMetaObject.invokeMethod(
-            self.parent(),  # assumes parent is PromptSimulatorWindow
+            self.parent(), # ######################################################## Assumes parent is PromptSimulatorWindow
             "on_sequence_complete",
             Qt.QueuedConnection
         )

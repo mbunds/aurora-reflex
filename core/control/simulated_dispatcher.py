@@ -47,11 +47,21 @@ from core.api import launch_app, open_folder  # From routed __init__.py (platfor
 # Ensure 'data' is in sys.path for correct resolution of db_interface
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from data.db_interface import resolve_reflex_action
+from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
 # This global is populated externally
 simulator_instance = None
 response_queue = Queue() # ########################## DISPATCHER RESPONSE_QUEUE DEFINED IN PROMPT_SIMULATOR_WINDOW - CRITICAL ##############
 
+def log_to_gui(msg: str):
+    if simulator_instance:
+        QMetaObject.invokeMethod(
+            simulator_instance,
+            "update_injected_prompt",
+            #"update_response_log",
+            Qt.QueuedConnection,
+            Q_ARG(str, msg)
+        )
 
 def inject_simulator(sim): # ************************************* Called by prompt_simulator_window
     global simulator_instance
@@ -73,6 +83,7 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
             expected = resolve_reflex_action(expected_id) # ******* Chat with aurora.db to return the value in the "expected_id" field and assign it to "expected"
             if expected: # **************************************** If expected is not empty
                 print(f"[SimulatedDispatcher] Resolved expected {expected_id} to expected: {expected}") # **** Debug print resolved value in expected
+                log_to_gui(f"[SimulatedDispatcher] Resolved expected {expected_id} to expected: {expected}") # ####################### LOG TO GUI
             else:
                 print(f"[SimulatedDispatcher] ERROR: expected {expected_id} returned nothing.") # ************ Debug print failure to resolve value in expected_id
         except Exception as e:
@@ -102,9 +113,9 @@ def dispatch_step(step: dict) -> str: # *************************** Define funct
 
     # *************************************************************************** Check the contents of the "expected" field <- <- <- <- <- <- AUTO TO NEXT LINE? FIRST EXECUTION?
     if expected: # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> We have a value in "expected" <<<<<<<<<<<<<<<<<<
-        print(f"[SimulatedDispatcher] Command: {expected_id}; command: {expected}")
+        print(f"[SimulatedDispatcher] Command: {expected_id}; Expected Command: {expected}")
         # Block until simulated response is received
-        print("[SimulatedDispatcher] Waiting for user response...")
+        print("[SimulatedDispatcher] Waiting for prompt input...")
         while response_queue.empty(): # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESPONSE QUEUE HOLD HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             time.sleep(0.1)
 
