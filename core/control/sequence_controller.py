@@ -78,22 +78,22 @@ class SequenceController:
                     result = self.dispatch_step(step)
                 """
 
-                step = self.steps[self.index_store] # ******************************* While running after first pass - DB CALL <<<<
+                step = self.steps[self.index_store] # ********************************* While running after first pass - DB CALL <<<<
 
             else:
 
-                step = self.steps[self.index] # ************************************* For first entry - DB CALL <<<<
+                step = self.steps[self.index] # *************************************** For first entry - DB CALL <<<<
 
             print(f"[SequenceController] Length of self.steps is: {len(self.steps)}")
             print(f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}")
             from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
-            prompt_text = (f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}") # < UPDATE LOG WINDOW
+            prompt_text = (f"[SequenceController] Executing step_order {step['step_order']} (index {self.index}): {step.get('instruction')}") # <<<<<< UPDATE LOG WINDOW
             if self.simulator_gui:
                 QMetaObject.invokeMethod(
                     self.simulator_gui,
-                    "update_step_log", # ********************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
                     #"update_injected_prompt", # ************************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                    "update_step_log", # ********************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
                     #"update_response_log", # ***************************** Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
                     Qt.QueuedConnection,
                     Q_ARG(str, prompt_text)
@@ -107,15 +107,15 @@ class SequenceController:
                 self.resume = 1
                 self.index_store = self.index
 
-                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...") # <<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+                prompt_text = (f"[SequenceController] Step {self.index} Complete. Awaiting next trigger. Holding...") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
                 from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
                 if self.simulator_gui:
                     QMetaObject.invokeMethod(
                         self.simulator_gui,
-                        #"update_step_log", # **************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
-                        "update_injected_prompt",  # ********************* Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
-                        #"update_response_log", # ************************ Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                        #"update_injected_prompt",  # ********************* Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                        #"update_step_log", # ***************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                        "update_response_log", # ************************** Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
                         Qt.QueuedConnection,
                         Q_ARG(str, prompt_text)
                     )
@@ -126,15 +126,15 @@ class SequenceController:
                 self.resume = 1
                 self.index_store = self.index
 
-                prompt_text = (f"[SequenceController] Step {self.index} Inomplete. Awaiting retry. Holding...") # <<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+                prompt_text = (f"[SequenceController] Step {self.index} Inomplete. Awaiting retry. Holding...") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
                 from PySide6.QtCore import QMetaObject, Qt, Q_ARG
 
                 if self.simulator_gui:
                     QMetaObject.invokeMethod(
                         self.simulator_gui,
-                        #"update_step_log", # *************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
-                        #"update_injected_prompt",  # ******************* Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
-                        "update_response_log", # ************************ Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                        #"update_injected_prompt",  # ******************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                        #"update_step_log", # **************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                        "update_response_log", # ************************* Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
                         Qt.QueuedConnection,
                         Q_ARG(str, prompt_text)
                     )
@@ -199,6 +199,21 @@ class SequenceController:
         self.index += 1
 
         print(f"[SequenceController] Sequence {self.sequence_id} completed.")
+        prompt_text = (f"[SequenceController] Sequence {self.sequence_id} completed.") # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UPDATE LOG WINDOW
+        from PySide6.QtCore import QMetaObject, Qt, Q_ARG
+
+        if self.simulator_gui:
+            QMetaObject.invokeMethod(
+                self.simulator_gui,
+                #"update_injected_prompt",  # ******************** Write to GUI "injected_prompt" (Top Box); this is defined in PromptSimulatorWindow
+                "update_step_log", # ***************************** Write to GUI "step_log" (Second from bottom); this is defined in PromptSimulatorWindow
+                #"update_response_log", # ************************ Write to GUI "response_log" (Bottom box); this is defined in PromptSimulatorWindow
+                Qt.QueuedConnection,
+                Q_ARG(str, prompt_text)
+            )
+
+        if self.simulator_gui and hasattr(self.simulator_gui, 'on_sequence_complete'):
+            self.simulator_gui.on_sequence_complete()
 
 if __name__ == "__main__":
     from data.db_interface import get_sequence_id_by_name

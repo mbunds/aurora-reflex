@@ -51,7 +51,7 @@ class PromptSimulatorWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Aurora – Prompt Cycle Simulator")
-        self.setMinimumSize(700, 500)
+        self.setMinimumSize(700, 800)
 
         self.layout = QVBoxLayout(self)
 
@@ -73,33 +73,33 @@ class PromptSimulatorWindow(QDialog):
 
         # --- Step History and Response Log ---
         self.step_log = QListWidget()
-        self.step_log.setFixedHeight(120)
+        self.step_log.setFixedHeight(300)
         self.step_log_label = QLabel("Sequence Step Log:") # ************************** Sequencer Step Log listbox
 
         self.reply_log = QListWidget()
-        self.reply_log.setFixedHeight(120)
-        self.reply_log_label = QLabel("Simulated Response Log:") # ******************** Sequencer Response Log listbox
+        self.reply_log.setFixedHeight(200)
+        self.reply_log_label = QLabel("Simulated Response Log:") # ************** Sequencer Response Log listbox
 
-        self.status_label = QLabel("Status: Idle") # ********************************** Sequencer status label
+        self.status_label = QLabel("Status: Idle") # **************************** Sequencer status label
         self.layout.addWidget(self.status_label)
 
         # --- Layout Assembly ---
-        self.layout.addWidget(self.prompt_label) #    Injected Prompt label
-        self.layout.addWidget(self.prompt_display) #  Injected Prompt text edit box
-        self.layout.addWidget(self.reply_label) #     User entry box label
+        self.layout.addWidget(self.prompt_label) # ****************************** Injected Prompt label
+        self.layout.addWidget(self.prompt_display) # **************************** Injected Prompt text edit box
+        self.layout.addWidget(self.reply_label) # ******************************* User entry box label
 
         hbox = QHBoxLayout()
-        hbox.addWidget(self.reply_input) #            User entry box
-        hbox.addWidget(self.send_button) #            User entry box send button
-        self.layout.addLayout(hbox) #                 Horizonal container
+        hbox.addWidget(self.reply_input) # ************************************** User entry box
+        hbox.addWidget(self.send_button) # ************************************** User entry box send button
+        self.layout.addLayout(hbox) # ******************************************* Horizonal container
 
-        self.layout.addWidget(self.step_log_label) #  Step Log label
-        self.layout.addWidget(self.step_log) #        Step Log listbox
+        self.layout.addWidget(self.step_log_label) # **************************** Step Log label
+        self.layout.addWidget(self.step_log) # ********************************** Step Log listbox
 
-        self.layout.addWidget(self.reply_log_label) # Response Log box label
-        self.layout.addWidget(self.reply_log) #       Respons Log listbox
+        self.layout.addWidget(self.reply_log_label) # *************************** Response Log box label
+        self.layout.addWidget(self.reply_log) # ********************************* Respons Log listbox
 
-        from core.control.simulated_dispatcher import inject_simulator # Call function inject_simulator
+        from core.control.simulated_dispatcher import inject_simulator # ******** Call function inject_simulator
         inject_simulator(self)
 
     @Slot(str)
@@ -109,34 +109,35 @@ class PromptSimulatorWindow(QDialog):
         print(f"[Prompt Injected Display Updated] {prompt_text[:80]}")
 
     @Slot(str)
-    def update_step_log(self, prompt_text: str): # *********************** DISPLAYS STEPS IN "step_log"
+    def update_step_log(self, prompt_text: str): # ****************************** DISPLAYS STEPS IN "step_log"
         self.step_log.addItem(f"[Injected] {prompt_text[:80]}")
         print(f"[PromptSimulatorWindow Injected] {prompt_text[:80]}")
 
     @Slot(str)
-    def update_response_log(self, prompt_text: str): # *********************** DISPLAYS USER RESPONSES IN "reply_log"
+    def update_response_log(self, prompt_text: str): # ************************** DISPLAYS USER RESPONSES IN "reply_log"
         self.reply_log.addItem(f"[Injected] {prompt_text[:80]}")
         print(f"[PromptSimulatorWindow Injected] {prompt_text[:80]}")
 
-    def send_response(self): # ***************************************** DISPLAYS USER RESPONSE FROM "reply_input"
+    def send_response(self): # ************************************************** DISPLAYS USER RESPONSE FROM "reply_input"
         response = self.reply_input.text().strip()
         if response:
-            #self.reply_log.addItem(f"[User] {response}") # ################################ REPLY LOG ##############################
+            #self.reply_log.addItem(f"[User] {response}") # ##################### REPLY LOG
             print(f"[PromptSimulatorWindow Added User Response:] {response}")
             self.reply_input.clear()
             #self.prompt_display.clear()
-            simulated_dispatcher.response_queue.put(response) # ########################## DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS ##############
+            simulated_dispatcher.response_queue.put(response) # ################# DISPATCHER RESPONSE_QUEUE CRITICAL - USED IN DISPATCHERS
 
     def begin_sequence(self):
-        self.status_label.setText("Status: Running...")
+        self.status_label.setText("Status: Running...") # ####################### SET STATUS LABEL TEXT
+        self.run_button.setText("Halt Sequence") # ############################## SET RUN BUTTON TEXT
         try:
-            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # ******************** Grab sequence id from the arm button, assign to "seq_id"
+            seq_id = self.parent().ui.pb_sequence_arm.property("sequence_id") # # Grab sequence id from the arm button, assign to "seq_id"
         except AttributeError:
-            print("[PromptSimulatorWindow] Could not access sequence ID.") # ****** If oops
+            print("[PromptSimulatorWindow] Could not access sequence ID.") # #### If oops
             return
 
         if seq_id is None:
-            print("[PromptSimulatorWindow] No sequence ID armed.") # ************** If oops
+            print("[PromptSimulatorWindow] No sequence ID armed.") # ############ If oops
             return
 
         self.thread = QThread()
